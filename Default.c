@@ -1,5 +1,4 @@
 /*
-Template by Sai Suman Chitturi
 Linkedin: https://www.linkedin.com/in/sai-suman-chitturi-9727a2196/
 Hackerrank: https://www.hackerrank.com/skynetasspyder?hr_r=1
 Codechef: https://www.codechef.com/users/suman_18733097
@@ -66,7 +65,7 @@ const ll inf = ((ll)(1e18)); // 10**18
 static inline void swapInt(int *a, int *b) 		{int temp=*a;*a=*b;*b=temp;}
 static inline void swapChar(char *a, char *b)	{char c=*a;*a=*b;*b=c;}
 static inline void swapLong(ll *a, ll *b)		{ll temp=*a;*a=*b;*b=temp;}
-static inline int setBitCount(ll n)				{int ans=0;for(;n>0;n/=2,ans+=n%2);return ans;}
+static inline int setBitCount(ll n)				{int ans=0;for(;n>0;ans+=(n&1),n>>=1);return ans;}
 static inline ll gcd(ll a, ll b) 				{for(ll rem;b>0;rem=a%b,a=b,b=rem);return a;}
 static inline ll lcm(ll a, ll b) 				{return (a*b)/(gcd(a,b));}
 static inline ll max(ll a, ll b) 				{return (a>b?a:b);}

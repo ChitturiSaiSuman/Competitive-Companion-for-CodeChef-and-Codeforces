@@ -1,24 +1,21 @@
-"""
- _____   _    _   __    __     ____     __    _
-/ ____| | |  | | |  \  /  |   /    \   |  \  | |
-| |___  | |  | | |   \/   |  /   _  \  | . \ | |
-\____ \ | |  | | | |\__/| | |   /_\  | | |\ \| |
-____| | | \__/ | | |    | | |   __   | | | \ ` |
-|_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
-
-"""
-"""
-/*
-Template by Sai Suman Chitturi
-Linkedin: https://www.linkedin.com/in/sai-suman-chitturi-9727a2196/
-Hackerrank: https://www.hackerrank.com/skynetasspyder?hr_r=1
-Codechef: https://www.codechef.com/users/suman_18733097
-Codeforces: http://codeforces.com/profile/saisumanchitturi
-Github: https://github.com/ChitturiSaiSuman
-Hackerearth: https://www.hackerearth.com/@chitturi7
-SPOJ: Sai Suman Chitturi @out_of_bound
-*/
-"""
+# 
+# Linkedin: https://www.linkedin.com/in/sai-suman-chitturi-9727a2196/
+# Hackerrank: https://www.hackerrank.com/skynetasspyder?hr_r=1
+# Codechef: https://www.codechef.com/users/suman_18733097
+# Codeforces: http://codeforces.com/profile/saisumanchitturi
+# Github: https://github.com/ChitturiSaiSuman
+# Hackerearth: https://www.hackerearth.com/@chitturi7
+# SPOJ: Sai Suman Chitturi @out_of_bound
+# 
+# 
+#  _____   _    _   __    __     ____     __    _
+# / ____| | |  | | |  \  /  |   /    \   |  \  | |
+# | |___  | |  | | |   \/   |  /   _  \  | . \ | |
+# \____ \ | |  | | | |\__/| | |   /_\  | | |\ \| |
+# ____| | | \__/ | | |    | | |   __   | | | \ ` |
+# |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
+# 
+#
 from sys import stdin,stdout,stderr,setrecursionlimit
 from math import pi,sqrt,gcd,ceil,floor,log2,log10,factorial
 from math import cos,acos,tan,atan,atan2,sin,asin,radians,degrees,hypot
@@ -32,7 +29,7 @@ from statistics import mean,median,mode
 from heapq import heapify,heappop,heappush,heappushpop,heapreplace,merge,nlargest,nsmallest
 from collections import deque,OrderedDict,defaultdict
 from collections import Counter,namedtuple,ChainMap,UserDict,UserList,UserString
-from numpy import dot,trace,argmax,argmin,array,cumprod,cumsum,matmul
+# from numpy import dot,trace,argmax,argmin,array,cumprod,cumsum,matmul
 
 mod = 10**9+7
 hell = 10**9+9
@@ -52,7 +49,7 @@ setrecursionlimit(size)
 def preCompute():
     return
 
-def solve(**argv):
+def solve():
     return
 
 def main():
@@ -83,7 +80,7 @@ class IO:
     def Int(self):
         return self.nextInt()
     def nextFloat(self):
-        return float(next())
+        return float(self.next())
     def Float(self):
         return self.nextFloat()
     def nextList(self):

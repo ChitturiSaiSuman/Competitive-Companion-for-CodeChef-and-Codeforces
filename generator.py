@@ -9,7 +9,7 @@ def generate_input_as_string():
 
 def main():
     test = 10
-    with open("input.txt","w") as file:
+    with open("in.in","w") as file:
         file.write(str(test)+'\n')
         for t in range(test):
             string = generate_input_as_string()

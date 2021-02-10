@@ -5,6 +5,6 @@ git add .
 git status
 git commit -m 'Updated Files'
 git push
-echo "Uploaded Successfully"
+echo "Committed!!!"
 sleep 5
 clear

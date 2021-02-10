@@ -1,5 +1,4 @@
 /*
-Template by Sai Suman Chitturi
 Linkedin: https://www.linkedin.com/in/sai-suman-chitturi-9727a2196/
 Hackerrank: https://www.hackerrank.com/skynetasspyder?hr_r=1
 Codechef: https://www.codechef.com/users/suman_18733097
@@ -31,9 +30,8 @@ class Main {
         if(t==0)
             t = scan.nextInt();
         for(int test = 0;test<t;test++) {
-            // System.out.print("Case #"+(test+1)+": ");
-
-            println();
+            // print("Case #"+(test+1)+": ");
+            solve();
         }
     }
     static final int mod = (int)(1e9+7);
@@ -90,7 +88,10 @@ class Main {
         return power(a,p-2,p);
     }
     static void error(Object obj) {
-        System.err.print(obj+" ");
+        System.err.println(obj);
+    }
+    static void debug(Object obj) {
+        System.err.println(obj);
     }
     static void read(int arr[], int mxN) {
         for(int i=0;i<mxN;i++)
