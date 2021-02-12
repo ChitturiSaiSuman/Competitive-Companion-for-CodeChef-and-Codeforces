@@ -7,7 +7,7 @@
 # Hackerearth: https://www.hackerearth.com/@chitturi7
 # SPOJ: Sai Suman Chitturi @out_of_bound
 # 
-# 
+
 #  _____   _    _   __    __     ____     __    _
 # / ____| | |  | | |  \  /  |   /    \   |  \  | |
 # | |___  | |  | | |   \/   |  /   _  \  | . \ | |
@@ -15,7 +15,7 @@
 # ____| | | \__/ | | |    | | |   __   | | | \ ` |
 # |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
 # 
-#
+
 from sys import stdin,stdout,stderr,setrecursionlimit
 from math import pi,sqrt,gcd,ceil,floor,log2,log10,factorial
 from math import cos,acos,tan,atan,atan2,sin,asin,radians,degrees,hypot
