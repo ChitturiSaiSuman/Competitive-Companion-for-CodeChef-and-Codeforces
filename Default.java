@@ -21,9 +21,11 @@ ____| | | \__/ | | |    | | |   __   | | | \ ` |
 import java.io.*;
 import java.util.*;
 class Main {
+
     static void solve() {
         return;
     }
+
     public static void main(String[] args) {
         scan = new FastReader();
         int t = 0;
@@ -34,10 +36,13 @@ class Main {
             solve();
         }
     }
-    static final int mod = (int)(1e9+7);
-    static final long inf = (long)(1e18);
-    static final int hell = (int)(1e9+9);
+
+    static final int shit = ((int)(998244353));
+    static final int mod = ((int)(1e9+7));
+    static final int hell = ((int)(1e9+9));
+    static final long inf = ((long)(1e18));
     static FastReader scan;
+
     static int min(int a, int b) {
         return a<b?a:b;
     }

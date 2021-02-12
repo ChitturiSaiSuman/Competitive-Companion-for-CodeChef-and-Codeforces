@@ -31,6 +31,7 @@ from collections import deque,OrderedDict,defaultdict
 from collections import Counter,namedtuple,ChainMap,UserDict,UserList,UserString
 # from numpy import dot,trace,argmax,argmin,array,cumprod,cumsum,matmul
 
+shit = 998244353
 mod = 10**9+7
 hell = 10**9+9
 inf = 10**18
@@ -46,10 +47,15 @@ size = 10**6+1
 
 setrecursionlimit(size)
 
+def abort():
+    raise AssertionError("Abort Called")
+
 def preCompute():
+
     return
 
 def solve():
+    
     return
 
 def main():

@@ -16,7 +16,7 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 //	 |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
 //
 						
-#include <stdio.h>			
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -44,6 +44,7 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 #define println(a)				printf("%lld\n",((ll)a))
 #define getName(var)			#var
 #define debug(var)				fprintf(stderr,"%s = %lld\n",getName(var),((ll)var));
+#define abort					assert(false);
 #define readInt(arr,nax)		FOR(IT,nax) {scan(arr[IT]);}
 #define readLL(arr,nax)			FOR(IT,nax) {scanll(arr[IT]);}
 #define write(arr,nax)			FOR(IT,nax) {print(arr[IT]);space;}
@@ -58,6 +59,8 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 
 typedef unsigned long long int ull;
 typedef long long int ll;
+
+const ll shit = ((ll)(998244353)); // 998,244,353
 const ll mod = ((ll)(1e9+7)); // 10**9+7
 const ll hell = ((ll)(1e9+9)); // 10**9+9
 const ll inf = ((ll)(1e18)); // 10**18
@@ -108,15 +111,15 @@ bool isPrime(ll n)
 
 typedef struct tuple
 {
-	int value;
-}tuple;
+	int val1, val2;
+} tuple;
 
 int compare(const void *a,const void *b)
 {
 	tuple *t1 = (tuple *)a;
 	tuple *t2 = (tuple *)b;
-	int v1 = t1->value;
-	int v2 = t2->value;
+	int v1 = t1->val1;
+	int v2 = t2->val1;
 	return v1>v2?1:-1;
 }
 

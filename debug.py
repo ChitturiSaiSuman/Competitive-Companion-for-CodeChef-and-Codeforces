@@ -25,10 +25,15 @@ with open("out2.out") as out:
     output2 = list(map(str,output2.split('\n')))
 
 if output1 != output2:
-    print(Fore.RED + "Unequal Outputs")
+    print(Fore.RED + "Unequal Outputs dude")
+    fail_count = 0
     for i in range(len(output1)):
         if output1[i]!=output2[i]:
+            fail_count += 1
             print(Fore.RED + str(i+1) + "th test case failed")
+            if fail_count == 10:
+                print(Fore.RED + "There could be Many. First rectify these you Idiot!")
+                break
 
     print("Output1")
     print(output1)
@@ -37,4 +42,4 @@ if output1 != output2:
     print(output2)
 
 else:
-    print(Fore.GREEN + "Outputs Matched")
+    print(Fore.GREEN + "Hurray! Outputs Matched")
