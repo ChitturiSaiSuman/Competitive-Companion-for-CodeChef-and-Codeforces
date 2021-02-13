@@ -40,11 +40,15 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 #define inverse(a,p) 			power(a,p-2,p)
 #define scan(a) 				scanf("%d",&a)
 #define scanll(a)				scanf("%lld",&a)
+#define scans(s)				scanf("%s",s)
+#define scanLine(s)				scanf("%[^\n]%*c",s);
 #define print(a) 				printf("%lld",((ll)a))
 #define println(a)				printf("%lld\n",((ll)a))
+#define prints(s)				printf("%s",s)
+#define printsln(s)				printf("%s\n",s)
 #define getName(var)			#var
-#define debug(var)				fprintf(stderr,"%s = %lld\n",getName(var),((ll)var));
-#define abort					assert(false);
+#define debug(var)				fprintf(stderr,"%s = %lld\n",getName(var),((ll)var))
+#define abort					assert(false)
 #define readInt(arr,nax)		FOR(IT,nax) {scan(arr[IT]);}
 #define readLL(arr,nax)			FOR(IT,nax) {scanll(arr[IT]);}
 #define write(arr,nax)			FOR(IT,nax) {print(arr[IT]);space;}
@@ -65,6 +69,13 @@ const ll mod = ((ll)(1e9+7)); // 10**9+7
 const ll hell = ((ll)(1e9+9)); // 10**9+9
 const ll inf = ((ll)(1e18)); // 10**18
 
+const char yes[] = "yes";
+const char Yes[] = "Yes";
+const char YES[] = "YES";
+const char no[] = "no";
+const char No[] = "No";
+const char NO[] = "NO";
+
 static inline void swapInt(int *a, int *b) 		{int temp=*a;*a=*b;*b=temp;}
 static inline void swapChar(char *a, char *b)	{char c=*a;*a=*b;*b=c;}
 static inline void swapLong(ll *a, ll *b)		{ll temp=*a;*a=*b;*b=temp;}
@@ -84,19 +95,16 @@ static inline void IntFraction(int *a, int *b)	{int g = gcd(*a,*b); (*a)/=g; (*b
 int ascending (const void *a, const void *b)	{return *(int*)a>=*(int*)b?1:-1;}
 int descending(const void *a, const void *b)	{return *(int*)b>=*(int*)a?1:-1;}
 
-ll power(ll x, ll y, ll p)
-{
+ll power(ll x, ll y, ll p) {
 	ll result=1;
-	for(;y>0;y>>=1,x=mul(x,x,p))
-	{
+	for(;y>0;y>>=1,x=mul(x,x,p)) {
 		if(y&1)
 			result = mul(result,x,p);
 	}
 	return result;
 }
 
-bool isPrime(ll n)
-{
+bool isPrime(ll n) {
 	if(n==0 or n==1)
 		return false;
 	else if(n==2 or n==3)
@@ -109,13 +117,11 @@ bool isPrime(ll n)
 	return true;
 }
 
-typedef struct tuple
-{
+typedef struct tuple {
 	int val1, val2;
 } tuple;
 
-int compare(const void *a,const void *b)
-{
+int compare(const void *a,const void *b) {
 	tuple *t1 = (tuple *)a;
 	tuple *t2 = (tuple *)b;
 	int v1 = t1->val1;
@@ -125,18 +131,17 @@ int compare(const void *a,const void *b)
 
 #define size 1000003 // 10**6+3
 
-void preCompute()
-{
+void preCompute() {
+
 	return;
 }
 
-void solve()
-{
+void solve() {
+
 	return;
 }
 
-int main()
-{
+int main() {
 	int t=0;
 	if(!t) scan(t);
 	preCompute();

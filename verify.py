@@ -14,7 +14,7 @@ print(Fore.BLUE+"Status: ", end = "")
 p_output = p_output.strip()
 a_output = a_output.strip()
 if a_output == "":
-    print(Fore.RED + "Validation Failed")
+    print(Fore.RED + "Cannot Validate")
     exit(0)
 
 p_lines = list(map(str, p_output.split('\n')))

@@ -131,7 +131,7 @@ def factor(n):
     if n>2:
         ans*=2
     return ans
-# Sieve in O(log n) for spf
+# Sieve in O(n log n) for spf
 size=10**5
 spf=[i for i in range(size)]
 for i in range(2,size,2):
