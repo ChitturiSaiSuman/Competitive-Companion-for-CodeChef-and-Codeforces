@@ -4,7 +4,11 @@ import sys
 import os
 import time
 
-online_judge = False
+import pyttsx3
+engine = pyttsx3.init()
+engine.setProperty('rate', 150)
+
+online_judge = True
 
 program_to_be_executed = sys.argv[1]
 if len(sys.argv) == 3:
@@ -30,6 +34,8 @@ if ".java" in program_to_be_executed:
         end = time.time()
     if end - start > 4:
         print(Fore.RED + "Time Limit Exceeded")
+        engine.say("Time Limit Exceeded")
+        engine.runAndWait()
         exit(0)
 
 elif ".cpp" in program_to_be_executed:
@@ -45,6 +51,8 @@ elif ".cpp" in program_to_be_executed:
         end = time.time()
     if end - start > 2:
         print(Fore.RED + "Time Limit Exceeded")
+        engine.say("Time Limit Exceeded")
+        engine.runAndWait()
         exit(0)
 
 elif ".c" in program_to_be_executed:
@@ -60,6 +68,8 @@ elif ".c" in program_to_be_executed:
         end = time.time()
     if end - start > 2:
         print(Fore.RED + "Time Limit Exceeded")
+        engine.say("Time Limit Exceeded")
+        engine.runAndWait()
         exit(0)
 
 elif ".py" in program_to_be_executed:
@@ -74,6 +84,8 @@ elif ".py" in program_to_be_executed:
         end = time.time()
     if end - start > 10:
         print(Fore.RED + "Time Limit Exceeded")
+        engine.say("Time Limit Exceeded")
+        engine.runAndWait()
         exit(0)
 
 with open("in.in", "r") as inputFile:

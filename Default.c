@@ -137,7 +137,7 @@ void preCompute() {
 }
 
 void solve() {
-
+	
 	return;
 }
 

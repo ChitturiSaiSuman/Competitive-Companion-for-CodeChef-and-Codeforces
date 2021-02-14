@@ -2,6 +2,10 @@ import os
 import sys
 from colorama import Fore, Style, Back
 
+import pyttsx3
+engine = pyttsx3.init()
+engine.setProperty('rate', 150)
+
 program1 = sys.argv[1]
 program2 = sys.argv[2]
 
@@ -26,6 +30,8 @@ with open("out2.out") as out:
 
 if output1 != output2:
     print(Fore.RED + "Unequal Outputs dude")
+    engine.say("Unequal Outputs dude")
+    engine.runAndWait()
     fail_count = 0
     for i in range(len(output1)):
         if output1[i]!=output2[i]:
@@ -43,3 +49,5 @@ if output1 != output2:
 
 else:
     print(Fore.GREEN + "Hurray! Outputs Matched")
+    engine.say("Hurray! Outputs matched")
+    engine.runAndWait()

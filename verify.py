@@ -1,5 +1,9 @@
 from colorama import Fore, Style
 
+import pyttsx3
+engine = pyttsx3.init()
+engine.setProperty('rate', 180)
+
 p_out = open("output.out", "r")
 a_out = open("out.out", "r")
 
@@ -15,6 +19,8 @@ p_output = p_output.strip()
 a_output = a_output.strip()
 if a_output == "":
     print(Fore.RED + "Cannot Validate")
+    engine.say("Cannont Validate")
+    engine.runAndWait()
     exit(0)
 
 p_lines = list(map(str, p_output.split('\n')))
@@ -32,3 +38,9 @@ if passed:
             break
 
 print(Fore.GREEN + "Pre-Tests Passed" if passed else Fore.RED + "Pre-Tests Failed")
+if passed:
+    engine.say("Pre Tests Passed")
+    engine.runAndWait()
+else:
+    engine.say("Pre Tests Failed")
+    engine.runAndWait()
