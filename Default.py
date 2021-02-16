@@ -105,5 +105,17 @@ class IO:
         stdout.write(string)
     def write(self,*obj,sep=" ",end="\n"):
         self.print(*obj,sep=sep,end=end)
+    def yes(self):
+        self.write("yes")
+    def Yes(self):
+        self.write("Yes")
+    def YES(self):
+        self.write("YES")
+    def no(self):
+        self.write("no")
+    def No(self):
+        self.write("No")
+    def NO(self):
+        self.write("NO")
 
 main()

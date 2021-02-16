@@ -39,6 +39,12 @@ class Main {
     static final int mod = ((int)(1e9+7));
     static final int hell = ((int)(1e9+9));
     static final long inf = ((long)(1e18));
+    static final String yes = "yes";
+    static final String Yes = "Yes";
+    static final String YES = "YES";
+    static final String no = "no";
+    static final String No = "No";
+    static final String NO = "NO";
     static FastReader scan;
 
     static int min(int a, int b) {
