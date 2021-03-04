@@ -1,7 +1,37 @@
 import java.util.*;
 import java.io.*;
 
+class Heap {
+    
+    private PriorityQueue<Integer> heap;
 
+    public Heap(boolean minHeap) {
+        if(minHeap)
+            heap = new PriorityQueue<Integer>();
+        else
+            heap = new PriorityQueue<Integer>(Collections.reverseOrder());
+    }
+
+    public void insert(int a) {
+        heap.add(a);
+    }
+
+    public void add(int a) {
+        heap.add(a);
+    }
+
+    public int get() {
+        return heap.peek();
+    }
+
+    public int pop() {
+        return heap.poll();
+    }
+
+    public void remove(int k) {
+        heap.remove(k);
+    }
+}
 
 class DSU {
 
