@@ -20,25 +20,68 @@ class Algo {
         return sum;
     }
 
-    static int gcd(int a, int b) {
+    public static int gcd(int a, int b) {
         for(int rem; b > 0; rem = a % b, a = b, b = rem);
         return a;
     }
 
-    static long gcd(long a, long b) {
+    public static long gcd(long a, long b) {
         for(long rem; b > 0; rem = a % b, a = b, b = rem);
         return a;
     }
 
-    static long lcm(int a, int b) {
+    public static long lcm(int a, int b) {
         return ((long)a * (long)b) / gcd(a, b);
     }
 
-    static long lcm(long a, long b) {
+    public static long lcm(long a, long b) {
         return (a * b) / gcd(a, b);
     }
 
+    public static long add(long a, long b, long p) {
+        return (a % p + b % p) % p;
+    }
 
+    public static long sub(long a, long b, long p) {
+        return add(a-b, p, p);
+    }
+
+    public static long mul(long a, long b, long p) {
+        return (a % p * b % p) % p;
+    }
+
+    public static long inverse(long a, long p) {
+        return power(a, p-2, p);
+    }
+
+    public static long power(long x, long y, long p) {
+        long result = 1;
+        for(result = 1; y > 0; x = (x % p * x % p) % p, y >>= 1)
+            if((y&1) == 1)
+                result = (result % p * x % p) % p;
+        return result;
+    }
+}
+
+class Factorial {
+    private long fact[];
+    private int size;
+
+    public Factorial(int size) {
+        this.size = size + 1;
+    }
+
+    private long mul(long a, long b, long p) {
+        return (a % p * b % p) % p;
+    }
+
+    public void compute() {
+        fact = new long[size];
+        fact[0] = 1;
+        long mod = ((long)(1e9+7));
+        for(int i = 1; i < size; i++)
+            fact[i] = mul(fact[i-1], i, mod);
+    }
 }
 
 class Fraction {

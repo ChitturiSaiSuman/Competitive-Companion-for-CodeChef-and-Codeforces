@@ -145,29 +145,3 @@ class Graph {
         }
     }
 }
-class Fraction {
-    int num = 0, den = 1;
-    long Num = 0, Den = 1;
-    Fraction(int num, int den) {
-        this.num = num;
-        this.den = den;
-        int g = gcd(this.num,this.den);
-        this.num /= g;
-        this.den /= g;
-    }
-    Fraction(long num, long den) {
-        this.Num = num;
-        this.Den = den;
-        long g = gcd(this.Num,this.Den);
-        this.num /= g;
-        this.den /= g;
-    }
-    static int gcd(int a, int b) {
-        for(int rem;b>0;rem=a%b,a=b,b=rem);
-        return a;
-    }
-    static long gcd(long a, long b) {
-        for(long rem;b>0;rem=a%b,a=b,b=rem);
-        return a;
-    }
-}
