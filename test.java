@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.*;
 
 
+
 class DSU {
 
     int size = 0;
@@ -86,6 +87,9 @@ class DSU {
 }
 
 class Primality {
+
+    private int k = 18;
+
     public boolean check(int n) {
         if(n == 0 || n == 1)
             return false;
@@ -99,10 +103,131 @@ class Primality {
         }
         return true;
     }
+
+    public void setMillerConstant(int k) {
+        this.k = k;
+    }
+
+    public void set(int k) {
+        this.k = k;
+    }
+
+    private long power(long x, long y, long p) {
+        long result = 1;
+        for(result = 1; y > 0; x = (x % p * x % p) % p, y >>= 1)
+            if((y&1) == 1)
+                result = (result % p * x % p) % p;
+        return result;
+    }
+
+    private boolean millerTest(long d, long n) {
+        long a = 2 + (long) (Math.random() * (n - 5));
+        long x = power(a, d, n);
+        if(x == 1 || x == (n - 1))
+            return true;
+        while(d != (n - 1)) {
+            x = (x % n * x % n) % n;
+            d *= 2;
+            if(x == 1)
+                return false;
+            else if(x == n - 1)
+                return true;
+        }
+        return false;
+    }
+
     public boolean test(long n) {
-        
+        if(n <= 1 || n == 4)
+            return false;
+        if(n <= 3)
+            return true;
+        long d = n - 1;
+        while((d % 2) == 0)
+            d /= 2;
+        for(int i = 0; i < k ; i++)
+            if(!millerTest(d, n))
+                return false;
         return true;
-    } 
+    }
+}
+
+class Sieve {
+    private int size = 0;
+    private boolean prime[];
+    private int spf[];
+    private int phi[];
+
+    public Sieve(int size) {
+        this.size = size + 1;
+    }
+
+    public void setSize(int size) {
+        this.size = size + 1;
+    }
+
+    public boolean[] sieve() {
+        prime = new boolean[size];
+        Arrays.fill(prime, false);
+
+        prime[2] = true;
+
+        for(int i = 3; i < size; i += 2)
+            prime[i] = true;
+
+        for(int i = 3; i <= Math.sqrt(size); i += 2)
+            if(prime[i])
+                for(int j = i * i; j < size; j += i)
+                    prime[j] = false;
+        return prime;
+    }
+
+    public int[] SPF() {
+        spf = new int[size];
+
+        for(int i = 2; i < size; i += 2)
+            spf[i] = 2;
+
+        for(int i = 3; i < size; i += 2)
+            spf[i] = i;
+
+        for(int i = 3; i < Math.sqrt(size); i += 2)
+            if(spf[i] == i)
+                for(int j = i * i; j < size; j += i)
+                    if(spf[j] == j)
+                        spf[j] = i;
+
+        return spf;
+    }
+
+    public int[] getSPF() {
+        return SPF();
+    }
+
+    public int[] computeSPF() {
+        return SPF();
+    }
+    
+    public int[] Totient() {
+        phi = new int[size];
+
+        for(int i = 0;i < size; i++)
+            phi[i] = i;
+
+        for(int i = 2;i < size; i++)
+            if(phi[i] == i)
+                for(int j = i;j < size;j += i)
+                    phi[j] -= phi[j]/i;
+
+        return phi;
+    }
+
+    public int[] getTotient() {
+        return Totient();
+    }
+
+    public int[] computeTotient() {
+        return Totient();
+    }
 }
 
 class Counter {
