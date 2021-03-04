@@ -1,6 +1,105 @@
 import java.util.*;
 import java.io.*;
 
+class Algo {
+    public static long[] cumsum(int a[]) {
+        int n = a.length;
+        long sum[] = new long[n];
+        sum[0] = a[0];
+        for(int i = 1; i < n; i++)
+            sum[i] = sum[i-1] + a[i];
+        return sum;
+    }
+
+    public static long[] cumsum(long a[]) {
+        int n = a.length;
+        long sum[] = new long[n];
+        sum[0] = a[0];
+        for(int i = 1; i < n; i++)
+            sum[i] = sum[i-1] + a[i];
+        return sum;
+    }
+
+    static int gcd(int a, int b) {
+        for(int rem; b > 0; rem = a % b, a = b, b = rem);
+        return a;
+    }
+
+    static long gcd(long a, long b) {
+        for(long rem; b > 0; rem = a % b, a = b, b = rem);
+        return a;
+    }
+
+    static long lcm(int a, int b) {
+        return ((long)a * (long)b) / gcd(a, b);
+    }
+
+    static long lcm(long a, long b) {
+        return (a * b) / gcd(a, b);
+    }
+
+
+}
+
+class Fraction {
+    private long num = 0;
+    private long den = 1;
+
+    public Fraction(long num) {
+        this.num = num;
+    }
+
+    private long gcd(long a, long b) {
+        for(long rem; b > 0; rem = a % b, a = b, b = rem);
+        return a;
+    }
+
+    private long lcm(long a, long b) {
+        return (a * b) / gcd(a, b);
+    }
+
+    public Fraction(long num, long den) {
+        this.num = num;
+        this.den = den;
+        long g = gcd(num, den);
+        this.num /= g;
+        this.den /= g;
+    }
+
+    public Fraction add(Fraction f2) {
+        long num1 = this.num;
+        long den1 = this.den;
+        long num2 = f2.num;
+        long den2 = f2.den;
+        long den = lcm(den1, den2);
+        return new Fraction(num1 * (den / den1) + num2 * (den / den2), den);
+    }
+
+    public Fraction sub(Fraction f2) {
+        long num1 = this.num;
+        long den1 = this.den;
+        long num2 = f2.num;
+        long den2 = f2.den;
+        long den = lcm(den1, den2);
+        return new Fraction(num1 * (den / den1) - num2 * (den / den2), den);
+    }
+
+    public Fraction mul(Fraction f2) {
+        return new Fraction(this.num * f2.num, this.den * f2.den);
+    }
+
+    public Fraction div(Fraction f2) {
+        return new Fraction(this.num * f2.den, this.den * f2.num);
+    }
+    
+    public String toString() {
+        if(this.den == 1)
+            return Long.toString(this.num);
+        return (this.num + "/" + this.den);
+    }
+
+}
+
 class Heap {
     
     private PriorityQueue<Integer> heap;
@@ -385,5 +484,14 @@ class FastReader {
             e.printStackTrace();
         }
         return str;
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Fraction f1 = new Fraction(50, 100);
+        Fraction f2 = new Fraction(1);
+
+        System.out.println(f1.div(f2));
     }
 }
