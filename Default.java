@@ -361,8 +361,6 @@ class DSU {
 
 class Primality {
 
-    private static int k = 27;
-
     public static boolean check(int n) {
         if(n == 0 || n == 1)
             return false;
@@ -377,54 +375,59 @@ class Primality {
         return true;
     }
 
-    public static void setMillerConstant(int k) {
-        Primality.k = k;
-    }
-
-    public static void set(int k) {
-        Primality.k = k;
-    }
-
     private static long power(long x, long y, long p) {
         long result = 1;
+
         for(result = 1; y > 0; x = (x % p * x % p) % p, y >>= 1)
             if((y&1) == 1)
                 result = (result % p * x % p) % p;
+
         return result;
     }
 
-    private static boolean millerTest(long d, long n) {
-        long a = 2 + (long) (Math.random() * (n - 5));
+    private static boolean check_composite(long n, long a, long d, long s) {
         long x = power(a, d, n);
-        if(x == 1 || x == (n - 1))
-            return true;
-        while(d != (n - 1)) {
+
+        if(x == 1 || x == n - 1)
+            return false;
+
+        for(int r = 1; r < s; r++) {
             x = (x % n * x % n) % n;
-            d *= 2;
-            if(x == 1)
+            if(x == n - 1)
                 return false;
-            else if(x == n - 1)
-                return true;
         }
-        return false;
+
+        return true;
     }
 
     public static boolean test(long n) {
-        if(n <= 1 || n == 4)
+        if(n < 2)
             return false;
-        if(n <= 3)
-            return true;
+
+        int r = 0;
         long d = n - 1;
-        while((d % 2) == 0)
-            d /= 2;
-        for(int i = 0; i < k ; i++)
-            if(!millerTest(d, n))
+
+        while((d&1) == 0) {
+            d >>= 1;
+            r++;
+        }
+
+        int primes[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
+
+        for(int i = 0; i < primes.length; i++) {
+            int a = primes[i];
+            if(n == a)
+                return true;
+            if(check_composite(n, a, d, r))
                 return false;
+        }
+
         return true;
     }
 }
 
 class Sieve {
+
     private int size = 0;
     private boolean prime[];
     private int spf[];
@@ -439,6 +442,7 @@ class Sieve {
     }
 
     public boolean[] sieve() {
+
         prime = new boolean[size];
         Arrays.fill(prime, false);
 
@@ -451,10 +455,12 @@ class Sieve {
             if(prime[i])
                 for(int j = i * i; j < size; j += i)
                     prime[j] = false;
+
         return prime;
     }
 
     public int[] SPF() {
+
         spf = new int[size];
 
         for(int i = 2; i < size; i += 2)
@@ -481,6 +487,7 @@ class Sieve {
     }
     
     public int[] Totient() {
+
         phi = new int[size];
 
         for(int i = 0;i < size; i++)
@@ -800,7 +807,5 @@ class IO {
         Object arr[] = a.toArray();
         debug(arr);
     }
-
-
-
+    
 }
