@@ -29,7 +29,7 @@ class Main {
     }
 
     public static void solve() {
-
+        
         return;
     }
 
@@ -807,5 +807,58 @@ class IO {
         Object arr[] = a.toArray();
         debug(arr);
     }
-    
+
+}
+
+class Graph {
+
+    private int V, E;
+    private ArrayList<LinkedList<Integer>> graph;
+
+    public Graph(int V, int E) {
+        this.V = V + 1;
+        this.E = E;
+
+        graph = new ArrayList<LinkedList<Integer>>();
+
+        for(int i = 0; i < this.V; i++)
+            graph.add(new LinkedList<Integer>());
+    }
+
+    public void addEdge(int a, int b) {
+        graph.get(a).add(b);
+    }
+
+    public void readGraph(IO io) {
+
+        for(int i = 0; i < this.E; i++) {
+            int a = io.nextInt();
+            int b = io.nextInt();
+            addEdge(a, b);
+            // addEdge(b, a);
+        }
+    }
+
+    public boolean bfs(int start, int end) {
+
+        if(!(0 <= end && end < this.V))
+            return false;
+
+        boolean visited[] = new boolean[this.V];
+        Arrays.fill(visited, false);
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(start);
+        visited[start] = true;
+        while(!queue.isEmpty() && !visited[end]) {
+            start = queue.poll();
+            for(int i: this.graph.get(start)) {
+                if(!visited[i]) {
+                    visited[i] = true;
+                    queue.add(i);
+                }
+            }
+        }
+        return visited[end];
+    }
+
 }
