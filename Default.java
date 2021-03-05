@@ -36,7 +36,7 @@ class Main {
     public static void main(String[] args) {
 
         io = new IO();
-        int testcases = 10;
+        int testcases = 0;
 
         if(testcases == 0)
             testcases = io.nextInt();
