@@ -184,34 +184,10 @@ class Main {
 
 }
 
-class Factorial {
-    private long fact[];
-    private int size;
-
-    public Factorial(int size) {
-        this.size = size + 1;
-    }
-
-    private long mul(long a, long b, long p) {
-        return (a % p * b % p) % p;
-    }
-
-    public void compute() {
-        fact = new long[size];
-        fact[0] = 1;
-        long mod = ((long)(1e9+7));
-        for(int i = 1; i < size; i++)
-            fact[i] = mul(fact[i-1], i, mod);
-    }
-}
-
 class Fraction {
+    
     private long num = 0;
     private long den = 1;
-
-    public Fraction(long num) {
-        this.num = num;
-    }
 
     private long gcd(long a, long b) {
         for(long rem; b > 0; rem = a % b, a = b, b = rem);
@@ -220,6 +196,10 @@ class Fraction {
 
     private long lcm(long a, long b) {
         return (a * b) / gcd(a, b);
+    }
+
+    public Fraction(long num) {
+        this.num = num;
     }
 
     public Fraction(long num, long den) {
@@ -381,7 +361,7 @@ class DSU {
 
 class Primality {
 
-    private static int k = 16;
+    private static int k = 27;
 
     public static boolean check(int n) {
         if(n == 0 || n == 1)
