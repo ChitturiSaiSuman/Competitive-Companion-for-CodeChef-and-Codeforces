@@ -1,0 +1,6 @@
+Bisect_left  (a, 1): 0
+Bisect_right (a, 1): 1
+Bisect_left  (a, 2): 1
+Bisect_right (a, 2): 1
+Bisect_left  (a, 5): 3
+Bisect_right (a, 5): 6

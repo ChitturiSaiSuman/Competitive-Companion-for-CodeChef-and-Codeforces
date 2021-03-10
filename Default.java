@@ -184,6 +184,58 @@ class Main {
 
 }
 
+class Algo {
+
+    static int binarySearch(int a[], int key) {
+        int lb = 0;
+        int ub = a.length - 1;
+        while(lb <= ub) {
+            int mid = (lb + ub) / 2;
+            if(a[mid] == key)
+                return mid;
+            else if(a[mid] < key)
+                lb = mid + 1;
+            else
+                ub = mid - 1;
+        }
+        return -1;
+    }
+
+    static int bisect_left(int a[], int key) {
+        int ind = binarySearch(a, key);
+        double k = key;
+        if(ind != -1) {
+            k = ((double)(key)) - 0.5;
+        }
+        int lb = 0, ub = a.length - 1;
+        while(lb <= ub) {
+            int mid = (lb + ub) / 2;
+            if(a[mid] < k)
+                lb = mid + 1;
+            else
+                ub = mid - 1;
+        }
+        return lb;
+    }
+
+    static int bisect_right(int a[], int key) {
+        int ind = binarySearch(a, key);
+        double k = key;
+        if(ind != -1) {
+            k = ((double)(key)) + 0.5;
+        }
+        int lb = 0, ub = a.length - 1;
+        while(lb <= ub) {
+            int mid = (lb + ub) / 2;
+            if(a[mid] < k)
+                lb = mid + 1;
+            else
+                ub = mid - 1;
+        }
+        return lb;
+    }
+}
+
 class Fraction {
     
     private long num = 0;
