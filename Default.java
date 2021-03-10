@@ -271,9 +271,6 @@ class Algo {
             s = s + a[i];
         return s;
     }
-
-
-
 }
 
 class Fraction {
