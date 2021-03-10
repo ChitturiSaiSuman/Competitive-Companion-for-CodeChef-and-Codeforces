@@ -29,7 +29,7 @@ class Main {
     }
 
     public static void solve() {
-        
+
         return;
     }
 
@@ -54,6 +54,7 @@ class Main {
     static final int mod = ((int)(1e9+7));
     static final int hell = ((int)(1e9+9));
     static final long inf = ((long)(1e18));
+    static final double pi = Math.PI;
     static final String yes = "yes";
     static final String Yes = "Yes";
     static final String YES = "YES";
@@ -182,6 +183,28 @@ class Main {
         return -1;
     }
 
+    int numberOfDigits(long a) {
+        return Long.toString(a).length();
+    }
+
+    int sumOfDigits(long a) {
+        int c = 0;
+        while(a > 0) {
+            c += a % 10;
+            a /= 10;
+        }
+        return c;
+    }
+
+    int setBitCount(long a) {
+        int c = 0;
+        while(a > 0) {
+            c += a % 2;
+            a /= 2;
+        }
+        return c;
+    }
+
 }
 
 class Algo {
@@ -234,6 +257,23 @@ class Algo {
         }
         return lb;
     }
+
+    static long sum(int a[]) {
+        long s = 0;
+        for(int i = 0; i < a.length; i++)
+            s = s + a[i];
+        return s;
+    }
+
+    static long sum(long a[]) {
+        long s = 0;
+        for(int i = 0; i < a.length; i++)
+            s = s + a[i];
+        return s;
+    }
+
+
+
 }
 
 class Fraction {
