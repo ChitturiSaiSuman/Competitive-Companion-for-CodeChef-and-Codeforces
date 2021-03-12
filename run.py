@@ -12,7 +12,7 @@ online_judge = True
 
 program_to_be_executed = sys.argv[1]
 if len(sys.argv) == 3:
-    online_judge = True
+    online_judge = False
 
 os.system("clear")
 
@@ -40,7 +40,7 @@ if ".java" in program_to_be_executed:
 
 elif ".cpp" in program_to_be_executed:
     print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using g++ (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0")
-    os.system("g++ -o runner "+program_to_be_executed+" -lm")
+    os.system("g++ -o runner "+program_to_be_executed+" -lm -O2")
     if online_judge:
         start = time.time()
         os.system("timeout 2s ./runner < in.in > output.out 2> err.err")
