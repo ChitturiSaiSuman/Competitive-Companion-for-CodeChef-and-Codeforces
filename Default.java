@@ -19,6 +19,19 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 import java.io.*;
 import java.util.*;
 
+class Pair implements Comparator<Pair> {
+
+    int value = 0, index = -1;
+
+    public int compare(Pair p1, Pair p2) {
+
+
+
+
+        return 0;
+    }
+}
+
 class Main {
 
     static IO io;
