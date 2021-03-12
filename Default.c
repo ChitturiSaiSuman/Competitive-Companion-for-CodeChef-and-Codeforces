@@ -121,7 +121,7 @@ typedef struct tuple {
 	int val1, val2;
 } tuple;
 
-int compare(const void *a,const void *b) {
+int compare(const void *a, const void *b) {
 	tuple *t1 = (tuple *)a;
 	tuple *t2 = (tuple *)b;
 	int v1 = t1->val1;
