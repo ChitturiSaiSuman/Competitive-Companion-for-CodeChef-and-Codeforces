@@ -35,6 +35,9 @@ class Pair {
     Pair sub(Pair p2) {
         return new Pair(this.x - p2.x, this.y - p2.y);
     }
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ")";
+    }
 }
 
 class Compare implements Comparator<Pair> {
