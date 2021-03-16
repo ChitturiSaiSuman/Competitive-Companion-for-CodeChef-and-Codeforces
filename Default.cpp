@@ -69,8 +69,60 @@ static inline ll add(ll a, ll b, ll p) 			{return ((a%p+b%p)%p);}
 static inline ll sub(ll a, ll b, ll p) 			{return ((a%p-b%p)+p)%p;}
 static inline int sumOfDigits(ll n) 			{return n>0?n%10+sumOfDigits(n/10):0;}
 static inline int numberOfDigits(ll n)			{return n>0?1+numberOfDigits(n/10):0;}
-static inline void LLFraction(ll *a, ll *b) 	{ll g = gcd(*a,*b); (*a)/=g; (*b)/=g;}
-static inline void IntFraction(int *a, int *b)	{int g = gcd(*a,*b); (*a)/=g; (*b)/=g;}
+
+class Fraction {
+	public:
+	ll num = 0, den = 1;
+	ll gcd(ll a, ll b) {for(ll rem;b>0;rem=a%b,a=b,b=rem); return a;}
+	ll lcm(ll a, ll b) {return (a * b) / gcd(a, b);}
+	Fraction() {
+		num = 0;
+		den = 1;
+	};
+	Fraction(ll n) {
+		num = n;
+		den = 1;
+	};
+	Fraction(ll n, ll d) {
+		if(d == 0) {
+			throw invalid_argument("Non-Zero denominator is expected");
+		}
+		num = n;
+		den = d;
+		ll g = gcd(num, den);
+		num /= g;
+		den /= g;
+	};
+	Fraction operator + (Fraction const &frac) {
+		ll l = lcm(den, frac.den);
+		ll a = num * (l / den);
+		ll b = frac.num * (l / frac.den);
+		return Fraction(a+b, l);
+	}
+	Fraction operator - (Fraction const &frac) {
+		ll l = lcm(den, frac.den);
+		ll a = num * (l / den);
+		ll b = frac.num * (l / frac.den);
+		return Fraction(a - b, l);
+	}
+	Fraction operator * (Fraction const &frac) {
+		return Fraction(num * frac.num, den * frac.den);
+	}
+	Fraction operator / (Fraction const &frac) {
+		return Fraction(num * frac.den, den * frac.num);
+	}
+	operator string() const {
+		if(den == 1)
+			return to_string(num);
+		return to_string(num) + "/" + to_string(den);
+	}
+};
+
+ostream& operator << (ostream& out, const Fraction &f) {
+	if(f.den == 1)
+		return out << to_string(f.num);
+	return out << to_string(f.num) + "/" + to_string(f.den);
+}
 
 ll power(ll x, ll y, ll p) {
 	ll result=1;
@@ -101,13 +153,17 @@ void preCompute() {
 
 void solve() {
 
-    return;
+
+	return;
 }
 
 int main() {
 
     ios_base::sync_with_stdio(false), cin.tie(NULL);
-    int t = 0;
+
+    int t = 1
+	;
+	
 	if(!t) scan(t);
 	preCompute();
 	For(test, t) {

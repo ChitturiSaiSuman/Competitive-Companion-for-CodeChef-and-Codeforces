@@ -19,13 +19,26 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 import java.io.*;
 import java.util.*;
 
-class Pair implements Comparator<Pair> {
+class Pair {
+    int x, y;
+    Pair() {
+        this.x = 0;
+        this.y = 0;
+    }
+    Pair(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    Pair add(Pair p2) {
+        return new Pair(this.x + p2.x, this.y + p2.y);
+    }
+    Pair sub(Pair p2) {
+        return new Pair(this.x - p2.x, this.y - p2.y);
+    }
+}
 
-    int value = 0, index = -1;
-
+class Compare implements Comparator<Pair> {
     public int compare(Pair p1, Pair p2) {
-
-
 
 
         return 0;
