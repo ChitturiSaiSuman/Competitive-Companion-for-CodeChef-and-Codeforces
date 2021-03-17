@@ -19,32 +19,23 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 import java.io.*;
 import java.util.*;
 
-class Pair {
-    int x, y;
-    Pair() {
-        this.x = 0;
-        this.y = 0;
-    }
-    Pair(int x, int y) {
+class Pair implements Comparable<Pair> {
+    long x = 0, y = 0;
+    Pair(long x, long y) {
         this.x = x;
         this.y = y;
     }
-    Pair add(Pair p2) {
-        return new Pair(this.x + p2.x, this.y + p2.y);
-    }
-    Pair sub(Pair p2) {
-        return new Pair(this.x - p2.x, this.y - p2.y);
+    public int compareTo(Pair p2) {
+        Pair p1 = this;
+        if(p1.x == p2.x) {
+            if(p1.y == p2.y)
+                return 0;
+            return ((p1.y > p2.y)?1:-1);
+        }
+        return ((p1.x > p2.x)?1:-1);
     }
     public String toString() {
         return "(" + this.x + ", " + this.y + ")";
-    }
-}
-
-class Compare implements Comparator<Pair> {
-    public int compare(Pair p1, Pair p2) {
-
-
-        return 0;
     }
 }
 
@@ -69,6 +60,8 @@ class Main {
 
         if(testcases == 0)
             testcases = io.nextInt();
+
+        preCompute();
         
         for(int test = 0; test < testcases; test++) {
 
@@ -302,7 +295,7 @@ class Algo {
     }
 }
 
-class Fraction {
+class Fraction implements Comparable<Fraction> {
     
     private long num = 0;
     private long den = 1;
@@ -358,6 +351,16 @@ class Fraction {
         if(this.den == 1)
             return Long.toString(this.num);
         return (this.num + "/" + this.den);
+    }
+
+    public int compareTo(Fraction f2) {
+        Fraction f1 = this;
+        long l = lcm(f1.den, f2.den);
+        long num1 = (l/f1.den) * f1.num;
+        long num2 = (l/f2.den) * f2.num;
+        if(num1 == num2)
+            return 0;
+        return ((num1>num2)?1:-1);
     }
 
 }
