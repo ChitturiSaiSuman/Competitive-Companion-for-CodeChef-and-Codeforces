@@ -257,6 +257,7 @@ class Graph:
 # Disjoint Set Union
 class DSU:
     def __init__(self,nax):
+        nax += 1
         self.nax = nax
         self.weight = [i for i in range(nax)]
         self.parent = [i for i in range(nax)]
