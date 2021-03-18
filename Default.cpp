@@ -161,7 +161,7 @@ int main() {
 
     ios_base::sync_with_stdio(false), cin.tie(NULL);
 
-    int t = 1
+    int t = 0
 	;
 	
 	if(!t) scan(t);
