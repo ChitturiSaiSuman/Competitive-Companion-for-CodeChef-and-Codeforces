@@ -34,6 +34,8 @@ using namespace std;
 #define write(arr, nax)             FOR(IT, nax) {cout << arr[IT] << " ";}
 #define fill(arr,nax,value)		    FOR(IT,nax) {arr[IT] = value;}
 #define reverse(arr,nax)		    FOR(x,nax/2) {arr[x]=arr[nax-x-1];}
+#define SORT123(v)					sort(v.begin(), v.end())
+#define SORT321(v)					sort(v.begin(), v.end(), greater<int>())
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -83,13 +85,14 @@ bool isPrime(ll n) {
 	return true;
 }
 
+#define size (1000001) // 1e6 + 1
+
 void preCompute() {
 
     return;
 }
 
 void solve() {
-
 
 	return;
 }
