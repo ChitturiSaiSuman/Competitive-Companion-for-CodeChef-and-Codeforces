@@ -173,16 +173,16 @@ int main() {
 	return 0;
 }
 
-vector<bool> sieve(int size) {
-    vector<bool> prime(size, false);
+vector<bool> sieve(int nax) {
+    vector<bool> prime(nax, false);
     prime[2] = true;
-    for(int i = 3; i < size; i++) {
+    for(int i = 3; i < nax; i += 2) {
         prime[i] = true;
     }
 
-    for(int i = 3; i*i < size; i += 2) {
+    for(int i = 3; i * i < nax; i += 2) {
         if(prime[i]) {
-            for(int j = i*i; j < size; j += i) {
+            for(int j = i * i; j < nax; j += i) {
                 prime[j] = false;
             }
         }
