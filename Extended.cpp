@@ -19,30 +19,21 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 #include <bits/stdc++.h>
 using namespace std;
 
-#define newline 				    cout << "\n"
-#define space					    cout << " "
-#define endl					    cout << "\n"
+#define nl							"\n"
+#define sp							" "
 #define iter(x, a, b) 			    for(int x = a; x <= b; x++)
 #define range(start, stop, step)    for(int it = start; it < stop; it += step)
 #define FOR(x, N) 				    for(int x = 0; x < N; x++)
 #define For(x, N) 				    for(int x = 0; x < N; x++)
-#define caseprint                   cout << "Case #" << d << ": "
-#define inverse(a, p) 			    power(a, p-2, p)
-#define scan(a) 				    cin >> a
-#define print(a) 				    cout << a
-#define println(a)                  cout << a << "\n";
+#define caseprint                   cout << "Case #" << (test + 1) << ": "
+#define inverse(a, p) 			    power(a, p - 2, p)
 #define getName(var)			    #var
 #define debug(var)                  cerr << getName(var) << " = " << var << "\n"
 #define abort					    assert(false)
 #define read(arr, nax)              FOR(IT, nax) {cin >> arr[IT];}
 #define write(arr, nax)             FOR(IT, nax) {cout << arr[IT] << " ";}
 #define fill(arr,nax,value)		    FOR(IT,nax) {arr[IT] = value;}
-#define sort123(arr,nax)		    qsort(arr,nax,sizeof(int),ascending)
-#define sort321(arr,nax)		    qsort(arr,nax,sizeof(int),descending)
 #define reverse(arr,nax)		    FOR(x,nax/2) {arr[x]=arr[nax-x-1];}
-#define newInt(nax)				    (int*)malloc(sizeof(int)*nax)
-#define newLong(nax)			    (ll *)malloc(sizeof(ll)*nax)
-#define copy(from,to,nax)           FOR(IT,nax) {to[IT] = from[IT];}
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -71,27 +62,28 @@ static inline int sumOfDigits(ll n) 			{return n>0?n%10+sumOfDigits(n/10):0;}
 static inline int numberOfDigits(ll n)			{return n>0?1+numberOfDigits(n/10):0;}
 
 ll power(ll x, ll y, ll p) {
-	ll result=1;
-	for(;y>0;y>>=1,x=mul(x,x,p)) {
+	ll result = 1;
+	for(; y > 0; y >>= 1, x = mul(x, x, p)) {
 		if(y&1)
-			result = mul(result,x,p);
+			result = mul(result, x, p);
 	}
 	return result;
 }
 
 bool isPrime(ll n) {
-	if(n==0 or n==1)
+	if(n == 0 || n == 1)
 		return false;
-	else if(n==2 or n==3)
+	else if(n == 2 || n == 3)
 		return true;
-	else if(n%2==0 or n%3==0)
+	else if(n % 2 == 0 || n % 3 == 0)
 		return false;
-	for(int i=5;i<=sqrt(n);i+=6)
-		if(n%i==0 or n%(i+2)==0)
+	for(int i = 5; i <= sqrt(n); i += 6)
+		if(n % i == 0 || n % (i + 2)== 0)
 			return false;
 	return true;
 }
 
+// Fraction template for CPP
 
 class Fraction {
 	public:
@@ -146,3 +138,5 @@ ostream& operator << (ostream& out, const Fraction &f) {
 		return out << to_string(f.num);
 	return out << to_string(f.num) + "/" + to_string(f.den);
 }
+
+// End of Fraction template for CPP
