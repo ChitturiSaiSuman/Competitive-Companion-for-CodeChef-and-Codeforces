@@ -96,23 +96,23 @@ int ascending (const void *a, const void *b)	{return *(int*)a>=*(int*)b?1:-1;}
 int descending(const void *a, const void *b)	{return *(int*)b>=*(int*)a?1:-1;}
 
 ll power(ll x, ll y, ll p) {
-	ll result=1;
-	for(;y>0;y>>=1,x=mul(x,x,p)) {
+	ll result = 1;
+	for(; y > 0; y >>= 1,x = mul(x, x, p)) {
 		if(y&1)
-			result = mul(result,x,p);
+			result = mul(result, x, p);
 	}
 	return result;
 }
 
 bool isPrime(ll n) {
-	if(n==0 or n==1)
+	if(n == 0 or n == 1)
 		return false;
-	else if(n==2 or n==3)
+	else if(n == 2 or n == 3)
 		return true;
-	else if(n%2==0 or n%3==0)
+	else if(n % 2 == 0 or n % 3 == 0)
 		return false;
-	for(int i=5;i<=sqrt(n);i+=6)
-		if(n%i==0 or n%(i+2)==0)
+	for(int i = 5;i <= sqrt(n);i += 6)
+		if(n % i == 0 or n % (i + 2) == 0)
 			return false;
 	return true;
 }
@@ -142,12 +142,18 @@ void solve() {
 }
 
 int main() {
-	int t=0;
+	
+	int t = 0;
+
+	// t++;
+
 	if(!t) scan(t);
+
 	preCompute();
-	For(test,t)
-	{
+
+	For(test, t) {
 		// caseprint;
+		
 		solve();
 	}
 	return 0;

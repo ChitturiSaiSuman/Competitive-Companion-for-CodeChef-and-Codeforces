@@ -16,7 +16,20 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 //	 |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
 //
 
-#include <bits/stdc++.h>
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <random>
+#include <set>
+#include <vector>
 using namespace std;
 
 #define nl							"\n"
@@ -140,3 +153,24 @@ ostream& operator << (ostream& out, const Fraction &f) {
 }
 
 // End of Fraction template for CPP
+
+// Sieve for Prime Generation
+
+vector<bool> sieve(int nax) {
+    vector<bool> prime(nax, false);
+    prime[2] = true;
+    for(int i = 3; i < nax; i += 2) {
+        prime[i] = true;
+    }
+
+    for(int i = 3; i * i < nax; i += 2) {
+        if(prime[i]) {
+            for(int j = i * i; j < nax; j += i) {
+                prime[j] = false;
+            }
+        }
+    }
+    return prime;
+}
+
+// End of Sieve for Prime Generation

@@ -16,7 +16,20 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 //	 |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
 //
 
-#include <bits/stdc++.h>
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <random>
+#include <set>
+#include <vector>
 using namespace std;
 
 #define nl							"\n"
@@ -101,31 +114,17 @@ int main() {
 
     ios_base::sync_with_stdio(false), cin.tie(NULL);
 
-    int t = 0
-	;
+    int t = 0;
+
+	// t++;
 	
 	if(!t) cin >> t;
+
 	preCompute();
+	
 	For(test, t) {
 		// caseprint;
 		solve();
 	}
 	return 0;
-}
-
-vector<bool> sieve(int nax) {
-    vector<bool> prime(nax, false);
-    prime[2] = true;
-    for(int i = 3; i < nax; i += 2) {
-        prime[i] = true;
-    }
-
-    for(int i = 3; i * i < nax; i += 2) {
-        if(prime[i]) {
-            for(int j = i * i; j < nax; j += i) {
-                prime[j] = false;
-            }
-        }
-    }
-    return prime;
 }
