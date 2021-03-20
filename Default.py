@@ -42,6 +42,7 @@ mul = lambda x, y: ((x%mod)*(y%mod))%mod
 inverse = lambda x: (pow(x, mod-2, mod))
 setBitCount = lambda x: bin(x).count("1")
 sumOfDigits = lambda x: sum([int(i) for i in str(x)])
+io = None
 
 size = 10**6+1
 
@@ -59,8 +60,13 @@ def solve():
     return
 
 def main():
+
     io = IO()
+
     testcases = 0
+
+    # testcases += 1
+
     if testcases == 0:
         testcases = io.nextInt()
     preCompute()
