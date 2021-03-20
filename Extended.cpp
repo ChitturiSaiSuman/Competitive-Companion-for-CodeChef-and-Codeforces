@@ -47,6 +47,8 @@ using namespace std;
 #define write(arr, nax)             FOR(IT, nax) {cout << arr[IT] << " ";}
 #define fill(arr,nax,value)		    FOR(IT,nax) {arr[IT] = value;}
 #define reverse(arr,nax)		    FOR(x,nax/2) {arr[x]=arr[nax-x-1];}
+#define SORT123(v)					sort(v.begin(), v.end())
+#define SORT321(v)					sort(v.begin(), v.end(), greater<int>())
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -174,3 +176,60 @@ vector<bool> sieve(int nax) {
 }
 
 // End of Sieve for Prime Generation
+
+
+class Graph {
+    public:
+    int V = 0;
+    int E = 0;
+    vector<vector<int>> graph;
+    Graph(int v, int e) {
+        V = v + 1;
+        E = e;
+        FOR(i, V) {
+            graph.push_back(vector<int>());
+        }
+    }
+
+    void addEdge(int a, int b) {
+        graph[a].push_back(b);
+        // graph[b].push_back(a);
+    }
+
+    bool bfs(int start, int end) {
+        vector<bool> visited(V, false);
+        visited[true] = true;
+        queue<int> q;
+        q.push(start);
+        while (!q.empty() && !visited[end]) {
+            start = q.front();
+            q.pop();
+            for(int i: graph[start]) {
+                if(!visited[i]) {
+                    visited[i] = true;
+                    q.push(i);
+                }
+            }
+        }
+        return visited[end];
+    }
+
+    void recurse(int start, vector<bool> & visited, int end) {
+        if(start == end) {
+            visited[start] = true;
+            return;
+        }
+        visited[start] = true;
+        for(int i: graph[start]) {
+            if(!visited[i]) {
+                recurse(i, visited, end);
+            }
+        }
+    }
+
+    bool dfs(int start, int end) {
+        vector<bool> visited(V, false);
+        recurse(start, visited, end);
+        return visited[end];
+    }
+};
