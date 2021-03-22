@@ -19,25 +19,7 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 import java.io.*;
 import java.util.*;
 
-class Pair implements Comparable<Pair> {
-    long x = 0, y = 0;
-    Pair(long x, long y) {
-        this.x = x;
-        this.y = y;
-    }
-    public int compareTo(Pair p2) {
-        Pair p1 = this;
-        if(p1.x == p2.x) {
-            if(p1.y == p2.y)
-                return 0;
-            return ((p1.y > p2.y) ? 1 : -1);
-        }
-        return ((p1.x > p2.x) ? 1 : -1);
-    }
-    public String toString() {
-        return "(" + this.x + ", " + this.y + ")";
-    }
-}
+// Graph Constructor Signature: (V: int, E: int, directed: boolean, weighted: boolean)
 
 class Main {
 
@@ -935,19 +917,63 @@ class IO {
 
 }
 
+class Edge implements Comparable<Edge> {
+
+    int start = 0, end = 0, cost = 0;
+
+    Edge(Edge e) {
+        this.start = e.start;
+        this.end = e.end;
+        this.cost = e.cost;
+    }
+
+    Edge(int start, int end, int cost) {
+        this.start = start;
+        this.end = end;
+        this.cost = cost;
+    }
+    public String toString() {
+        return "(" + start + ", " + end + ", " + cost + ")";
+    }
+
+    public int compareTo(Edge e2) {
+        Edge e1 = this;
+        int cost1 = e1.cost;
+        int cost2 = e2.cost;
+        if(cost1 == cost2) {
+            if(e1.start == e2.start) {
+                if(e1.end == e2.end) {
+                    return 0;
+                }
+                return (e1.end > e2.end ? 1 : -1);
+            }
+            return (e1.start > e2.start ? 1 : -1);
+        }
+        return ((cost1 > cost2) ? 1 : -1);
+    }
+}
+
 class Graph {
 
     private int V, E;
     private ArrayList<LinkedList<Integer>> graph;
+    private Edge edges[];
+    private Edge included[];
+    private long cost = 0;
+    private boolean weighted = false;
+    private boolean directed = true;
 
-    public Graph(int V, int E) {
-        this.V = V + 1;
+    public Graph(int V, int E, boolean directed, boolean weighted) {
+        this.V = V;
         this.E = E;
+        this.weighted = weighted;
+        this.directed = directed;
 
         graph = new ArrayList<LinkedList<Integer>>();
-
         for(int i = 0; i < this.V; i++)
             graph.add(new LinkedList<Integer>());
+
+        edges = new Edge[E];
     }
 
     public void addEdge(int a, int b) {
@@ -960,8 +986,44 @@ class Graph {
             int a = io.nextInt();
             int b = io.nextInt();
             addEdge(a, b);
-            // addEdge(b, a);
+            if(!directed)
+                addEdge(b, a);
+            int c = 0;
+            if(weighted)
+                c = io.nextInt();
+            edges[i] = new Edge(a, b, c);
         }
+    }
+
+    void MST() {
+        included = new Edge[(this.V - 1)];
+        Arrays.sort(edges);
+        int includedSoFar = 0;
+        DSU dsu = new DSU(V);
+        int ind = 0;
+        while(includedSoFar != (V - 1) && ind < E) {
+            if(!dsu.find(edges[ind].start, edges[ind].end)) {
+                dsu.union(edges[ind].start, edges[ind].end);
+                included[includedSoFar] = edges[ind];
+                cost = cost + edges[ind].cost;
+                includedSoFar += 1;
+            }
+            ind += 1;
+        }
+    }
+
+    long mstCost() {
+        if(included == null) {
+            MST();
+        }
+        return cost;
+    }
+
+    Edge[] mstIncluded() {
+        if(included == null) {
+            MST();
+        }
+        return included;
     }
 
     public boolean bfs(int start, int end) {
@@ -986,4 +1048,24 @@ class Graph {
         return visited[end];
     }
 
+}
+
+class Pair implements Comparable<Pair> {
+    long x = 0, y = 0;
+    Pair(long x, long y) {
+        this.x = x;
+        this.y = y;
+    }
+    public int compareTo(Pair p2) {
+        Pair p1 = this;
+        if(p1.x == p2.x) {
+            if(p1.y == p2.y)
+                return 0;
+            return ((p1.y > p2.y) ? 1 : -1);
+        }
+        return ((p1.x > p2.x) ? 1 : -1);
+    }
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ")";
+    }
 }
