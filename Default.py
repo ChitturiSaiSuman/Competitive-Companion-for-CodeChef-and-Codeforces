@@ -32,36 +32,39 @@ from collections import Counter, namedtuple, ChainMap, UserDict, UserList, UserS
 # from numpy import dot, trace, argmax, argmin, array, cumprod, cumsum, matmul
 
 shit = 998244353
-mod = 10**9+7
-hell = 10**9+9
+mod = 10**9 + 7
+hell = 10**9 + 9
 inf = 10**18
-lcm = lambda x, y: ((x*y)//gcd(x, y))
-add = lambda x, y: (x%mod+y%mod)%mod
-sub = lambda x, y: ((x%mod-y%mod)+mod)%mod
-mul = lambda x, y: ((x%mod)*(y%mod))%mod
-inverse = lambda x: (pow(x, mod-2, mod))
+lcm = lambda x, y: ((x * y) // gcd(x, y))
+add = lambda x, y, p: (x % p + y % p) % p
+sub = lambda x, y, p: ((x % p - y % p) + p) % p
+mul = lambda x, y, p: ((x % p) * (y % p)) % p
+inverse = lambda x, p: (pow(x, p - 2, p))
 setBitCount = lambda x: bin(x).count("1")
 sumOfDigits = lambda x: sum([int(i) for i in str(x)])
-io = None
 
-size = 10**6+1
+size = 2 * 10**6 + 1
 
 setrecursionlimit(size)
 
-def abort():
-    raise AssertionError("Abort Called")
+def abort(s):
+    raise AssertionError(s)
 
 def preCompute():
+    # Precompute some values here
+    # 
+    pass
 
-    return
+
 
 def solve():
-    
-    return
+    # Solve Test Cases here
+    # 
+    pass
+
+
 
 def main():
-
-    io = IO()
 
     testcases = 0
 
@@ -69,10 +72,14 @@ def main():
 
     if testcases == 0:
         testcases = io.nextInt()
+
     preCompute()
 
     for test in range(testcases):
+
         # io.write("Case #%d: "%(test+1), end="")
+        # Write any logic here, if needed
+        # 
         
         solve()
 
@@ -103,14 +110,16 @@ class IO:
         return tuple(map(int, self.next().split()))
     def Tuple(self):
         return self.nextTuple()
-    def debug(self, *obj, sep=" ", end="\n"):
+    def debug(self, *obj, sep = " ", end = "\n"):
         string = sep.join([str(item) for item in obj])+end
         stderr.write(string)
-    def print(self, *obj, sep=" ", end='\n'):
+    def print(self, *obj, sep = " ", end = '\n', flush = False):
         string = sep.join([str(item) for item in obj])+end
         stdout.write(string)
-    def write(self, *obj, sep=" ", end="\n"):
-        self.print(*obj, sep=sep, end=end)
+        if flush:
+            stdout.flush()
+    def write(self, *obj, sep = " ", end = "\n", flush = False):
+        self.print(*obj, sep = sep, end = end, flush = flush)
     def yes(self):
         self.write("yes")
     def Yes(self):
@@ -123,5 +132,7 @@ class IO:
         self.write("No")
     def NO(self):
         self.write("NO")
+
+io = IO()
 
 main()
