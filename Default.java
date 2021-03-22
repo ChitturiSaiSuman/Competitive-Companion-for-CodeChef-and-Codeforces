@@ -30,9 +30,9 @@ class Pair implements Comparable<Pair> {
         if(p1.x == p2.x) {
             if(p1.y == p2.y)
                 return 0;
-            return ((p1.y > p2.y)?1:-1);
+            return ((p1.y > p2.y) ? 1 : -1);
         }
-        return ((p1.x > p2.x)?1:-1);
+        return ((p1.x > p2.x) ? 1 : -1);
     }
     public String toString() {
         return "(" + this.x + ", " + this.y + ")";
@@ -44,12 +44,14 @@ class Main {
     static IO io;
 
     public static void preCompute() {
-
+        // Precompute some values here
+        // 
         return;
     }
 
     public static void solve() {
-
+        // Solve Test Cases here
+        // 
         return;
     }
 
