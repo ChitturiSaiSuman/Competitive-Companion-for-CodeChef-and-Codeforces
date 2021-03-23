@@ -318,8 +318,83 @@ class Algo {
         return ans;
     }
 
-    static long countInversions(int a[]) {
+    public static long countInversions(int a[]) {
         return mergeSort(a, 0, a.length - 1);
+    }
+    
+    public static int lcs(int a[], int b[]) {
+        int m = a.length;
+        int n = b.length;
+        int dp[][] = new int[m+1][n+1];
+        for(int i = 0; i <= m; i++) {
+            for(int j = 0; j <= n; j++) {
+                if(i == 0 || j == 0) {
+                    dp[i][j] = 0;
+                }
+                else if(a[i-1] == b[j-1]) {
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }
+                else {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    public static int lcs(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+        int dp[][] = new int[m+1][n+1];
+        for(int i = 0; i <= m; i++) {
+            for(int j = 0; j <= n; j++) {
+                if(i == 0 || j == 0) {
+                    dp[i][j] = 0;
+                }
+                else if(s1.charAt(i-1) == s2.charAt(j-1)) {
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }
+                else {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    static void matmul(Fraction f1[][], Fraction f2[][], Fraction res[][]) {
+        int m = f1.length;
+        int n = f1[0].length;
+        int p = f2[0].length;
+        Fraction result[][] = new Fraction[m][p];
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < p; j++) {
+                result[i][j] = new Fraction(0);
+                for(int k = 0; k < n; k++) {
+                    result[i][j] = result[i][j].add(f1[i][k].mul(f2[k][j]));
+                }
+            }
+        }
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < p; j++) {
+                res[i][j] = result[i][j];
+            }
+        }
+    }
+
+    static Fraction[][] power(Fraction f[][], int y) {
+        int n = f.length;
+        Fraction res[][] = new Fraction[n][n];
+        for(int i = 0; i < n; i++)
+            res[i][i] = new Fraction(1);
+        while(y > 0) {
+            if((y&1) == 1) {
+                matmul(f, res, res);
+            }
+            matmul(f, f, f);
+            y >>= 1;
+        }
+        return res;
     }
 
 }
