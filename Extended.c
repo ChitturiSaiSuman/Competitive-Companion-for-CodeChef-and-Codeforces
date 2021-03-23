@@ -714,3 +714,50 @@ int getValue(Counter count, int key) {
     return 0;
 }
 */
+
+typedef long long int ll;
+
+
+ll merge(int a[], int lb, int ub) {
+	ll ans = 0;
+	int mid = (lb + ub)/2;
+	int *temp = (int *)malloc(sizeof(int)*(ub + 1 - lb));
+	int i = lb;
+	int j = (mid + 1);
+	int ind = 0;
+	while(i <= mid && j <= ub) {
+		if(a[i] <= a[j]) {
+			temp[ind++] = a[i++];
+		}
+		else {
+			ans = ans + (mid + 1 - i);
+			temp[ind++] = a[j++];
+		}
+	}
+	while(i <= mid) {
+		temp[ind++] = a[i++];
+	}
+	while(j <= ub) {
+		temp[ind++] = a[j++];
+	}
+	for(i = lb, ind = 0; i <= ub; i++, ind++) {
+		a[i] = temp[ind];
+	}
+	free(temp);
+	return ans;
+}
+
+ll mergeSort(int a[], int lb, int ub) {
+	ll ans = 0;
+	if(lb < ub) {
+		int mid = (lb + ub)/2;
+		ans += mergeSort(a, lb, mid);
+		ans += mergeSort(a, mid + 1, ub);
+		ans += merge(a, lb, ub);
+	}
+	return ans;
+}
+
+ll countInversions(int a[], int n) {
+	return mergeSort(a, 0, n - 1);
+}
