@@ -34,7 +34,6 @@ class Main {
     public static void solve() {
         // Solve Test Cases here
         // 
-        return;
     }
 
     public static void main(String[] args) {
@@ -171,9 +170,11 @@ class Main {
     }
 
     public static void computeInverses(long p) {
+        if(fact == null)
+            computeFactorials(p);
         inv = new long[size];
         for(int i = 0; i < size; i++)
-            inv[i] = inverse(i, p);
+            inv[i] = inverse(fact[i], p);
     }
 
     public static int binarySearch(int a[], int key) {
