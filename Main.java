@@ -21,14 +21,14 @@ import java.util.*;
 
 // Graph Constructor Signature: (V: int, E: int, directed: boolean, weighted: boolean)
 
-class Main {
+public class Main {
 
     static IO io;
+    static int size = ((int)( 1e6 + 1 ));
 
     public static void preCompute() {
         // Precompute some values here
         // 
-        return;
     }
 
     public static void solve() {
@@ -69,18 +69,26 @@ class Main {
     static final String No = "No";
     static final String NO = "NO";
 
-    static int size = ((int)( 1e6 + 1 ));
+    public static long add(long a, long b, long p) {
+        return (a % p + b % p) % p;
+    }
+
+    public static long sub(long a, long b, long p) {
+        return add(a-b, p, p);
+    }
+
+    public static long mul(long a, long b, long p) {
+        return (a % p * b % p) % p;
+    }
+
+}
+
+class Algo {
+
     static long fact[];
     static long inv[];
 
-    public static long gcd(long a, long b) {
-        for(long rem; b > 0; rem = a % b, a = b, b = rem);
-        return a;
-    }
-
-    public static long lcm(long a, long b) {
-        return (a * b) / gcd(a, b);
-    }
+    static final int mod = ((int)(1e9+7));
 
     public static long add(long a, long b, long p) {
         return (a % p + b % p) % p;
@@ -94,8 +102,13 @@ class Main {
         return (a % p * b % p) % p;
     }
 
-    public static long inverse(long a, long p) {
-        return power(a, p-2, p);
+    public static long gcd(long a, long b) {
+        for(long rem; b > 0; rem = a % b, a = b, b = rem);
+        return a;
+    }
+
+    public static long lcm(long a, long b) {
+        return (a * b) / gcd(a, b);
     }
 
     public static long power(long x, long y, long p) {
@@ -104,6 +117,10 @@ class Main {
             if((y&1) == 1)
                 result = (result % p * x % p) % p;
         return result;
+    }
+
+    public static long inverse(long a, long p) {
+        return power(a, p-2, p);
     }
 
     static void matmul(long a[][], long b[][], long res[][], long p) {
@@ -140,21 +157,39 @@ class Main {
         return power(base, n, mod)[0][1];
     }
 
-    public static long[] cumsum(int a[]) {
+    public static long[] prefixSum(int a[]) {
         int n = a.length;
         long sum[] = new long[n];
         sum[0] = a[0];
         for(int i = 1; i < n; i++)
-            sum[i] = sum[i-1] + a[i];
+            sum[i] = sum[i - 1] + a[i];
         return sum;
     }
 
-    public static long[] cumsum(long a[]) {
+    public static long[] prefixSum(long a[]) {
         int n = a.length;
         long sum[] = new long[n];
         sum[0] = a[0];
         for(int i = 1; i < n; i++)
-            sum[i] = sum[i-1] + a[i];
+            sum[i] = sum[i - 1] + a[i];
+        return sum;
+    }
+
+    public static long[] suffixSum(int a[]) {
+        int n = a.length;
+        long sum[] = new long[n];
+        sum[n - 1] = a[n - 1];
+        for(int i = n - 2; i >= 0; i--)
+            sum[i] = sum[i + 1] + a[i];
+        return sum;
+    }
+
+    public static long[] suffixSum(long a[]) {
+        int n = a.length;
+        long sum[] = new long[n];
+        sum[n - 1] = a[n - 1];
+        for(int i = n - 2; i >= 0; i--)
+            sum[i] = sum[i + 1] + a[i];
         return sum;
     }
 
@@ -162,18 +197,18 @@ class Main {
         return mul(fact[n], mul(inv[r], inv[n-r], p), p);
     }
 
-    public static void computeFactorials(long p) {
-        fact = new long[size];
+    public static void computeFactorials(int nax, long p) {
+        fact = new long[nax];
         fact[0] = 1;
-        for(int i = 1; i < size; i++)
+        for(int i = 1; i < nax; i++)
             fact[i] = mul(fact[i-1], i, p);
     }
 
-    public static void computeInverses(long p) {
+    public static void computeInverses(int nax, long p) {
         if(fact == null)
-            computeFactorials(p);
-        inv = new long[size];
-        for(int i = 0; i < size; i++)
+            computeFactorials(nax, p);
+        inv = new long[nax];
+        for(int i = 0; i < nax; i++)
             inv[i] = inverse(fact[i], p);
     }
 
@@ -212,25 +247,6 @@ class Main {
             a /= 2;
         }
         return c;
-    }
-
-}
-
-class Algo {
-
-    static int binarySearch(int a[], int key) {
-        int lb = 0;
-        int ub = a.length - 1;
-        while(lb <= ub) {
-            int mid = (lb + ub) / 2;
-            if(a[mid] == key)
-                return mid;
-            else if(a[mid] < key)
-                lb = mid + 1;
-            else
-                ub = mid - 1;
-        }
-        return -1;
     }
 
     static int bisect_left(int a[], int key) {
