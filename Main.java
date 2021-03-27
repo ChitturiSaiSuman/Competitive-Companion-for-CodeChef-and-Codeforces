@@ -120,7 +120,7 @@ class Algo {
     }
 
     public static long inverse(long a, long p) {
-        return power(a, p-2, p);
+        return power(a, p - 2, p);
     }
 
     static void matmul(long a[][], long b[][], long res[][], long p) {
