@@ -11,6 +11,28 @@ from heapq import heapify,heappop,heappush,heappushpop,heapreplace,merge,nlarges
 from collections import deque,OrderedDict,defaultdict,Counter,namedtuple,ChainMap,UserDict,UserList,UserString
 from numpy import dot,trace,argmax,argmin,array,cumprod,cumsum,matmul
 
+# Next Greater in left using stack
+def nextGreaterInLeft(a, n):
+    stack = []
+    left_index = [-1] * n
+    for i in range(n - 1, -1, -1):
+        while stack != [] and a[i] > a[stack[-1]]:
+            left_index[stack.pop()] = i
+        stack.append(i)
+    return left_index
+
+# Next Greater in Right using stack
+def nextGreaterInRight(a, n):
+    stack = []
+    right_index = [-1] * n
+    for i in range(n):
+        while stack != [] and a[i] > a[stack[-1]]:
+            right_index[stack.pop()] = i
+        stack.append(i)
+    return right_index
+
+
+
 # Sieve for prime generation, sum of primes, count of primes
 def sieve(size):
     prime=[0]*size
