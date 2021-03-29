@@ -31,19 +31,7 @@ from collections import deque, OrderedDict, defaultdict
 from collections import Counter, namedtuple, ChainMap, UserDict, UserList, UserString
 # from numpy import dot, trace, argmax, argmin, array, cumprod, cumsum, matmul
 
-shit = 998244353
-mod = 10**9 + 7
-hell = 10**9 + 9
-inf = 10**18
-lcm = lambda x, y: ((x * y) // gcd(x, y))
-add = lambda x, y, p: (x % p + y % p) % p
-sub = lambda x, y, p: ((x % p - y % p) + p) % p
-mul = lambda x, y, p: ((x % p) * (y % p)) % p
-inverse = lambda x, p: (pow(x, p - 2, p))
-setBitCount = lambda x: bin(x).count("1")
-sumOfDigits = lambda x: sum([int(i) for i in str(x)])
-
-size = 2 * 10**6 + 1
+size = 2 * (10 ** 6 + 1)
 
 setrecursionlimit(size)
 
@@ -80,9 +68,7 @@ def main():
         # io.write("Case #%d: "%(test+1), end="")
         # Write any logic here, if needed
         # 
-        
         solve()
-
 
 
 class IO:
@@ -134,5 +120,16 @@ class IO:
         self.write("NO")
 
 io = IO()
+shit = 998244353
+mod = 10**9 + 7
+hell = 10**9 + 9
+inf = 10**18
+lcm = lambda x, y: ((x * y) // gcd(x, y))
+add = lambda x, y, p: (x % p + y % p) % p
+sub = lambda x, y, p: ((x % p - y % p) + p) % p
+mul = lambda x, y, p: ((x % p) * (y % p)) % p
+inverse = lambda x, p: (pow(x, p - 2, p))
+setBitCount = lambda x: bin(x).count("1")
+sumOfDigits = lambda x: sum([int(i) for i in str(x)])
 
 main()
