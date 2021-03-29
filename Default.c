@@ -132,13 +132,13 @@ int compare(const void *a, const void *b) {
 #define size 1000003 // 10**6+3
 
 void preCompute() {
-
-	return;
+	// Precompute some values here
+	// 
 }
 
 void solve() {
-	
-	return;
+	// Solve test cases here
+	// 
 }
 
 int main() {

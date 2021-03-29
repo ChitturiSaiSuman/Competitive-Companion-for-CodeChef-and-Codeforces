@@ -761,3 +761,33 @@ ll mergeSort(int a[], int lb, int ub) {
 ll countInversions(int a[], int n) {
 	return mergeSort(a, 0, n - 1);
 }
+
+int* nextGreaterInLeft(int a[], int n) {
+	int *left_index = (int *)malloc(sizeof(int) * n);
+	int *stack = (int *)malloc(sizeof(int) * n);
+	int top = -1;
+	for(int i = 0; i < n; i++)
+		left_index[i] = -1;
+	for(int i = n - 1; i >= 0; i--) {
+		while(top != -1 && a[i] > a[stack[top]])
+			left_index[stack[top--]] = i;
+		stack[++top] = i;
+	}
+	free(stack);
+	return left_index;
+}
+
+int* nextGreaterInRight(int a[], int n) {
+	int *right_index = (int *)malloc(sizeof(int) * n);
+	int *stack = (int *)malloc(sizeof(int) * n);
+	int top = -1;
+	for(int i = 0; i < n; i++)
+		right_index[i] = -1;
+	for(int i = 0; i < n; i++) {
+		while(top != -1 && a[i] > a[stack[top]])
+			right_index[stack[top--]] = i;
+		stack[++top] = i;
+	}
+	free(stack);
+	return right_index;
+}
