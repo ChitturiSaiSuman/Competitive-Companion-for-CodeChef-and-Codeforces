@@ -152,9 +152,9 @@ class Algo {
         return result;
     }
 
-    static long nthFibonacci(long n) {
+    static long nthFibonacci(long n, long p) {
         long base[][] = {{1, 1}, {1, 0}};
-        return power(base, n, mod)[0][1];
+        return power(base, n, p)[0][1];
     }
 
     public static long[] prefixSum(int a[]) {
