@@ -21,10 +21,10 @@ import java.util.*;
 
 // Graph Constructor Signature: (V: int, E: int, directed: boolean, weighted: boolean)
 
-public class Main {
+public class Main { // Make sure the class is Public
 
     static IO io;
-    static int size = ((int)( 1e6 + 1 ));
+    static int size = ((int)(1e6 + 1));
 
     public static void preCompute() {
         // Precompute some values here
@@ -123,7 +123,7 @@ class Algo {
         return power(a, p - 2, p);
     }
 
-    static void matmul(long a[][], long b[][], long res[][], long p) {
+    public static void matmul(long a[][], long b[][], long res[][], long p) {
         int M = a.length;
         int N = a[0].length;
         int P = b[0].length;
@@ -141,7 +141,7 @@ class Algo {
                 res[i][j] = result[i][j];
     }
 
-    static long[][] power(long a[][], long y, long p) {
+    public static long[][] power(long a[][], long y, long p) {
         long result[][] = new long[a.length][a.length];
         for(int i = 0; i < a.length; i++)
             result[i][i] = 1;
@@ -152,7 +152,7 @@ class Algo {
         return result;
     }
 
-    static long nthFibonacci(long n, long p) {
+    public static long nthFibonacci(long n, long p) {
         long base[][] = {{1, 1}, {1, 0}};
         return power(base, n, p)[0][1];
     }
@@ -227,11 +227,11 @@ class Algo {
         return -1;
     }
 
-    int numberOfDigits(long a) {
+    public static int numberOfDigits(long a) {
         return Long.toString(a).length();
     }
 
-    int sumOfDigits(long a) {
+    public static int sumOfDigits(long a) {
         int c = 0;
         while(a > 0) {
             c += a % 10;
@@ -240,7 +240,7 @@ class Algo {
         return c;
     }
 
-    int setBitCount(long a) {
+    public static int setBitCount(long a) {
         int c = 0;
         while(a > 0) {
             c += a % 2;
@@ -249,7 +249,7 @@ class Algo {
         return c;
     }
 
-    static int bisect_left(int a[], int key) {
+    public static int bisect_left(int a[], int key) {
         int ind = binarySearch(a, key);
         double k = key;
         if(ind != -1) {
@@ -266,7 +266,7 @@ class Algo {
         return lb;
     }
 
-    static int bisect_right(int a[], int key) {
+    public static int bisect_right(int a[], int key) {
         int ind = binarySearch(a, key);
         double k = key;
         if(ind != -1) {
@@ -283,14 +283,14 @@ class Algo {
         return lb;
     }
 
-    static long sum(int a[]) {
+    public static long sum(int a[]) {
         long s = 0;
         for(int i = 0; i < a.length; i++)
             s = s + a[i];
         return s;
     }
 
-    static long sum(long a[]) {
+    public static long sum(long a[]) {
         long s = 0;
         for(int i = 0; i < a.length; i++)
             s = s + a[i];
@@ -379,7 +379,7 @@ class Algo {
         return dp[m][n];
     }
 
-    static void matmul(Fraction f1[][], Fraction f2[][], Fraction res[][]) {
+    public static void matmul(Fraction f1[][], Fraction f2[][], Fraction res[][]) {
         int m = f1.length;
         int n = f1[0].length;
         int p = f2[0].length;
@@ -388,7 +388,7 @@ class Algo {
             for(int j = 0; j < p; j++) {
                 result[i][j] = new Fraction(0);
                 for(int k = 0; k < n; k++) {
-                    result[i][j] = result[i][j].add(f1[i][k].mul(f2[k][j]));
+                    result[i][j] = Fraction.add(result[i][j], Fraction.mul(f1[i][k], f2[k][j]));
                 }
             }
         }
@@ -399,7 +399,7 @@ class Algo {
         }
     }
 
-    static Fraction[][] power(Fraction f[][], int y) {
+    public static Fraction[][] power(Fraction f[][], int y) {
         int n = f.length;
         Fraction res[][] = new Fraction[n][n];
         for(int i = 0; i < n; i++)
@@ -414,7 +414,7 @@ class Algo {
         return res;
     }
 
-    static int[] nextGreaterInLeft(int a[], int n) {
+    public static int[] nextGreaterInLeft(int a[], int n) {
         int left_index[] = new int[n];
         Arrays.fill(left_index, -1);
         Stack<Integer> stack = new Stack<Integer>();
@@ -429,7 +429,7 @@ class Algo {
         return left_index;
     }
 
-    static int[] nextGreaterInRight(int a[], int n) {
+    public static int[] nextGreaterInRight(int a[], int n) {
         int right_index[] = new int[n];
         Arrays.fill(right_index, -1);
         Stack<Integer> stack = new Stack<Integer>();
@@ -448,15 +448,15 @@ class Algo {
 
 class Fraction implements Comparable<Fraction> {
     
-    private long num = 0;
-    private long den = 1;
+    public long num = 0;
+    public long den = 1;
 
-    private long gcd(long a, long b) {
+    private static long gcd(long a, long b) {
         for(long rem; b > 0; rem = a % b, a = b, b = rem);
         return a;
     }
 
-    private long lcm(long a, long b) {
+    private static long lcm(long a, long b) {
         return (a * b) / gcd(a, b);
     }
 
@@ -472,30 +472,30 @@ class Fraction implements Comparable<Fraction> {
         this.den /= g;
     }
 
-    public Fraction add(Fraction f2) {
-        long num1 = this.num;
-        long den1 = this.den;
+    public static Fraction add(Fraction f1, Fraction f2) {
+        long num1 = f1.num;
+        long den1 = f2.den;
         long num2 = f2.num;
         long den2 = f2.den;
         long den = lcm(den1, den2);
         return new Fraction(num1 * (den / den1) + num2 * (den / den2), den);
     }
 
-    public Fraction sub(Fraction f2) {
-        long num1 = this.num;
-        long den1 = this.den;
+    public static Fraction sub(Fraction f1, Fraction f2) {
+        long num1 = f1.num;
+        long den1 = f2.den;
         long num2 = f2.num;
         long den2 = f2.den;
         long den = lcm(den1, den2);
         return new Fraction(num1 * (den / den1) - num2 * (den / den2), den);
     }
 
-    public Fraction mul(Fraction f2) {
-        return new Fraction(this.num * f2.num, this.den * f2.den);
+    public static Fraction mul(Fraction f1, Fraction f2) {
+        return new Fraction(f1.num * f2.num, f1.den * f2.den);
     }
 
-    public Fraction div(Fraction f2) {
-        return new Fraction(this.num * f2.den, this.den * f2.num);
+    public static Fraction div(Fraction f1, Fraction f2) {
+        return new Fraction(f1.num * f2.den, f2.den * f2.num);
     }
     
     public String toString() {
