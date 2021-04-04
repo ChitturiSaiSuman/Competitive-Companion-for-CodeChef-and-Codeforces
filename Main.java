@@ -74,7 +74,7 @@ public class Main { // Make sure the class is Public
     }
 
     public static long sub(long a, long b, long p) {
-        return add(a-b, p, p);
+        return (p + a % p - b % p) % p;
     }
 
     public static long mul(long a, long b, long p) {
@@ -435,6 +435,36 @@ class Algo {
         Stack<Integer> stack = new Stack<Integer>();
         for(int i = 0; i < n; i++) {
             while(!stack.isEmpty() && a[i] > a[stack.peek()]) {
+                int r = stack.peek();
+                stack.pop();
+                right_index[r] = i;
+            }
+            stack.push(i);
+        }
+        return right_index;
+    }
+
+    public static int[] nextSmallerInLeft(int a[], int n) {
+        int left_index[] = new int[n];
+        Arrays.fill(left_index, -1);
+        Stack<Integer> stack = new Stack<Integer>();
+        for(int i = n - 1; i >= 0; i--) {
+            while(!stack.isEmpty() && a[i] < a[stack.peek()]) {
+                int r = stack.peek();
+                stack.pop();
+                left_index[r] = i;
+            }
+            stack.push(i);
+        }
+        return left_index;
+    }
+
+    public static int[] nextSmallerInRight(int a[], int n) {
+        int right_index[] = new int[n];
+        Arrays.fill(right_index, -1);
+        Stack<Integer> stack = new Stack<Integer>();
+        for(int i = 0; i < n; i++) {
+            while(!stack.isEmpty() && a[i] < a[stack.peek()]) {
                 int r = stack.peek();
                 stack.pop();
                 right_index[r] = i;
