@@ -30,6 +30,7 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 #include <random>
 #include <set>
 #include <vector>
+#include <stack>
 using namespace std;
 
 #define nl							"\n"
@@ -233,3 +234,60 @@ class Graph {
         return visited[end];
     }
 };
+
+
+vector<int> nextGreaterInRight(vector<int> a, int n) {
+	vector<int> right_index(n, -1);
+	stack<int> st;
+	for(int i = 0; i < n; i++) {
+		while(!st.empty() && a[i] > a[st.top()]) {
+			int r = st.top();
+			st.pop();
+			right_index[r] = i;
+		}
+		st.push(i);
+	}
+	return right_index;
+}
+
+vector<int> nextGreaterInLeft(vector<int> a, int n) {
+	vector<int> left_index(n, -1);
+	stack<int> st;
+	for(int i = n - 1; i >= 0; i--) {
+		while(!st.empty() && a[i] > a[st.top()]) {
+			int r = st.top();
+			st.pop();
+			left_index[r] = i;
+		}
+		st.push(i);
+	}
+	return left_index;
+}
+
+vector<int> nextSmallerInRight(vector<int> a, int n) {
+	vector<int> right_index(n, -1);
+	stack<int> st;
+	for(int i = 0; i < n; i++) {
+		while(!st.empty() && a[i] < a[st.top()]) {
+			int r = st.top();
+			st.pop();
+			right_index[r] = i;
+		}
+		st.push(i);
+	}
+	return right_index;
+}
+
+vector<int> nextSmallerInLeft(vector<int> a, int n) {
+	vector<int> left_index(n, -1);
+	stack<int> st;
+	for(int i = n - 1; i >= 0; i--) {
+		while (!st.empty() && a[i] < a[st.top()]) {
+			int r = st.top();
+			st.pop();
+			left_index[r] = i;
+		}
+		st.push(i);
+	}
+	return left_index;
+}
