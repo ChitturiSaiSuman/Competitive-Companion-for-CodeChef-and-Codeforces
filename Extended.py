@@ -24,7 +24,7 @@ def nextGreaterInLeft(a, n):
 # Next Greater in Right using stack
 def nextGreaterInRight(a, n):
     stack = []
-    right_index = [-1] * n
+    right_index = [n] * n
     for i in range(n):
         while stack != [] and a[i] > a[stack[-1]]:
             right_index[stack.pop()] = i
@@ -46,7 +46,7 @@ def nextSmallerInLeft(a, n):
 
 def nextSmallerInRight(a, n):
     stack = []
-    right_index = [-1] * n
+    right_index = [n] * n
     for i in range(n):
         while stack != [] and a[i] < a[stack[-1]]:
             right_index[stack.pop()] = i
