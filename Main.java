@@ -431,7 +431,7 @@ class Algo {
 
     public static int[] nextGreaterInRight(int a[], int n) {
         int right_index[] = new int[n];
-        Arrays.fill(right_index, -1);
+        Arrays.fill(right_index, n);
         Stack<Integer> stack = new Stack<Integer>();
         for(int i = 0; i < n; i++) {
             while(!stack.isEmpty() && a[i] > a[stack.peek()]) {
@@ -461,7 +461,7 @@ class Algo {
 
     public static int[] nextSmallerInRight(int a[], int n) {
         int right_index[] = new int[n];
-        Arrays.fill(right_index, -1);
+        Arrays.fill(right_index, n);
         Stack<Integer> stack = new Stack<Integer>();
         for(int i = 0; i < n; i++) {
             while(!stack.isEmpty() && a[i] < a[stack.peek()]) {
