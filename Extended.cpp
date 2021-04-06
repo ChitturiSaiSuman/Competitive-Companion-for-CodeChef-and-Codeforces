@@ -237,7 +237,7 @@ class Graph {
 
 
 vector<int> nextGreaterInRight(vector<int> a, int n) {
-	vector<int> right_index(n, -1);
+	vector<int> right_index(n, n);
 	stack<int> st;
 	for(int i = 0; i < n; i++) {
 		while(!st.empty() && a[i] > a[st.top()]) {
@@ -265,7 +265,7 @@ vector<int> nextGreaterInLeft(vector<int> a, int n) {
 }
 
 vector<int> nextSmallerInRight(vector<int> a, int n) {
-	vector<int> right_index(n, -1);
+	vector<int> right_index(n, n);
 	stack<int> st;
 	for(int i = 0; i < n; i++) {
 		while(!st.empty() && a[i] < a[st.top()]) {
