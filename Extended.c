@@ -795,7 +795,7 @@ int* nextGreaterInRight(int a[], int n) {
 	int *stack = (int *)malloc(sizeof(int) * n);
 	int top = -1;
 	for(int i = 0; i < n; i++)
-		right_index[i] = -1;
+		right_index[i] = n;
 	for(int i = 0; i < n; i++) {
 		while(top != -1 && a[i] > a[stack[top]])
 			right_index[stack[top--]] = i;
@@ -810,7 +810,7 @@ int* nextSmallerInRight(int a[], int n) {
 	int *stack = (int *)malloc(sizeof(int) * n);
 	int top = -1;
 	for(int i = 0; i < n; i++)
-		right_index[i] = -1;
+		right_index[i] = n;
 	for(int i = 0; i < n; i++) {
 		while(top != -1 && a[i] < a[stack[top]])
 			right_index[stack[top--]] = i;
