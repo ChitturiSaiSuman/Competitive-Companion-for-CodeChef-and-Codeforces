@@ -19,7 +19,8 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 import java.io.*;
 import java.util.*;
 
-// Graph Constructor Signature: (V: int, E: int, directed: boolean, weighted: boolean)
+// Graph: Graph(V: int, E: int, directed: boolean, weighted: boolean)
+// Bit (0-based Indexing): BIT(int a[]); methods: pointUpdate(ind, val), addRange(l, r, val), rangeSum(l, r)
 
 public class Main { // Make sure the class is Public
 
@@ -474,6 +475,57 @@ class Algo {
         return right_index;
     }
 
+}
+
+class BIT {
+    int n;
+    int a[];
+    long bit1[], bit2[];
+
+    public BIT(int a[]) {
+        this.n = a.length;
+        bit1 = new long[this.n + 1];
+        bit2 = new long[this.n + 1];
+        this.a = a.clone();
+        for(int i = 0; i < n; i++) {
+            addRange(i, i, a[i]);
+        }
+    }
+
+    public void pointUpdate(int ind, int val) {
+        int value = val - a[ind];
+        a[ind] = val;
+        addRange(ind, ind, value);
+    }
+
+    public void addRange(int l, int r, int val) {
+        updateBIT(bit1, l, val);
+        updateBIT(bit1, r + 1, -val);
+        updateBIT(bit2, l, val * (l - 1));
+        updateBIT(bit2, r + 1, -val * r);
+    }
+
+    public long rangeSum(int l, int r) {
+        return sum(r, bit1, bit2) - sum(l - 1, bit1, bit2);
+    }
+
+    private void updateBIT(long bit[], int ind, int val) {
+        for(ind = ind + 1; ind <= this.n; ind += (ind & (-ind))) {
+            bit[ind] += val;
+        }
+    }
+
+    private long getSum(long bit[], int ind) {
+        long sum = 0;
+        for(ind = ind + 1; ind > 0; ind -= (ind & (-ind))) {
+            sum += bit[ind];
+        }
+        return sum;
+    }
+
+    private long sum(int ind, long bit1[], long bit2[]) {
+        return (getSum(bit1, ind) * ind - getSum(bit2, ind));
+    }
 }
 
 class Fraction implements Comparable<Fraction> {
