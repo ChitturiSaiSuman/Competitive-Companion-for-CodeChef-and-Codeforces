@@ -97,3 +97,34 @@ bool isPrime(ll n) {
 			return false;
 	return true;
 }
+
+#define size (1000001) // 1e6 + 1
+
+void preCompute() {
+
+    return;
+}
+
+void solve() {
+
+	return;
+}
+
+int main() {
+
+    ios_base::sync_with_stdio(false), cin.tie(NULL);
+
+    int t = 0;
+
+	// t++;
+	
+	if(!t) cin >> t;
+
+	preCompute();
+	
+	For(test, t) {
+		// caseprint;
+		solve();
+	}
+	return 0;
+}

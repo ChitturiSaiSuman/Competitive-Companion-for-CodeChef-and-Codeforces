@@ -37,10 +37,10 @@ if passed:
             passed = False
             break
 
-print(Fore.GREEN + "Pre-Tests Passed" if passed else Fore.RED + "Pre-Tests Failed")
+print(Fore.GREEN + "Samples Passed" if passed else Fore.RED + "Samples Failed")
 if passed:
-    engine.say("Pre Tests Passed")
+    engine.say("Samples Passed")
     engine.runAndWait()
 else:
-    engine.say("Pre Tests Failed")
+    engine.say("Samples Failed")
     engine.runAndWait()
