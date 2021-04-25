@@ -1,21 +1,3 @@
-/*
-Linkedin: https://www.linkedin.com/in/sai-suman-chitturi-9727a2196/
-Hackerrank: https://www.hackerrank.com/skynetasspyder?hr_r=1
-Codechef: https://www.codechef.com/users/suman_18733097
-Codeforces: http://codeforces.com/profile/saisumanchitturi
-Github: https://github.com/ChitturiSaiSuman
-Hackerearth: https://www.hackerearth.com/@chitturi7
-SPOJ: Sai Suman Chitturi @out_of_bound
-*/
-
-//	  _____   _    _   __    __     ____     __    _
-//	 / ____| | |  | | |  \  /  |   /    \   |  \  | |
-//	 | |___  | |  | | |   \/   |  /   _  \  | . \ | |
-//	 \____ \ | |  | | | |\__/| | |   /_\  | | |\ \| |
-//	 ____| | | \__/ | | |    | | |   __   | | | \ ` |
-//	 |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
-//
-
 #include <array>
 #include <cassert>
 #include <chrono>
