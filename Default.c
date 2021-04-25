@@ -1,12 +1,3 @@
-/*
-Linkedin: https://www.linkedin.com/in/sai-suman-chitturi-9727a2196/
-Hackerrank: https://www.hackerrank.com/skynetasspyder?hr_r=1
-Codechef: https://www.codechef.com/users/suman_18733097
-Codeforces: http://codeforces.com/profile/saisumanchitturi
-Github: https://github.com/ChitturiSaiSuman
-Hackerearth: https://www.hackerearth.com/@chitturi7
-SPOJ: Sai Suman Chitturi @out_of_bound
-*/
 
 //	  _____   _    _   __    __     ____     __    _
 //	 / ____| | |  | | |  \  /  |   /    \   |  \  | |
@@ -60,6 +51,7 @@ SPOJ: Sai Suman Chitturi @out_of_bound
 #define newLong(nax)			(ll *)malloc(sizeof(ll)*nax)
 #define newString(nax)			(char *)malloc(sizeof(char)*nax)
 #define copy(from,to,nax)       FOR(IT,nax) {to[IT] = from[IT];}
+#define numberOfDigits(n)		(((int)(log10(n))) + 1)
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -87,8 +79,7 @@ static inline ll min(ll a, ll b) 				{return (a<b?a:b);}
 static inline ll mul(ll a, ll b, ll p) 			{return ((a%p*b%p)%p);}
 static inline ll add(ll a, ll b, ll p) 			{return ((a%p+b%p)%p);}
 static inline ll sub(ll a, ll b, ll p) 			{return ((a%p-b%p)+p)%p;}
-static inline int sumOfDigits(ll n) 			{return n>0?n%10+sumOfDigits(n/10):0;}
-static inline int numberOfDigits(ll n)			{return n>0?1+numberOfDigits(n/10):0;}
+static inline int sumOfDigits(ll n) 			{int sum = 0; while(n) {sum += n%10; n /= 10;} return sum;}
 static inline void LLFraction(ll *a, ll *b) 	{ll g = gcd(*a,*b); (*a)/=g; (*b)/=g;}
 static inline void IntFraction(int *a, int *b)	{int g = gcd(*a,*b); (*a)/=g; (*b)/=g;}
 

@@ -38,7 +38,7 @@ if output1 != output2:
             fail_count += 1
             print(Fore.RED + str(i+1) + "th test case failed")
             if fail_count == 10:
-                print(Fore.RED + "There could be Many. First rectify these you Idiot!")
+                print(Fore.RED + "Could be more than 10")
                 break
 
     print("Output1")
