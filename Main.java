@@ -713,7 +713,8 @@ class Primality {
             return true;
         else if(n % 2 == 0 || n % 3 == 0)
             return false;
-        for(int i = 5; i <= Math.sqrt(n); i += 6) {
+        final int root = ((int)(Math.sqrt(n)));
+        for(int i = 5; i <= root; i += 6) {
             if(n % i == 0 || n % (i + 2) == 0)
                 return false;
         }
