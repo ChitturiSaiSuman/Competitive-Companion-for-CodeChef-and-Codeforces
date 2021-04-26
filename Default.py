@@ -110,6 +110,9 @@ inverse = lambda x, p: (pow(x, p - 2, p))
 setBitCount = lambda x: bin(x).count("1")
 sumOfDigits = lambda x: sum([int(i) for i in str(x)])
 
+dc = [1, 0, 0, -1, -1, -1, 1, 1]
+dr = [0, 1, -1, 0, -1, 1, -1, 1]
+
 def abort(s):
     raise AssertionError(s)
 
