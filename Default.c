@@ -60,12 +60,12 @@ const ll mod	= ((ll)(1e9+7));		// 10**9 + 7
 const ll hell	= ((ll)(1e9+9));		// 10**9 + 9
 const ll inf	= ((ll)(1e18));			// 10 ** 18
 
-const char yes[] = "yes";
-const char Yes[] = "Yes";
-const char YES[] = "YES";
-const char no[] = "no";
-const char No[] = "No";
-const char NO[] = "NO";
+const char yes[]	= "yes";
+const char Yes[]	= "Yes";
+const char YES[]	= "YES";
+const char no[]		= "no";
+const char No[]		= "No";
+const char NO[]		= "NO";
 
 static inline void	swapInt(int *a, int *b)			{int temp=*a;*a=*b;*b=temp;}
 static inline void	swapChar(char *a, char *b)		{char c=*a;*a=*b;*b=c;}
