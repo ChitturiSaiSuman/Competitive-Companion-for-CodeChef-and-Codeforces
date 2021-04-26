@@ -7,27 +7,27 @@
 # |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
 # 
 
-from sys import stdin, stdout, stderr, setrecursionlimit
-from math import pi, sqrt, gcd, ceil, floor, log2, log10, factorial
-from math import cos, acos, tan, atan, atan2, sin, asin, radians, degrees, hypot
-from bisect import insort, insort_left, insort_right, bisect_left, bisect_right, bisect
-from functools import reduce
-from itertools import combinations, combinations_with_replacement, permutations
-from fractions import Fraction
-from random import choice, getrandbits, randint, random, randrange, shuffle
-from re import compile, findall, escape, search, match
-from statistics import mean, median, mode
-from heapq import heapify, heappop, heappush, heappushpop, heapreplace, merge, nlargest, nsmallest
-from collections import deque, OrderedDict, defaultdict
-from collections import Counter, namedtuple, ChainMap, UserDict, UserList, UserString
+from functools      import reduce
+from fractions      import Fraction
+from statistics     import mean, median, mode
+from collections    import deque, OrderedDict, defaultdict
+from re             import compile, findall, escape, search, match
+from sys            import stdin, stdout, stderr, setrecursionlimit
+from math           import pi, sqrt, gcd, ceil, floor, log2, log10, factorial
+from random         import choice, getrandbits, randint, random, randrange, shuffle
+from itertools      import combinations, combinations_with_replacement, permutations
+from collections    import Counter, namedtuple, ChainMap, UserDict, UserList, UserString
+from math           import cos, acos, tan, atan, atan2, sin, asin, radians, degrees, hypot
+from bisect         import insort, insort_left, insort_right, bisect_left, bisect_right, bisect
+from heapq          import heapify, heappop, heappush, heappushpop, heapreplace, merge, nlargest, nsmallest
 # from numpy import dot, trace, argmax, argmin, array, cumprod, cumsum, matmul
 
 size = 2 * (10 ** 6 + 1)
 
-setrecursionlimit(size)
+# Scope for Global Variables
+# 
+# 
 
-def abort(s):
-    raise AssertionError(s)
 
 def preCompute():
     # Precompute some values here
@@ -35,12 +35,10 @@ def preCompute():
     pass
 
 
-
 def solve():
     # Solve Test Cases here
     # 
     pass
-
 
 
 def main():
@@ -57,46 +55,35 @@ def main():
     for test in range(testcases):
 
         # io.write("Case #%d: "%(test+1), end="")
-        # Write any logic here, if needed
+        # Use the following lines to write any logic if needed
+        # 
         # 
         solve()
 
 
 class IO:
-    def next(self):
+    def input(self):
         return stdin.readline().strip()
-    def nextLine(self):
-        return self.next()
     def String(self):
-        return self.next()
-    def nextStrings(self):
-        return list(map(str, self.next().split()))
-    def nextInt(self):
-        return int(self.next())
+        return self.input()
+    def StringList(self):
+        return list(map(str, self.input().split()))
     def Int(self):
-        return self.nextInt()
-    def nextFloat(self):
-        return float(self.next())
+        return int(self.input())
     def Float(self):
-        return self.nextFloat()
-    def nextList(self):
-        return list(map(int, self.next().split()))
+        return float(self.input())
     def List(self):
-        return self.nextList()
-    def nextTuple(self):
-        return tuple(map(int, self.next().split()))
+        return list(map(int, self.input().split()))
     def Tuple(self):
-        return self.nextTuple()
+        return tuple(map(int, self.input().split()))
     def debug(self, *obj, sep = " ", end = "\n"):
-        string = sep.join([str(item) for item in obj])+end
+        string = sep.join([str(item) for item in obj]) + end
         stderr.write(string)
-    def print(self, *obj, sep = " ", end = '\n', flush = False):
-        string = sep.join([str(item) for item in obj])+end
+    def write(self, *obj, sep = " ", end = '\n'):
+        string = sep.join([str(item) for item in obj]) + end
         stdout.write(string)
-        if flush:
-            stdout.flush()
-    def write(self, *obj, sep = " ", end = "\n", flush = False):
-        self.print(*obj, sep = sep, end = end, flush = flush)
+    def put(self, val: str):
+        stdout.write(val + '\n')
     def yes(self):
         self.write("yes")
     def Yes(self):
@@ -112,9 +99,9 @@ class IO:
 
 io = IO()
 shit = 998244353
-mod = 10**9 + 7
-hell = 10**9 + 9
-inf = 10**18
+mod = 10 ** 9 + 7
+hell = 10 ** 9 + 9
+inf = 10 ** 18
 lcm = lambda x, y: ((x * y) // gcd(x, y))
 add = lambda x, y, p: (x % p + y % p) % p
 sub = lambda x, y, p: ((x % p - y % p) + p) % p
@@ -122,5 +109,10 @@ mul = lambda x, y, p: ((x % p) * (y % p)) % p
 inverse = lambda x, p: (pow(x, p - 2, p))
 setBitCount = lambda x: bin(x).count("1")
 sumOfDigits = lambda x: sum([int(i) for i in str(x)])
+
+def abort(s):
+    raise AssertionError(s)
+
+setrecursionlimit(size)
 
 main()
