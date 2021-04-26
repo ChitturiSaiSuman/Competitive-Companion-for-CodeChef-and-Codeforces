@@ -10,16 +10,16 @@ ll power(ll x, ll y, ll p)
 	return result;
 }
 
-bool isPrime(ll n)
-{
-	if(n==0 or n==1)
+bool isPrime(ll n) {
+	if(n == 0 or n == 1)
 		return false;
-	else if(n==2 or n==3)
+	else if(n == 2 or n == 3)
 		return true;
-	else if(n%2==0 or n%3==0)
+	else if(n % 2 == 0 or n % 3 == 0)
 		return false;
-	for(int i=5;i<=sqrt(n);i+=6)
-		if(n%i==0 or n%(i+2)==0)
+	const int root = sqrt(n);
+	for(int i = 5; i <= root; i += 6)
+		if(n % i == 0 or n % (i + 2) == 0)
 			return false;
 	return true;
 }
