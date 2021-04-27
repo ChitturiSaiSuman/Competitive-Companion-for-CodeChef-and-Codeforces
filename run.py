@@ -22,7 +22,7 @@ end = None
 print(Style.BRIGHT + "", end="")
 
 if ".java" in program_to_be_executed:
-    print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using javac 11.0.9.1")
+    print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using javac 11.0.10")
     os.system("javac "+program_to_be_executed)
     if online_judge:
         start = time.time()
