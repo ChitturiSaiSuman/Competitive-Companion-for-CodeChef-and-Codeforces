@@ -26,6 +26,11 @@ public class Main { // Make sure the class is Public
     public static void solve() {
         // Solve Test Cases here
         // 
+        Sieve sieve = new Sieve(size);
+        sieve.computeSPF();
+        for(int i = 2; i <= 10000; i++) {
+            io.write(sieve.numberOfFactors(i));
+        }
     }
 
     public static void main(String[] args) {
@@ -33,7 +38,7 @@ public class Main { // Make sure the class is Public
         io = new IO();
         int testcases = 0;
 
-        // testcases++;
+        testcases++;
 
         if(testcases == 0)
             testcases = io.nextInt();
@@ -78,7 +83,7 @@ public class Main { // Make sure the class is Public
 class Algo {
 
     static long fact[];
-    static long inv[];
+    static long invFact[];
 
     static final int mod = ((int)(1e9+7));
 
@@ -186,7 +191,7 @@ class Algo {
     }
 
     public static long nCr_mod_p(int n, int r, long p) {
-        return mul(fact[n], mul(inv[r], inv[n-r], p), p);
+        return mul(fact[n], mul(invFact[r], invFact[n-r], p), p);
     }
 
     public static void computeFactorials(int nax, long p) {
@@ -199,12 +204,27 @@ class Algo {
     public static void computeInverses(int nax, long p) {
         if(fact == null)
             computeFactorials(nax, p);
-        inv = new long[nax];
+        invFact = new long[nax];
         for(int i = 0; i < nax; i++)
-            inv[i] = inverse(fact[i], p);
+            invFact[i] = inverse(fact[i], p);
     }
 
     public static int binarySearch(int a[], int key) {
+        int lb = 0;
+        int ub = a.length - 1;
+        while(lb <= ub) {
+            int mid = (lb + ub)/2;
+            if(a[mid] == key)
+                return mid;
+            else if(a[mid] < key)
+                lb = mid + 1;
+            else
+                ub = mid - 1;
+        }
+        return -1;
+    }
+
+    public static int binarySearch(long a[], long key) {
         int lb = 0;
         int ub = a.length - 1;
         while(lb <= ub) {
@@ -258,7 +278,41 @@ class Algo {
         return lb;
     }
 
+    public static int bisect_left(long a[], long key) {
+        int ind = binarySearch(a, key);
+        double k = key;
+        if(ind != -1) {
+            k = ((double)(key)) - 0.5;
+        }
+        int lb = 0, ub = a.length - 1;
+        while(lb <= ub) {
+            int mid = (lb + ub) / 2;
+            if(a[mid] < k)
+                lb = mid + 1;
+            else
+                ub = mid - 1;
+        }
+        return lb;
+    }
+
     public static int bisect_right(int a[], int key) {
+        int ind = binarySearch(a, key);
+        double k = key;
+        if(ind != -1) {
+            k = ((double)(key)) + 0.5;
+        }
+        int lb = 0, ub = a.length - 1;
+        while(lb <= ub) {
+            int mid = (lb + ub) / 2;
+            if(a[mid] < k)
+                lb = mid + 1;
+            else
+                ub = mid - 1;
+        }
+        return lb;
+    }
+
+    public static int bisect_right(long a[], long key) {
         int ind = binarySearch(a, key);
         double k = key;
         if(ind != -1) {
@@ -421,7 +475,37 @@ class Algo {
         return left_index;
     }
 
+    public static int[] nextGreaterInLeft(long a[], int n) {
+        int left_index[] = new int[n];
+        Arrays.fill(left_index, -1);
+        Stack<Integer> stack = new Stack<Integer>();
+        for(int i = n - 1; i >= 0; i--) {
+            while(!stack.isEmpty() && a[i] > a[stack.peek()]) {
+                int r = stack.peek();
+                stack.pop();
+                left_index[r] = i;
+            }
+            stack.push(i);
+        }
+        return left_index;
+    }
+
     public static int[] nextGreaterInRight(int a[], int n) {
+        int right_index[] = new int[n];
+        Arrays.fill(right_index, n);
+        Stack<Integer> stack = new Stack<Integer>();
+        for(int i = 0; i < n; i++) {
+            while(!stack.isEmpty() && a[i] > a[stack.peek()]) {
+                int r = stack.peek();
+                stack.pop();
+                right_index[r] = i;
+            }
+            stack.push(i);
+        }
+        return right_index;
+    }
+
+    public static int[] nextGreaterInRight(long a[], int n) {
         int right_index[] = new int[n];
         Arrays.fill(right_index, n);
         Stack<Integer> stack = new Stack<Integer>();
@@ -451,7 +535,37 @@ class Algo {
         return left_index;
     }
 
+    public static int[] nextSmallerInLeft(long a[], int n) {
+        int left_index[] = new int[n];
+        Arrays.fill(left_index, -1);
+        Stack<Integer> stack = new Stack<Integer>();
+        for(int i = n - 1; i >= 0; i--) {
+            while(!stack.isEmpty() && a[i] < a[stack.peek()]) {
+                int r = stack.peek();
+                stack.pop();
+                left_index[r] = i;
+            }
+            stack.push(i);
+        }
+        return left_index;
+    }
+
     public static int[] nextSmallerInRight(int a[], int n) {
+        int right_index[] = new int[n];
+        Arrays.fill(right_index, n);
+        Stack<Integer> stack = new Stack<Integer>();
+        for(int i = 0; i < n; i++) {
+            while(!stack.isEmpty() && a[i] < a[stack.peek()]) {
+                int r = stack.peek();
+                stack.pop();
+                right_index[r] = i;
+            }
+            stack.push(i);
+        }
+        return right_index;
+    }
+
+    public static int[] nextSmallerInRight(long a[], int n) {
         int right_index[] = new int[n];
         Arrays.fill(right_index, n);
         Stack<Integer> stack = new Stack<Integer>();
@@ -809,6 +923,8 @@ class Sieve {
 
         spf = new int[size];
 
+        spf[0] = spf[1] = 1;
+
         for(int i = 2; i < size; i += 2)
             spf[i] = 2;
 
@@ -854,6 +970,16 @@ class Sieve {
     public int[] computeTotient() {
         return Totient();
     }
+
+    public int numberOfFactors(int n) {
+        int ans = 1;
+        for(int c = 0, s = spf[n]; n > 1; c = 0) {
+            for(s = spf[n]; s == spf[n]; n /= s, c++);
+            ans *= c + 1;
+        }
+        return ans;
+    }
+
 }
 
 class Counter {
