@@ -16,7 +16,7 @@ import java.util.*;
 class Main { // Make sure the class is Public
 
     static IO io;
-    static int size = ((int)(1e6 + 1));
+    static int size = ((int)(2e6 + 1));
 
     public static void preCompute() {
         // Precompute some values here
