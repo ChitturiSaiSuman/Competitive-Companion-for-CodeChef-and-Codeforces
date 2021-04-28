@@ -26,11 +26,6 @@ public class Main { // Make sure the class is Public
     public static void solve() {
         // Solve Test Cases here
         // 
-        Sieve sieve = new Sieve(size);
-        sieve.computeSPF();
-        for(int i = 2; i <= 10000; i++) {
-            io.write(sieve.numberOfFactors(i));
-        }
     }
 
     public static void main(String[] args) {
@@ -38,7 +33,7 @@ public class Main { // Make sure the class is Public
         io = new IO();
         int testcases = 0;
 
-        testcases++;
+        // testcases++;
 
         if(testcases == 0)
             testcases = io.nextInt();
