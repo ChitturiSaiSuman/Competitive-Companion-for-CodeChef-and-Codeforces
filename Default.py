@@ -48,7 +48,7 @@ def main():
     # testcases += 1
 
     if testcases == 0:
-        testcases = io.nextInt()
+        testcases = io.Int()
 
     preCompute()
 
