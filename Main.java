@@ -206,7 +206,7 @@ class Algo {
         inv = new long[nax];
         inv[0] = 0;
         for(int i = 1; i < nax; i++) {
-            inv[i] = (-fact[i - 1] * invFact[i]) % p;
+            inv[i] = (fact[i - 1] * invFact[i]) % p;
         }
     }
 
@@ -786,6 +786,8 @@ class DSU {
     public void union(int a, int b) {
         int parentA = get(a);
         int parentB = get(b);
+        if(parentA == parentB)
+            return;
         if(weight[parentA] <= weight[parentB]) {
             parent[parentA] = parent[parentB];
             weight[parentB] += weight[parentA];

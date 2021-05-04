@@ -71,15 +71,16 @@ class Algo {
 
     static long fact[];
     static long invFact[];
+    static long inv[];
 
     static final int mod = ((int)(1e9+7));
 
     public static long add(long a, long b, long p) {
-        return ((a % p + b % p) % p + p) % p;
+        return (a % p + b % p + p) % p;
     }
 
     public static long sub(long a, long b, long p) {
-        return (a % p - b % p + p) % p;
+        return (p + a % p - b % p) % p;
     }
 
     public static long mul(long a, long b, long p) {
@@ -178,7 +179,7 @@ class Algo {
     }
 
     public static long nCr_mod_p(int n, int r, long p) {
-        return mul(fact[n], mul(invFact[r], invFact[n-r], p), p);
+        return mul(fact[n], mul(invFact[r], invFact[n - r], p), p);
     }
 
     public static void computeFactorials(int nax, long p) {
@@ -188,12 +189,25 @@ class Algo {
             fact[i] = mul(fact[i-1], i, p);
     }
 
-    public static void computeInverses(int nax, long p) {
+    public static void computeInverseFactorials(int nax, long p) {
         if(fact == null)
             computeFactorials(nax, p);
         invFact = new long[nax];
-        for(int i = 0; i < nax; i++)
-            invFact[i] = inverse(fact[i], p);
+        invFact[nax - 1] = power(fact[nax - 1], p - 2, p);
+        for(int i = nax - 2; i >= 0; i--) {
+            invFact[i] = ((i + 1) * invFact[i + 1]) % p;
+        }
+    }
+
+    public static void computeInverses(int nax, long p) {
+        if(invFact == null) {
+            computeInverseFactorials(nax, p);
+        }
+        inv = new long[nax];
+        inv[0] = 0;
+        for(int i = 1; i < nax; i++) {
+            inv[i] = (fact[i - 1] * invFact[i]) % p;
+        }
     }
 
     public static int binarySearch(int a[], int key) {
@@ -432,11 +446,15 @@ class Algo {
         }
     }
 
-    public static Fraction[][] power(Fraction f[][], int y) {
+    public static Fraction[][] power(Fraction f[][], long y) {
         int n = f.length;
         Fraction res[][] = new Fraction[n][n];
-        for(int i = 0; i < n; i++)
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                res[i][j] = new Fraction(0);
+            }
             res[i][i] = new Fraction(1);
+        }
         while(y > 0) {
             if((y&1) == 1) {
                 matmul(f, res, res);
@@ -690,38 +708,6 @@ class Fraction implements Comparable<Fraction> {
 
 }
 
-class Heap {
-    
-    private PriorityQueue<Integer> heap;
-
-    public Heap(boolean minHeap) {
-        if(minHeap)
-            heap = new PriorityQueue<Integer>();
-        else
-            heap = new PriorityQueue<Integer>(Collections.reverseOrder());
-    }
-
-    public void insert(int a) {
-        heap.add(a);
-    }
-
-    public void add(int a) {
-        heap.add(a);
-    }
-
-    public int get() {
-        return heap.peek();
-    }
-
-    public int pop() {
-        return heap.poll();
-    }
-
-    public void remove(int k) {
-        heap.remove(k);
-    }
-}
-
 class DSU {
 
     private int size = 0;
@@ -768,6 +754,8 @@ class DSU {
     public void union(int a, int b) {
         int parentA = get(a);
         int parentB = get(b);
+        if(parentA == parentB)
+            return;
         if(weight[parentA] <= weight[parentB]) {
             parent[parentA] = parent[parentB];
             weight[parentB] += weight[parentA];
