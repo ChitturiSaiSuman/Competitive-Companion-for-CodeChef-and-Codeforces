@@ -13,7 +13,7 @@ import java.util.*;
 // Graph: Graph(V: int, E: int, directed: boolean, weighted: boolean)
 // Bit (0-based Indexing): BIT(int a[]); methods: pointUpdate(ind, val), addRange(l, r, val), rangeSum(l, r)
 
-public class Main { // Make sure the class is Public
+class Main { // Make sure the class is Public
 
     static IO io = new IO();
     static int size = ((int)(2e6 + 1));
@@ -54,7 +54,7 @@ public class Main { // Make sure the class is Public
     static final String NO = "NO";
 
     public static long add(long a, long b, long p) {
-        return (a % p + b % p + p) % p;
+        return ((a % p + b % p) % p + p) % p;
     }
 
     public static long sub(long a, long b, long p) {
@@ -708,38 +708,6 @@ class Fraction implements Comparable<Fraction> {
 
 }
 
-class Heap {
-    
-    private PriorityQueue<Integer> heap;
-
-    public Heap(boolean minHeap) {
-        if(minHeap)
-            heap = new PriorityQueue<Integer>();
-        else
-            heap = new PriorityQueue<Integer>(Collections.reverseOrder());
-    }
-
-    public void insert(int a) {
-        heap.add(a);
-    }
-
-    public void add(int a) {
-        heap.add(a);
-    }
-
-    public int get() {
-        return heap.peek();
-    }
-
-    public int pop() {
-        return heap.poll();
-    }
-
-    public void remove(int k) {
-        heap.remove(k);
-    }
-}
-
 class DSU {
 
     private int size = 0;
@@ -788,7 +756,7 @@ class DSU {
         int parentB = get(b);
         if(parentA == parentB)
             return;
-        if(weight[parentA] <= weight[parentB]) {
+        if(weight[parentA] < weight[parentB]) {
             parent[parentA] = parent[parentB];
             weight[parentB] += weight[parentA];
         }
@@ -1010,7 +978,7 @@ class Counter {
 
     public Counter(long a[]) {
         int n = a.length;
-        longMap = new HashMap<Long, Integer>();
+        intMap = new HashMap<Integer, Integer>();
         for(int i = 0; i < n; i++) {
             try {
                 longMap.put(a[i], longMap.get(a[i]) + 1);

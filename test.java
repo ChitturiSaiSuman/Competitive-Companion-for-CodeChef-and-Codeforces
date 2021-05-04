@@ -756,7 +756,7 @@ class DSU {
         int parentB = get(b);
         if(parentA == parentB)
             return;
-        if(weight[parentA] <= weight[parentB]) {
+        if(weight[parentA] < weight[parentB]) {
             parent[parentA] = parent[parentB];
             weight[parentB] += weight[parentA];
         }
