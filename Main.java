@@ -1187,40 +1187,40 @@ class IO {
     public void write(String ... a) {
         String s = "" + a[0];
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
+            s = s.concat(sep).concat(a[i]);
+        s = s.concat(end);
         print(s);
     }
 
     public void write(int ... a) {
         String s = "" + a[0];
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
+            s = s.concat(sep + a[i]);
+        s = s.concat(end);
         print(s);
     }
 
     public void write(long ... a) {
         String s = "" + a[0];
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
+            s = s.concat(sep + a[i]);
+        s = s.concat(end);
         print(s);
     }
     
     public void write(char ... a) {
         String s = "" + a[0];
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
+            s = s.concat(sep + a[i]);
+        s = s.concat(end);
         print(s);
     }
 
     public <E> void write(E[] a) {
         String s = "" + a[0].toString();
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i].toString();
-        s = s + end;
+            s = s.concat(sep + a[i].toString());
+        s = s.concat(end);
         print(s);
     }
 
@@ -1251,40 +1251,40 @@ class IO {
     public void debug(String ... a) {
         String s = "" + a[0];
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
+            s = s.concat(sep).concat(a[i]);
+        s = s.concat(end);
         error(s);
     }
 
     public void debug(int ... a) {
         String s = "" + a[0];
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
+            s = s.concat(sep + a[i]);
+        s = s.concat(end);
         error(s);
     }
 
     public void debug(long ... a) {
         String s = "" + a[0];
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
+            s = s.concat(sep + a[i]);
+        s = s.concat(end);
         error(s);
     }
     
     public void debug(char ... a) {
         String s = "" + a[0];
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
+            s = s.concat(sep + a[i]);
+        s = s.concat(end);
         error(s);
     }
 
     public <E> void debug(E[] a) {
         String s = "" + a[0].toString();
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i].toString();
-        s = s + end;
+            s = s.concat(sep + a[i].toString());
+        s = s.concat(end);
         error(s);
     }
 
