@@ -1193,11 +1193,12 @@ class IO {
     }
 
     public void write(int ... a) {
-        String s = "" + a[0];
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s.concat(sep + a[i]);
-        s = s.concat(end);
-        print(s);
+            s.append(sep + a[i]);
+        s.append(end);
+        print(s.toString());
     }
 
     public void write(long ... a) {
