@@ -15,7 +15,7 @@ import java.util.*;
 
 class Main { // Make sure the class is Public
 
-    static IO io;
+    static IO io = new IO();
     static int size = ((int)(2e6 + 1));
 
     public static void preCompute() {
@@ -30,22 +30,14 @@ class Main { // Make sure the class is Public
 
     public static void main(String[] args) {
 
-        io = new IO();
         int testcases = 0;
-
         // testcases++;
-
         if(testcases == 0)
             testcases = io.nextInt();
-
         preCompute();
-        
         for(int test = 0; test < testcases; test++) {
-
             // io.print("Case #" + (test + 1) + ": ");
-
             solve();
-
         }
     }
 
