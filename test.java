@@ -1158,52 +1158,56 @@ class IO {
     }
 
     public void write(Object o) {
-        print(o.toString() + end);
+        print(o.toString().concat(end));
     }
 
     public void write(String s) {
-        s = s + end;
-        print(s);
+        print(s.concat(end));
     }
 
     public void write(String ... a) {
-        String s = "" + a[0];
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
-        print(s);
+            s.append(sep + a[i]);
+        s.append(end);
+        print(s.toString());
     }
 
     public void write(int ... a) {
-        String s = "" + a[0];
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
-        print(s);
+            s.append(sep + a[i]);
+        s.append(end);
+        print(s.toString());
     }
 
     public void write(long ... a) {
-        String s = "" + a[0];
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
-        print(s);
+            s.append(sep + a[i]);
+        s.append(end);
+        print(s.toString());
     }
     
     public void write(char ... a) {
-        String s = "" + a[0];
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
-        print(s);
+            s.append(sep + a[i]);
+        s.append(end);
+        print(s.toString());
     }
 
     public <E> void write(E[] a) {
-        String s = "" + a[0].toString();
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i].toString();
-        s = s + end;
-        print(s);
+            s.append(sep + a[i].toString());
+        s.append(end);
+        print(s.toString());
     }
 
     public <E> void write(List<E> a) {
@@ -1226,48 +1230,53 @@ class IO {
     }
 
     public void debug(String s) {
-        s = s + end;
+        s = s.concat(end);
         error(s);
     }
 
     public void debug(String ... a) {
-        String s = "" + a[0];
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
-        error(s);
+            s.append(sep + a[i]);
+        s.append(end);
+        print(s.toString());
     }
 
     public void debug(int ... a) {
-        String s = "" + a[0];
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
-        error(s);
+            s.append(sep + a[i]);
+        s.append(end);
+        print(s.toString());
     }
 
     public void debug(long ... a) {
-        String s = "" + a[0];
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
-        error(s);
+            s.append(sep + a[i]);
+        s.append(end);
+        print(s.toString());
     }
     
     public void debug(char ... a) {
-        String s = "" + a[0];
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i];
-        s = s + end;
-        error(s);
+            s.append(sep + a[i]);
+        s.append(end);
+        print(s.toString());
     }
 
     public <E> void debug(E[] a) {
-        String s = "" + a[0].toString();
+        StringBuilder s = new StringBuilder();
+        s.append(a[0]);
         for(int i = 1; i < a.length; i++)
-            s = s + sep + a[i].toString();
-        s = s + end;
-        error(s);
+            s.append(sep + a[i].toString());
+        s.append(end);
+        print(s.toString());
     }
 
     public <E> void debug(List<E> a) {
