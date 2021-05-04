@@ -713,29 +713,22 @@ class DSU {
     private int size = 0;
     private int parent[];
     private int weight[];
-    private boolean counted = false;
-    private Counter count;
-    private int root[];
 
     public DSU(int size) {
         this.size = size + 1;
         this.parent = new int[this.size];
         this.weight = new int[this.size];
-        this.root = new int[this.size];
         for(int i = 0; i < this.size; i++) {
             parent[i] = i;
             weight[i] = i;
-            root[i] = -1;
         }
     }
 
     public int get(int a) {
-        int temp = a;
         while(parent[a] != a) {
             parent[a] = parent[parent[a]];
             a = parent[a];
         }
-        root[temp] = a;
         return a;
     }
 
@@ -764,32 +757,6 @@ class DSU {
             parent[parentB] = parent[parentA];
             weight[parentA] += weight[parentB];
         }
-    }
-
-    public int getCount(int a) {
-        if(!counted) {
-            for(int i = 0; i < size; i++) {
-                if(root[i] == -1) {
-                    root[i] = get(i);
-                }
-            }
-            count = new Counter(root);
-            counted = true;
-        }
-        return count.get(a);
-    }
-
-    public int[] getParents() {
-        if(!counted) {
-            for(int i = 0; i < size; i++) {
-                if(root[i] == -1) {
-                    root[i] = get(i);
-                }
-            }
-            count = new Counter(root);
-            counted = true;
-        }
-        return root;
     }
 }
 
@@ -957,93 +924,6 @@ class Sieve {
 
 }
 
-class Counter {
-
-    Map <Integer, Integer> intMap;
-    Map <Character, Integer> charMap;
-    Map <Long, Integer> longMap;
-
-    public Counter(int a[]) {
-        int n = a.length;
-        intMap = new HashMap<Integer, Integer>();
-        for(int i = 0; i < n; i++) {
-            try {
-                intMap.put(a[i], intMap.get(a[i]) + 1);
-            }
-            catch (Exception e) {
-                intMap.put(a[i], 1);
-            }
-        }
-    }
-
-    public Counter(long a[]) {
-        int n = a.length;
-        intMap = new HashMap<Integer, Integer>();
-        for(int i = 0; i < n; i++) {
-            try {
-                longMap.put(a[i], longMap.get(a[i]) + 1);
-            }
-            catch (Exception e) {
-                longMap.put(a[i], 1);
-            }
-        }
-    }
-
-    public Counter(String s) {
-        int n = s.length();
-        charMap = new HashMap<Character, Integer>();
-        for(int i = 0; i < n; i++) {
-            char ch = s.charAt(i);
-            try {
-                charMap.put(ch, charMap.get(ch) + 1);
-            }
-            catch(Exception e) {
-                charMap.put(ch, 1);
-            }
-        }
-    }
-
-    public int get(int a) {
-        return intMap.get(a);
-    }
-
-    public void put(int a) {
-        try {
-            intMap.put(a, intMap.get(a) + 1);
-        }
-        catch(Exception e) {
-            intMap.put(a, 1);
-        }
-    }
-
-    public int get(char a) {
-        return charMap.get(a);
-    }
-
-    public void put(char a) {
-        try {
-            charMap.put(a, charMap.get(a) + 1);
-        }
-        catch(Exception e) {
-            charMap.put(a, 1);
-        }
-    }
-
-    public int get(long a) {
-        return longMap.get(a);
-    }
-
-    public void put(long a) {
-        try {
-            longMap.put(a, longMap.get(a) + 1);
-        }
-        catch(Exception e) {
-            longMap.put(a, 1);
-        }
-    }
-}
-
-
 class IO {
 
     private BufferedReader reader;
@@ -1088,11 +968,11 @@ class IO {
     }
 
     public String nextLine() {
-        String str="";
-        try{
-            str=reader.readLine();
+        String str = "";
+        try {
+            str = reader.readLine();
         }
-        catch(IOException e){
+        catch(IOException e) {
             e.printStackTrace();
         }
         return str;
@@ -1119,14 +999,6 @@ class IO {
         return a;
     }
 
-    public void println() {
-        print("\n");
-    }
-
-    public void newLine() {
-        println();
-    }
-
     public void print(String s) {
         try {
             writer.write(s);
@@ -1137,12 +1009,25 @@ class IO {
         }
     }
 
+    public void println() {
+        print("\n");
+    }
+
+    public void newLine() {
+        println();
+    }
+
     public void write(Object o) {
         print(o.toString().concat(end));
     }
 
     public void write(String s) {
         print(s.concat(end));
+    }
+
+    public void write(StringBuilder s) {
+        s.append(end);
+        print(s.toString());
     }
 
     public void write(String ... a) {
@@ -1220,7 +1105,7 @@ class IO {
         for(int i = 1; i < a.length; i++)
             s.append(sep + a[i]);
         s.append(end);
-        print(s.toString());
+        error(s.toString());
     }
 
     public void debug(int ... a) {
@@ -1229,7 +1114,7 @@ class IO {
         for(int i = 1; i < a.length; i++)
             s.append(sep + a[i]);
         s.append(end);
-        print(s.toString());
+        error(s.toString());
     }
 
     public void debug(long ... a) {
@@ -1238,7 +1123,7 @@ class IO {
         for(int i = 1; i < a.length; i++)
             s.append(sep + a[i]);
         s.append(end);
-        print(s.toString());
+        error(s.toString());
     }
     
     public void debug(char ... a) {
@@ -1247,7 +1132,7 @@ class IO {
         for(int i = 1; i < a.length; i++)
             s.append(sep + a[i]);
         s.append(end);
-        print(s.toString());
+        error(s.toString());
     }
 
     public <E> void debug(E[] a) {
@@ -1256,14 +1141,13 @@ class IO {
         for(int i = 1; i < a.length; i++)
             s.append(sep + a[i].toString());
         s.append(end);
-        print(s.toString());
+        error(s.toString());
     }
 
     public <E> void debug(List<E> a) {
         Object arr[] = a.toArray();
         debug(arr);
     }
-
 }
 
 class Edge implements Comparable<Edge> {
