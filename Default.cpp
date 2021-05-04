@@ -59,7 +59,7 @@ static inline ll	gcd(ll a, ll b)					{for(ll rem;b>0;rem=a%b,a=b,b=rem);return a
 static inline ll	lcm(ll a, ll b)					{return (a*b)/(gcd(a,b));}
 static inline ll	max(ll a, ll b)					{return (a>b?a:b);}
 static inline ll	min(ll a, ll b)					{return (a<b?a:b);}
-static inline ll	mul(ll a, ll b, ll p)			{return ((a%p*b%p)%p);}
+static inline ll	mul(ll a, ll b, ll p)			{return ((a%p*b%p)%p+p)%p;}
 static inline ll	add(ll a, ll b, ll p)			{return ((a%p+b%p)%p);}
 static inline ll	sub(ll a, ll b, ll p)			{return ((a%p-b%p)+p)%p;}
 

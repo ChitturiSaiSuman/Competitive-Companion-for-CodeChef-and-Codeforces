@@ -6,7 +6,7 @@
 //	 ____| | | \__/ | | |    | | |   __   | | | \ ` |
 //	 |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
 //
-						
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -75,7 +75,7 @@ static inline ll	lcm(ll a, ll b)					{return (a*b)/(gcd(a,b));}
 static inline ll	max(ll a, ll b)					{return (a>b?a:b);}
 static inline ll	min(ll a, ll b)					{return (a<b?a:b);}
 static inline ll	mul(ll a, ll b, ll p)			{return ((a%p*b%p)%p);}
-static inline ll	add(ll a, ll b, ll p)			{return ((a%p+b%p)%p);}
+static inline ll	add(ll a, ll b, ll p)			{return ((a%p+b%p)%p+p)%p;}
 static inline ll	sub(ll a, ll b, ll p)			{return ((a%p-b%p)+p)%p;}
 
 int ascending (const void *a, const void *b)		{return *(int*)a>=*(int*)b?1:-1;}

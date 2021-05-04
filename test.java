@@ -62,7 +62,7 @@ class Main { // Make sure the class is Public
     static final String NO = "NO";
 
     public static long add(long a, long b, long p) {
-        return (a % p + b % p) % p;
+        return ((a % p + b % p) % p + p) % p;
     }
 
     public static long sub(long a, long b, long p) {
@@ -83,11 +83,11 @@ class Algo {
     static final int mod = ((int)(1e9+7));
 
     public static long add(long a, long b, long p) {
-        return (a % p + b % p) % p;
+        return ((a % p + b % p) % p + p) % p;
     }
 
     public static long sub(long a, long b, long p) {
-        return add(a-b, p, p);
+        return (a % p - b % p + p) % p;
     }
 
     public static long mul(long a, long b, long p) {
