@@ -44,7 +44,7 @@ public class Main { // Make sure the class is Public
     static final int shit = ((int)(998244353));
     static final int mod = ((int)(1e9 + 7));
     static final int hell = ((int)(1e9 + 9));
-    static final long inf = ((long)(1e18));
+    static final long inf = ((long)(1e18 + 3));
     static final double pi = Math.PI;
     static final String yes = "yes";
     static final String Yes = "Yes";
@@ -72,6 +72,7 @@ class Algo {
     static long fact[];
     static long invFact[];
     static long inv[];
+    static int NAX = ((int)(2e6 + 100));
 
     static final int mod = ((int)(1e9+7));
 
@@ -182,30 +183,36 @@ class Algo {
         return mul(fact[n], mul(invFact[r], invFact[n - r], p), p);
     }
 
-    public static void computeFactorials(int nax, long p) {
-        fact = new long[nax];
+    public static long nthCatalan(int n, long p) {
+        return mul(nCr_mod_p(2 * n, n, p), inv[n + 1], p);
+    }
+
+    public static void compute(int nax, long p) {
+        NAX = nax;
+        computeFactorials(p);
+        computeInverseFactorials(p);
+        computeInverses(p);
+    }
+
+    public static void computeFactorials(long p) {
+        fact = new long[NAX];
         fact[0] = 1;
-        for(int i = 1; i < nax; i++)
+        for(int i = 1; i < NAX; i++)
             fact[i] = mul(fact[i-1], i, p);
     }
 
-    public static void computeInverseFactorials(int nax, long p) {
-        if(fact == null)
-            computeFactorials(nax, p);
-        invFact = new long[nax];
-        invFact[nax - 1] = power(fact[nax - 1], p - 2, p);
-        for(int i = nax - 2; i >= 0; i--) {
+    public static void computeInverseFactorials(long p) {
+        invFact = new long[NAX];
+        invFact[NAX - 1] = power(fact[NAX - 1], p - 2, p);
+        for(int i = NAX - 2; i >= 0; i--) {
             invFact[i] = ((i + 1) * invFact[i + 1]) % p;
         }
     }
 
-    public static void computeInverses(int nax, long p) {
-        if(invFact == null) {
-            computeInverseFactorials(nax, p);
-        }
-        inv = new long[nax];
+    public static void computeInverses(long p) {
+        inv = new long[NAX];
         inv[0] = 0;
-        for(int i = 1; i < nax; i++) {
+        for(int i = 1; i < NAX; i++) {
             inv[i] = (fact[i - 1] * invFact[i]) % p;
         }
     }
@@ -584,7 +591,6 @@ class Algo {
         }
         return right_index;
     }
-
 }
 
 class BIT {

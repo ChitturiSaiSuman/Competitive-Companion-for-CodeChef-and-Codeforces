@@ -58,7 +58,7 @@ const int dr[] = {0, 1, -1, 0, -1, 1, -1, 1};
 const ll shit	= ((ll)(998244353));	// 998,244,353
 const ll mod	= ((ll)(1e9+7));		// 10**9 + 7
 const ll hell	= ((ll)(1e9+9));		// 10**9 + 9
-const ll inf	= ((ll)(1e18));			// 10 ** 18
+const ll inf	= ((ll)(1e18 + 3));			// 10 ** 18 + 3
 
 const char yes[] = "yes";
 const char Yes[] = "Yes";
