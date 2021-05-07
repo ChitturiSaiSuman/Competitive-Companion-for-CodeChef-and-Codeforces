@@ -46,12 +46,16 @@ public class Main { // Make sure the class is Public
     static final int hell = ((int)(1e9 + 9));
     static final long inf = ((long)(1e18 + 3));
     static final double pi = Math.PI;
+
     static final String yes = "yes";
     static final String Yes = "Yes";
     static final String YES = "YES";
     static final String no = "no";
     static final String No = "No";
     static final String NO = "NO";
+
+    static final int dc[] = {1, 0, 0, -1, -1, -1, 1, 1};
+    static final int dr[] = {0, 1, -1, 0, -1, 1, -1, 1};
 
     public static long add(long a, long b, long p) {
         return ((a % p + b % p) % p + p) % p;
@@ -64,7 +68,6 @@ public class Main { // Make sure the class is Public
     public static long mul(long a, long b, long p) {
         return (a % p * b % p) % p;
     }
-
 }
 
 class Algo {
@@ -73,8 +76,6 @@ class Algo {
     static long invFact[];
     static long inv[];
     static int NAX = ((int)(2e6 + 100));
-
-    static final int mod = ((int)(1e9+7));
 
     public static long add(long a, long b, long p) {
         return (a % p + b % p + p) % p;
@@ -187,7 +188,7 @@ class Algo {
         return mul(nCr_mod_p(2 * n, n, p), inv[n + 1], p);
     }
 
-    public static void compute(int nax, long p) {
+    public static void prepare(int nax, long p) {
         NAX = nax;
         computeFactorials(p);
         computeInverseFactorials(p);
@@ -836,20 +837,12 @@ class Primality {
 
 class Sieve {
 
-    private int size = 0;
-    private boolean prime[];
-    private int spf[];
-    private int phi[];
+    public static boolean prime[];
+    public static int spf[];
+    public static int phi[];
+    public static ArrayList<Integer> primes;
 
-    public Sieve(int size) {
-        this.size = size + 1;
-    }
-
-    public void setSize(int size) {
-        this.size = size + 1;
-    }
-
-    public boolean[] sieve() {
+    public static boolean[] sieve(int size) {
 
         prime = new boolean[size];
         Arrays.fill(prime, false);
@@ -867,7 +860,27 @@ class Sieve {
         return prime;
     }
 
-    public int[] SPF() {
+    public static ArrayList<Integer> getPrimes(int size) {
+        if(prime == null) {
+            sieve(size);
+        }
+        if(primes == null) {
+            primes = new ArrayList<Integer>();
+            primes.add(2);
+            primes.add(3);
+            for(int i = 5; i + 2 < size; i += 6) {
+                if(prime[i]) {
+                    primes.add(i);
+                }
+                if(prime[i + 2]) {
+                    primes.add(i + 2);
+                }
+            }
+        }
+        return primes;
+    }
+
+    public static int[] SPF(int size) {
 
         spf = new int[size];
 
@@ -888,41 +901,41 @@ class Sieve {
         return spf;
     }
 
-    public int[] getSPF() {
-        return SPF();
+    public static int[] getSPF(int size) {
+        return SPF(size);
     }
 
-    public int[] computeSPF() {
-        return SPF();
+    public static int[] computeSPF(int size) {
+        return SPF(size);
     }
     
-    public int[] Totient() {
+    public static int[] Totient(int size) {
 
         phi = new int[size];
 
-        for(int i = 0;i < size; i++)
+        for(int i = 0; i < size; i++)
             phi[i] = i;
 
-        for(int i = 2;i < size; i++)
+        for(int i = 2; i < size; i++)
             if(phi[i] == i)
-                for(int j = i;j < size;j += i)
+                for(int j = i; j < size; j += i)
                     phi[j] -= phi[j]/i;
 
         return phi;
     }
 
-    public int[] getTotient() {
-        return Totient();
+    public static int[] getTotient(int size) {
+        return Totient(size);
     }
 
-    public int[] computeTotient() {
-        return Totient();
+    public static int[] computeTotient(int size) {
+        return Totient(size);
     }
 
-    public int numberOfFactors(int n) {
+    public static int numberOfFactors(int n) {
         int ans = 1;
-        for(int c = 0, s = spf[n]; n > 1; c = 0) {
-            for(s = spf[n]; s == spf[n]; n /= s, c++);
+        for(int c = 0; n > 1; c = 0) {
+            for(int s = spf[n]; s == spf[n]; n /= s, c++);
             ans *= c + 1;
         }
         return ans;
