@@ -379,7 +379,7 @@ class Trie:
         self.__lcpLength = 0
         self.__preset = 'a'
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.__count
 
     def setPreset(self, ch: str) -> None:
