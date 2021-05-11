@@ -1339,18 +1339,18 @@ class Trie {
     private StringBuilder lcp;
     private int count;
     private int lcpLength;
-    private char alpha;
+    private char preset;
 
     public Trie() {
         root = new Node();
         lcp = new StringBuilder();
         count = 0;
         lcpLength = 0;
-        alpha = 'a';
+        preset = 'a';
     }
 
-    public void setAlpha(char ch) {
-        alpha = ch;
+    public void setPreset(char ch) {
+        preset = ch;
     }
 
     public void insert(String str) {
@@ -1371,7 +1371,7 @@ class Trie {
     private void _insert(Node node, String str, final int length) {
         for(int i = 0; i < length; i++) {
             char ch = str.charAt(i);
-            int ind = ((int)(ch - alpha));
+            int ind = ((int)(ch - preset));
             if(node.next[ind] == null) {
                 node.next[ind] = new Node();
             }
@@ -1388,7 +1388,7 @@ class Trie {
     private boolean _find(Node node, String str, final int length) {
         for(int i = 0; i < length; i++) {
             char ch = str.charAt(i);
-            int ind = ((int)(ch - alpha));
+            int ind = ((int)(ch - preset));
             if(node.next[ind] == null) {
                 return false;
             }
@@ -1404,7 +1404,7 @@ class Trie {
     private int _prefixCount(Node node, String prefix, final int length) {
         for(int i = 0; i < length; i++) {
             char ch = prefix.charAt(i);
-            int ind = ((int)(ch - alpha));
+            int ind = ((int)(ch - preset));
             if(node.next[ind] == null) {
                 return 0;
             }
