@@ -114,7 +114,7 @@ with open("err.err", "r") as err:
 
 for file in os.listdir():
     if "runner" in file or ".class" in file:
-        os.system("rm "+file)
+        os.remove(file)
 
 os.system("python3 verify.py")
 print(Fore.CYAN + "\nTime: " + Fore.GREEN + "%.6f"%(end - start), end = " s\n\n")
