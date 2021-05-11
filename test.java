@@ -13,7 +13,7 @@ import java.util.*;
 // Graph: Graph(V: int, E: int, directed: boolean, weighted: boolean)
 // Bit (0-based Indexing): BIT(int a[]); methods: pointUpdate(ind, val), addRange(l, r, val), rangeSum(l, r)
 
-class Main { // Make sure the class is Public
+class Main implements Runnable { // Make sure the class is Public
 
     static IO io = new IO();
     static int size = ((int)(2e6 + 1));
@@ -28,8 +28,7 @@ class Main { // Make sure the class is Public
         // 
     }
 
-    public static void main(String[] args) {
-
+    public void run() {
         int testcases = 0;
         // testcases++;
         if(testcases == 0)
@@ -39,6 +38,10 @@ class Main { // Make sure the class is Public
             // io.print("Case #" + (test + 1) + ": ");
             solve();
         }
+    }
+
+    public static void main(String[] args) { // This way the recursion depth can be increased
+        new Thread(null, new Main(), "Main Thread", 1 << 26).start();
     }
 
     static final int shit = ((int)(998244353));
@@ -1358,6 +1361,9 @@ class Trie {
     }
 
     public void insert(String str) {
+        if(contains(str)) {
+            return;
+        }
         _insert(root, str, str.length());
         count++;
         if(count == 1) {
