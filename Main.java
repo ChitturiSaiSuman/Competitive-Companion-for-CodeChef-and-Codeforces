@@ -1321,3 +1321,104 @@ class Pair implements Comparable<Pair> {
         return "(" + this.x + ", " + this.y + ")";
     }
 }
+
+class Trie {
+
+    private class Node {
+        Node next[];
+        boolean isTerminalNode;
+        int samePrefixCount;
+        Node() {
+            next = new Node[26];
+            isTerminalNode = false;
+            samePrefixCount = 0;
+        }
+    }
+
+    private Node root;
+    private StringBuilder lcp;
+    private int count;
+    private int lcpLength;
+    private char alpha;
+
+    public Trie() {
+        root = new Node();
+        lcp = new StringBuilder();
+        count = 0;
+        lcpLength = 0;
+        alpha = 'a';
+    }
+
+    public void setAlpha(char ch) {
+        alpha = ch;
+    }
+
+    public void insert(String str) {
+        _insert(root, str, str.length());
+        count++;
+        if(count == 1) {
+            lcp.append(str);
+        }
+        else {
+            int i = 0;
+            final int length = Math.min(lcp.length(), str.length());
+            for(; i < length && lcp.charAt(i) == str.charAt(i); i++);
+            lcp.setLength(i);
+            lcpLength = i;
+        }
+    }
+
+    private void _insert(Node node, String str, final int length) {
+        for(int i = 0; i < length; i++) {
+            char ch = str.charAt(i);
+            int ind = ((int)(ch - alpha));
+            if(node.next[ind] == null) {
+                node.next[ind] = new Node();
+            }
+            node.next[ind].samePrefixCount++;
+            node = node.next[ind];
+        }
+        node.isTerminalNode = true;
+    }
+
+    public boolean contains(String str) {
+        return _find(root, str, str.length());
+    }
+
+    private boolean _find(Node node, String str, final int length) {
+        for(int i = 0; i < length; i++) {
+            char ch = str.charAt(i);
+            int ind = ((int)(ch - alpha));
+            if(node.next[ind] == null) {
+                return false;
+            }
+            node = node.next[ind];
+        }
+        return node.isTerminalNode;
+    }
+    
+    public int prefixCount(String prefix) {
+        return _prefixCount(root, prefix, prefix.length());
+    }
+
+    private int _prefixCount(Node node, String prefix, final int length) {
+        for(int i = 0; i < length; i++) {
+            char ch = prefix.charAt(i);
+            int ind = ((int)(ch - alpha));
+            if(node.next[ind] == null) {
+                return 0;
+            }
+            node = node.next[ind];
+        }
+        return node.samePrefixCount;
+    }
+
+    public int longestCommonPrefixLength() {
+        return lcpLength;
+    }
+
+    public String longestCommonPrefix() {
+        return lcp.toString();
+    }
+
+}
