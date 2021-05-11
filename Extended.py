@@ -364,3 +364,89 @@ class Tree:
     g.recurse(0,0)
     print(g.ans)
     """
+
+class Trie:
+    class Node:
+        def __init__(self):
+            self.next = [None for i in range(26)]
+            self.isTerminalNode = False
+            self.samePrefixCount = 0
+
+    def __init__(self):
+        self.__root = Trie.Node()
+        self.__lcp = []
+        self.__count = 0
+        self.__lcpLength = 0
+        self.__preset = 'a'
+
+    def __len__(self):
+        return self.__count
+
+    def setPreset(self, ch: str) -> None:
+        self.__preset = ch
+
+    def insert(self, string: str) -> None:
+        self.__insert(self.__root, string, len(string))
+        self.__count += 1
+        if (self.__count == 1):
+            self.__lcp = [i for i in string]
+        else:
+            i = 0
+            length = min(len(self.__lcp), len(string))
+            while i < length and self.__lcp[i] == string[i]:
+                i += 1
+            self.__lcp = self.__lcp[:i]
+            self.__lcpLength = i
+
+    def __insert(self, node: Node, string: str, length: int) -> None:
+        for i in range(length):
+            ch = string[i]
+            ind = ord(ch) - ord(self.__preset)
+            if (node.next[ind] == None):
+                node.next[ind] = Trie.Node()
+            node.next[ind].samePrefixCount += 1
+            node = node.next[ind]
+        node.isTerminalNode = True
+
+    def remove(self, string: str) -> None:
+        if not self.contains(string):
+            return
+        self.__remove(self.__root, string, len(string))
+
+    def __remove(self, node: Node, string: str, length: int) -> None:
+        for i in range(length):
+            ch = string[i]
+            ind = ord(ch) - ord(self.__preset)
+            node = node.next[ind]
+        node.isTerminalNode = False
+        self.__count -= 1
+
+    def contains(self, string: str) -> bool:
+        return self.__find(self.__root, string, len(string))
+
+    def __find(self, node: Node, string: str, length: int) -> bool:
+        for i in range(length):
+            ch = string[i]
+            ind = ord(ch) - ord(self.__preset)
+            if (node.next[ind] == None):
+                return False
+            node = node.next[ind]
+        return node.isTerminalNode
+
+    def prefixCount(self, prefix: str) -> int:
+        return self.__prefixCount(self.__root, prefix, len(prefix))
+
+    def __prefixCount(self, node: Node, prefix: str, length: int) -> int:
+        for i in range(length):
+            ch = prefix[i]
+            ind = ord(ch) - ord(self.__preset)
+            if node.next[ind] == None:
+                return 0
+            node = node.next[ind]
+        return node.samePrefixCount
+
+    def longestCommonPrefixLength(self) -> int:
+        return self.__lcpLength
+    
+    def longestCommonPrefix(self) -> str:
+        return ''.join(self.__lcp)

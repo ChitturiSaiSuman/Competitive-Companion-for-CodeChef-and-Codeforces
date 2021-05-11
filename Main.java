@@ -1349,6 +1349,10 @@ class Trie {
         preset = 'a';
     }
 
+    public int length() {
+        return count;
+    }
+
     public void setPreset(char ch) {
         preset = ch;
     }
@@ -1379,6 +1383,23 @@ class Trie {
             node = node.next[ind];
         }
         node.isTerminalNode = true;
+    }
+
+    public void remove(String str) {
+        if(!contains(str)) {
+            return;
+        }
+        _remove(root, str, str.length());
+    }
+
+    private void _remove(Node node, String str, final int length) {
+        for(int i = 0; i < length; i++) {
+            char ch = str.charAt(i);
+            int ind = ((int)(ch - preset));
+            node = node.next[ind];
+        }
+        node.isTerminalNode = false;
+        count--;
     }
 
     public boolean contains(String str) {
