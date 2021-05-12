@@ -41,7 +41,7 @@ class Main implements Runnable { // Make sure the class is Public
     }
 
     public static void main(String[] args) { // This way the recursion depth can be increased
-        new Thread(null, new Main(), "Main Thread", 1 << 26).start();
+        new Thread(null, new Main(), "Main Thread", 1 << 30).start();
     }
 
     static final int shit = ((int)(998244353));
