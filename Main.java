@@ -101,6 +101,12 @@ class Algo {
         return (a * b) / gcd(a, b);
     }
 
+    public static int log2(long n) {
+        int c = 0;
+        for(; n > 0; n >>= 1, c++);
+        return (c - 1);
+    }
+
     public static long power(long x, long y, long p) {
         long result = 1;
         for(result = 1; y > 0; x = (x % p * x % p) % p, y >>= 1)
@@ -1446,6 +1452,118 @@ class Trie {
 
     public String longestCommonPrefix() {
         return lcp.toString();
+    }
+
+}
+
+class SegmentTree {
+
+    class Node {
+        int lowerBound;
+        int upperBound;
+        Node leftChild, rightChild;
+        long value;
+    }
+
+    private long array[];
+    private int length;
+    private Node root;
+    private long baseValue = 0;
+
+    public SegmentTree(int a[]) {
+        int n = a.length;
+        length = 1 << (log2(n) + 1);
+        array = new long[length];
+        for(int i = 0; i < n; i++) {
+            array[i] = a[i];
+        }
+        for(int i = n; i < length; i++) {
+            array[i] = 0;
+        }
+        root = new Node();
+        build(root, 0, length - 1);
+    }
+
+    private long fun(long value1, long value2) {
+        return (value1 + value2);            // Sum Query
+        // return Math.max(value1, value2);     // Max Query
+        // return Math.min(value1, value2);     // Min Query
+        // return gcd(value1, value2);          // GCD Query
+        // return lcm(value2, value2);          // LCM Query
+        // return (value1 & value2);            // Bitwise-AND Query
+        // return (value1 | value2);            // Bitwise-OR Query
+        // return (value1 ^ value2);            // Bitwise-XOR Query
+    }
+
+    private int log2(long n) {
+        int c = 0;
+        for(; n > 0; n >>= 1, c++);
+        return (c - 1);
+    }
+
+    private long gcd(long a, long b) {
+        for(long rem; b > 0; rem = a % b, a = b, b = rem);
+        return a;
+    }
+
+    private long lcm(long a, long b) {
+        return (a * b) / gcd(a, b);
+    }
+
+    private long build(Node node, int lb, int ub) {
+        node.lowerBound = lb;
+        node.upperBound = ub;
+        if(lb == ub) {
+            node.value = array[lb];
+        }
+        else {
+            node.leftChild = new Node();
+            node.rightChild = new Node();
+            long leftValue = build(node.leftChild, lb, (lb + ub) / 2);
+            long rightValue = build(node.rightChild, (lb + ub) / 2 + 1, ub)
+            node.value = fun(leftValue, rightValue);
+        }
+        return node.value;
+    }
+
+    public long rangeQuery(int left, int right) {
+        return _rangeQuery(root, left, right);
+    }
+
+    private long _rangeQuery(Node node, int lb, int ub) {
+        if(node.lowerBound > ub || node.upperBound < lb) {
+            return baseValue;
+        }
+        else if(node.upperBound <= ub && lb <= node.lowerBound) {
+            return node.value;
+        }
+        long leftValue = _rangeQuery(node.leftChild, lb, ub);
+        long rightValue = _rangeQuery(node.rightChild, lb, ub);
+        return fun(leftValue, rightValue);
+    }
+
+    public void pointUpdate(int index, long value) {
+        _update(root, index, value);
+        array[index] = value;
+    }
+
+    private long _update(Node node, int index, long value) {
+        if(index < node.lowerBound || node.upperBound < index) {
+            return node.value;
+        }
+        else if(node.lowerBound == node.upperBound && node.upperBound == index) {
+            node.value = value;
+        }
+        else {
+            long leftValue = _update(node.leftChild, index, value);
+            long rightValue = _update(node.rightChild, index, value);
+            node.value = fun(leftValue, rightValue);
+        }
+        return node.value;
+    }
+
+    public long get(int index) {
+        return array[index];
     }
 
 }
