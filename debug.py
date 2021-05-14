@@ -41,12 +41,6 @@ if output1 != output2:
                 print(Fore.RED + "Could be more than 10")
                 break
 
-    print("Output1")
-    print(output1)
-
-    print("Output2")
-    print(output2)
-
 else:
     print(Fore.GREEN + "Hurray! Outputs Matched")
     engine.say("Hurray! Outputs matched")

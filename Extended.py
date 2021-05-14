@@ -450,3 +450,94 @@ class Trie:
     
     def longestCommonPrefix(self) -> str:
         return ''.join(self.__lcp)
+
+
+class SegmentTree:
+    """
+    Segment Tree with Get, pointUpdate, RangeUpdate and RangeQuery Operations
+    """
+
+    def __init__(self, a: list, key = lambda x, y: (x + y), default = 0) -> None:
+        """
+        Constructs Segment Tree. Parent Node = key(child1, child2). Extra nodes are set to default.
+        """
+        self.__array = [i for i in a]
+        self.__default = default
+        self.__key = key
+        self.__tree = self.__build()
+        self.__length = len(self.__tree) // 2
+        self.__carry = [default for i in range(self.__length * 2)]
+        del self.__array
+
+    def __build(self) -> list:
+        """
+        Utility function to build Segment Tree
+        """
+        n = len(self.__array)
+        while (n & (n - 1)) != 0:
+            self.__array.append(self.__default)
+            n += 1
+        tree = [self.__default for i in range(2 * n)]
+        for i in range(n):
+            tree[n + i] = self.__array[i]
+        for i in range(n - 1, 0, -1):
+            tree[i] = self.__key(tree[2 * i], tree[2 * i + 1])
+        return tree
+
+    def __str__(self) -> str:
+        return str(self.__tree)
+
+    def get(self, index: int) -> int:
+        """
+        Returns the value at a[index]
+        """
+        return self.rangeQuery(index, index)
+
+    def pointUpdate(self, index: int, value: int) -> None:
+        """
+        Modifies a Singly Node and its Ancestors, Sets a[index] to value
+        """
+        self.__update(1, 0, self.__length - 1, index, value)
+
+    def __update(self, node: int, node_lb: int, node_ub: int, index: int, value: int) -> int:
+        if (index < node_lb or node_ub < index):
+            return self.__tree[node]
+        elif (node_lb == node_ub and node_ub == index):
+            self.__tree[node] = value
+        else:
+            leftReturned = self.__update(2 * node, node_lb, (node_lb + node_ub) // 2, index, value)
+            rightReturned = self.__update(2 * node + 1, (node_lb + node_ub) // 2 + 1, node_ub, index, value)
+            self.__tree[node] = self.__key(leftReturned, rightReturned)
+        return self.__tree[node]
+
+    def rangeUpdate(self, range_lb: int, range_ub: int, value: int) -> None:
+        """
+        Modifies several Nodes lying in the Range by Performing key operation
+        """
+        self.__rangeUpdate(1, 0, self.__length - 1, range_lb, range_ub, value)
+
+    def __rangeUpdate(self, node: int, node_lb: int, node_ub: int, range_lb: int, range_ub: int, value: int) -> int:
+        if range_lb <= node_lb and node_ub <= range_ub:
+            self.__carry[node] = self.__key(self.__carry[node], value)
+        elif node_ub < range_lb or range_ub < node_lb:
+            return self.__carry[node]
+        else:
+            self.__rangeUpdate(2 * node, node_lb, (node_lb + node_ub) // 2, range_lb, range_ub, value)
+            self.__rangeUpdate(2 * node + 1, (node_lb + node_ub) // 2 + 1, node_ub, range_lb, range_ub, value)
+        return self.__carry[node]
+
+    def rangeQuery(self, query_lb: int, qeury_ub: int) -> int:
+        """
+        Returns the Result of Key Function over the Range
+        """
+        return self.__query(1, 0, self.__length - 1, query_lb, qeury_ub)
+
+    def __query(self, node: int, node_lb: int, node_ub: int, query_lb: int, query_ub: int) -> int:
+        if query_lb <= node_lb and node_ub <= query_ub:
+            return self.__key(self.__tree[node], self.__carry[node])
+        elif query_ub < node_lb or node_ub < query_lb:
+            return self.__default
+        else:
+            left_returned = self.__query(2 * node, node_lb, (node_lb + node_ub) // 2, query_lb, query_ub)
+            right_returned = self.__query(2 * node + 1, (node_lb + node_ub) // 2 + 1, node_ub, query_lb, query_ub)
+            return self.__key(self.__key(left_returned, right_returned), self.__carry[node])

@@ -1458,112 +1458,163 @@ class Trie {
 
 class SegmentTree {
 
-    class Node {
-        int lowerBound;
-        int upperBound;
-        Node leftChild, rightChild;
-        long value;
-    }
+    /**
+     * Segment Tree with Get, pointUpdate, RangeUpdate and RangeQuery Operations
+     */
 
-    private long array[];
+    private long tree[];
+    private long carry[];
     private int length;
-    private Node root;
-    private long baseValue = 0;
+    private long default_value;
 
-    public SegmentTree(int a[]) {
-        int n = a.length;
-        length = 1 << (log2(n) + 1);
-        array = new long[length];
-        for(int i = 0; i < n; i++) {
-            array[i] = a[i];
-        }
-        for(int i = n; i < length; i++) {
-            array[i] = 0;
-        }
-        root = new Node();
-        build(root, 0, length - 1);
-    }
-
-    private long fun(long value1, long value2) {
-        return (value1 + value2);            // Sum Query
-        // return Math.max(value1, value2);     // Max Query
-        // return Math.min(value1, value2);     // Min Query
-        // return gcd(value1, value2);          // GCD Query
-        // return lcm(value2, value2);          // LCM Query
-        // return (value1 & value2);            // Bitwise-AND Query
-        // return (value1 | value2);            // Bitwise-OR Query
-        // return (value1 ^ value2);            // Bitwise-XOR Query
-    }
-
-    private int log2(long n) {
-        int c = 0;
-        for(; n > 0; n >>= 1, c++);
-        return (c - 1);
+    private long key(long value1, long value2) {
+        /**
+         * Key Function builds up relation between parent node and its two child nodes
+         */
+        return value1 + value2;              // Range Sum Queries
+        // return Math.min(value1, value2);     // Range Minimum Queries
+        // return Math.max(value1, value2);     // Range Maximum Queries
+        // return value1 * value2;              // Range Product Queries
+        // return value1 | value2;              // Range Bitwise OR Queries
+        // return value1 & value2;              // Range Bitwise AND Queries
+        // return value1 ^ value2;              // Range Bitwise EX-OR Queries
+        // return lcm(value1, value2);          // Range LCM Queries
+        // return gcd(value1, value2);          // Range GCD Queries
     }
 
     private long gcd(long a, long b) {
+        /**
+         * For GCD Queries
+         */
         for(long rem; b > 0; rem = a % b, a = b, b = rem);
         return a;
     }
 
     private long lcm(long a, long b) {
+        /**
+         * For LCM Queries
+         */
         return (a * b) / gcd(a, b);
     }
 
-    private long build(Node node, int lb, int ub) {
-        node.lowerBound = lb;
-        node.upperBound = ub;
-        if(lb == ub) {
-            node.value = array[lb];
-        }
-        else {
-            node.leftChild = new Node();
-            node.rightChild = new Node();
-            long leftValue = build(node.leftChild, lb, (lb + ub) / 2);
-            long rightValue = build(node.rightChild, (lb + ub) / 2 + 1, ub)
-            node.value = fun(leftValue, rightValue);
-        }
-        return node.value;
+    public SegmentTree(int a[]) {
+        /**
+         * Default Constructor
+         */
+        int array[] = a.clone();
+        this.default_value = 0;
+        this.tree = build(array);
+        this.length = this.tree.length / 2;
+        this.carry = new long[2 * length];
+        Arrays.fill(carry, this.default_value);
     }
 
-    public long rangeQuery(int left, int right) {
-        return _rangeQuery(root, left, right);
+    public SegmentTree(int a[], long default_value) {
+        /**
+         * Overloaded Constructor. Extra nodes are filled with Default_value
+         */
+        int array[] = a.clone();
+        this.default_value = default_value;
+        this.tree = build(array);
+        this.length = this.tree.length / 2;
+        this.carry = new long[2 * length];
+        Arrays.fill(carry, this.default_value);
     }
 
-    private long _rangeQuery(Node node, int lb, int ub) {
-        if(node.lowerBound > ub || node.upperBound < lb) {
-            return baseValue;
-        }
-        else if(node.upperBound <= ub && lb <= node.lowerBound) {
-            return node.value;
-        }
-        long leftValue = _rangeQuery(node.leftChild, lb, ub);
-        long rightValue = _rangeQuery(node.rightChild, lb, ub);
-        return fun(leftValue, rightValue);
-    }
 
-    public void pointUpdate(int index, long value) {
-        _update(root, index, value);
-        array[index] = value;
-    }
-
-    private long _update(Node node, int index, long value) {
-        if(index < node.lowerBound || node.upperBound < index) {
-            return node.value;
+    private long[] build(int a[]) {
+        /**
+         * Builds Segment Tree
+         */
+        int n = a.length;
+        ArrayList<Long> array = new ArrayList<Long>(n);
+        for(int i = 0; i < n; i++) {
+            array.add(((long)(a[i])));
         }
-        else if(node.lowerBound == node.upperBound && node.upperBound == index) {
-            node.value = value;
+        while((n & (n - 1)) != 0) {
+            array.add(this.default_value);
+            n ++;
         }
-        else {
-            long leftValue = _update(node.leftChild, index, value);
-            long rightValue = _update(node.rightChild, index, value);
-            node.value = fun(leftValue, rightValue);
+        long tree[] = new long[2 * n];
+        Arrays.fill(tree, this.default_value);
+        for(int i = 0; i < n; i++) {
+            tree[n + i] = array.get(i);
         }
-        return node.value;
+        for(int i = n - 1; i > 0; i--) {
+            tree[i] = key(tree[2 * i], tree[2 * i + 1]);
+        }
+        return tree;
     }
 
     public long get(int index) {
-        return array[index];
+        /**
+         * Returns the value at a[index]
+         */
+        return this.rangeQuery(index, index);
     }
 
+    public void pointUpdate(int index, long value) {
+        /**
+         * Updates a single node and its Ancestors - Sets the node to this value
+         */
+        pointUpdate(1, 0, this.length - 1, index, value);
+    }
+
+    private long pointUpdate(int node, int node_lb, int node_ub, int index, long value) {
+        if(index < node_lb || node_ub < index) {
+            return this.tree[node];
+        }
+        else if(node_lb == node_ub && node_ub == index) {
+            this.tree[node] = value;
+        }
+        else {
+            long leftReturned = pointUpdate(2 * node, node_lb, (node_lb + node_ub) / 2, index, value);
+            long rightReturned = pointUpdate(2 * node + 1, (node_lb + node_ub) / 2 + 1, node_ub, index, value);
+            this.tree[node] = key(leftReturned, rightReturned);
+        }
+        return this.tree[node];
+    }
+
+    public void rangeUpdate(int range_lb, int range_ub, long value) {
+        /**
+         * Updates Several Nodes using the results of Key Function over Children
+         */
+        rangeUpdate(1, 0, this.length - 1, range_lb, range_ub, value);
+    }
+
+    private long rangeUpdate(int node, int node_lb, int node_ub, int range_lb, int range_ub, long value) {
+        if(range_lb <= node_lb && node_ub <= range_ub) {
+            this.carry[node] = this.key(this.carry[node], value);
+        }
+        else if(node_ub < range_lb || range_ub < node_lb) {
+            return this.carry[node];
+        }
+        else {
+            rangeUpdate(2 * node, node_lb, (node_lb + node_ub) / 2, range_lb, range_ub, value);
+            rangeUpdate(2 * node + 1, (node_lb + node_ub) / 2 + 1, node_ub, range_lb, range_ub, value);
+        }
+        return this.carry[node];
+    }
+    
+    public long rangeQuery(int query_lb, int query_ub) {
+        /**
+         * Returns the result of Key Function over the range
+         */
+        return rangeQuery(1, 0, this.length - 1, query_lb, query_ub);
+    }
+
+    private long rangeQuery(int node, int node_lb, int node_ub, int query_lb, int query_ub) {
+        if(query_lb <= node_lb && node_ub <= query_ub) {
+            return this.key(this.tree[node], this.carry[node]);
+        }
+        else if(query_ub < node_lb || node_ub < query_lb) {
+            return this.default_value;
+        }
+        else {
+            long leftReturned = rangeQuery(2 * node, node_lb, (node_lb + node_ub) / 2, query_lb, query_ub);
+            long rightReturned = rangeQuery(2 * node + 1, (node_lb + node_ub) / 2 + 1, node_ub, query_lb, query_ub);
+            long returned = this.key(this.key(leftReturned, rightReturned), this.carry[node]);
+            return returned;
+        }
+    }
 }
