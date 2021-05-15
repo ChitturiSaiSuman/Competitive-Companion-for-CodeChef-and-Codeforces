@@ -1501,9 +1501,8 @@ class SegmentTree {
         /**
          * Default Constructor
          */
-        int array[] = a.clone();
         this.default_value = 0;
-        this.tree = build(array);
+        this.tree = build(a);
         this.length = this.tree.length / 2;
         this.carry = new long[2 * length];
         Arrays.fill(carry, this.default_value);
@@ -1513,9 +1512,8 @@ class SegmentTree {
         /**
          * Overloaded Constructor. Extra nodes are filled with Default_value
          */
-        int array[] = a.clone();
         this.default_value = default_value;
-        this.tree = build(array);
+        this.tree = build(a);
         this.length = this.tree.length / 2;
         this.carry = new long[2 * length];
         Arrays.fill(carry, this.default_value);
