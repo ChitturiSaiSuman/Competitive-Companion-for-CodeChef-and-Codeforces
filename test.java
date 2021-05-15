@@ -1520,7 +1520,7 @@ class SegmentTree {
             node.leftChild = new Node();
             node.rightChild = new Node();
             long leftValue = build(node.leftChild, lb, (lb + ub) / 2);
-            long rightValue = build(node.rightChild, (lb + ub) / 2 + 1, ub)
+            long rightValue = build(node.rightChild, (lb + ub) / 2 + 1, ub);
             node.value = fun(leftValue, rightValue);
         }
         return node.value;
