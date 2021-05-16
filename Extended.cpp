@@ -402,3 +402,127 @@ class SegmentTree {
         }
     }
 };
+
+class Trie {
+
+    private:
+    class Node {
+
+        public:
+        Node *next[26];
+        bool isTerminalNode;
+        int samePrefixCount;
+
+        Node() {
+            isTerminalNode = false;
+            samePrefixCount = 0;
+        }
+    };
+
+    Node *root;
+    string lcp;
+    int count;
+    int lcpLength;
+    char preset;
+
+    public:
+    Trie() {
+        root = new Node();
+        count = 0;
+        lcpLength = 0;
+        preset = 'a';
+    }
+
+    int size() {
+        return count;
+    }
+
+    void setPreset(char ch) {
+        preset = ch;
+    }
+
+    void insert(string str) {
+        if(contains(str)) {
+            return;
+        }
+        _insert(root, str, str.size());
+        count++;
+        if(count == 1) {
+            lcp.append(str);
+        }
+        else {
+            int i = 0;
+            const int length = min(lcp.size(), str.size());
+            for(; i < length && lcp[i] == str[i]; i++);
+            lcp.resize(i);
+            lcpLength = i;
+        }
+    }
+
+    int longestCommonPrefixLength() {
+        return lcpLength;
+    }
+
+    string longestCommonPrefix() {
+        return lcp;
+    }
+
+    void remove(string str) {
+        if(!contains(str)) {
+            return;
+        }
+        _remove(root, str, str.size());
+    }
+
+    bool contains(string str) {
+        return _find(root, str, str.size());
+    }
+
+    int prefixCount(string prefix) {
+        return _prefixCount(root, prefix, prefix.size());
+    }
+
+    private:
+    void _insert(Node *node, string str, const int length) {
+        for(int i = 0; i < length; i++) {
+            int ind = str[i] - preset;
+            if(node->next[ind] == nullptr) {
+                node->next[ind] = new Node();
+            }
+            (node->next[ind])->samePrefixCount++;
+            node = node->next[ind];
+        }
+        node->isTerminalNode = true;
+    }
+
+    void _remove(Node *node, string str, const int length) {
+        for(int i = 0; i < length; i++) {
+            int ind = str[i] - preset;
+            node = node->next[ind];
+        }
+        node->isTerminalNode = false;
+        count--;
+    }
+
+    bool _find(Node *node, string str, const int length) {
+        for(int i = 0; i < length; i++) {
+            int ind = str[i] - preset;
+            if(node->next[ind] == nullptr) {
+                return false;
+            }
+            node = node->next[ind];
+        }
+        return node->isTerminalNode;
+    }
+
+    int _prefixCount(Node *node, string prefix, const int length) {
+        for(int i = 0; i < length; i++) {
+            int ind = prefix[i] - preset;
+            if(node->next[ind] == nullptr) {
+                return 0;
+            }
+            node = node->next[ind];
+        }
+        return node->samePrefixCount;
+    }
+};
