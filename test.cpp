@@ -23,8 +23,6 @@
 #include <vector>
 using namespace std;
 
-#define nl							"\n"
-#define sp							" "
 #define FOR(x, N)					for(int x = 0; x < N; x++)
 #define inverse(a, p)				power(a, p - 2, p)
 #define getName(var)				#var
@@ -46,7 +44,7 @@ const int dr[] = {0, 1, -1, 0, -1, 1, -1, 1};
 const ll shit	= ((ll)(998244353));	// 998,244,353
 const ll mod	= ((ll)(1e9+7));		// 10**9 + 7
 const ll hell	= ((ll)(1e9+9));		// 10**9 + 9
-const ll inf	= ((ll)(1e18 + 3));			// 10 ** 18 + 3
+const ll inf	= ((ll)(1e18 + 3));		// 10 ** 18 + 3
 
 const char yes[]	= "yes";
 const char Yes[]	= "Yes";
@@ -59,9 +57,13 @@ static inline ll	gcd(ll a, ll b)					{for(ll rem;b>0;rem=a%b,a=b,b=rem);return a
 static inline ll	lcm(ll a, ll b)					{return (a*b)/(gcd(a,b));}
 static inline ll	max(ll a, ll b)					{return (a>b?a:b);}
 static inline ll	min(ll a, ll b)					{return (a<b?a:b);}
-static inline ll	mul(ll a, ll b, ll p)			{return ((a%p*b%p)%p);}
+static inline ll	mul(ll a, ll b, ll p)			{return ((a%p*b%p)%p+p)%p;}
 static inline ll	add(ll a, ll b, ll p)			{return ((a%p+b%p)%p+p)%p;}
 static inline ll	sub(ll a, ll b, ll p)			{return ((a%p-b%p)+p)%p;}
+static inline ll	sum(ll a, ll b)					{return a + b;}
+static inline ll	AND(ll a, ll b)					{return a & b;}
+static inline ll	XOR(ll a, ll b)					{return a ^ b;}
+static inline ll	OR(ll a, ll b)					{return a | b;}
 
 ll power(ll x, ll y, ll p) {
 	ll result = 1;
@@ -86,7 +88,7 @@ bool isPrime(ll n) {
 	return true;
 }
 
-#define size 2000003 // 2 * 10 ** 6+3
+#define SIZE 2000003 // 2e6 + 3
 // Use Following lines to declare Global Variables
 // 
 // 
@@ -104,15 +106,10 @@ void solve() {
 int main() {
 
     ios_base::sync_with_stdio(false), cin.tie(NULL);
-
     int t = 0;
-
 	// t++;
-	
 	if(!t) cin >> t;
-
 	preCompute();
-	
 	FOR(test, t) {
 		// cout << "Case #" << (test + 1) << ": ";
 		solve();
