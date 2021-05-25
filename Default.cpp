@@ -88,7 +88,7 @@ bool isPrime(ll n) {
 	return true;
 }
 
-#define SIZE 2000003 // 2e6 + 3
+#define nax 2000003 // 2e6 + 3
 // Use Following lines to declare Global Variables
 // 
 // 
