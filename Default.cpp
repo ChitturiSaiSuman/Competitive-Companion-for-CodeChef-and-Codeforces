@@ -66,33 +66,10 @@ static inline ll	AND(ll a, ll b)					{return a & b;}
 static inline ll	XOR(ll a, ll b)					{return a ^ b;}
 static inline ll	OR(ll a, ll b)					{return a | b;}
 
-ll power(ll x, ll y, ll p) {
-	ll result = 1;
-	for(; y > 0; y >>= 1, x = mul(x, x, p)) {
-		if(y & 1)
-			result = mul(result, x, p);
-	}
-	return result;
-}
-
-bool isPrime(ll n) {
-	if(n == 0 or n == 1)
-		return false;
-	else if(n == 2 or n == 3)
-		return true;
-	else if(n % 2 == 0 or n % 3 == 0)
-		return false;
-	const int root = sqrt(n);
-	for(int i = 5; i <= root; i += 6)
-		if(n % i == 0 or n % (i + 2) == 0)
-			return false;
-	return true;
-}
-
 #define nax 2000003 // 2e6 + 3
 // Use Following lines to declare Global Variables
 // 
-// 
+
 
 void preCompute() {
 	// Precompute stuff

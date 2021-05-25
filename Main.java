@@ -778,7 +778,7 @@ class DSU {
 
 class Primality {
 
-    public static boolean check(int n) {
+    public static boolean check(long n) {
         if(n == 0 || n == 1)
             return false;
         else if(n == 2 || n == 3)
