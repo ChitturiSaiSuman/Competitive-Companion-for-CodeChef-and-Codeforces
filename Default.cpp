@@ -21,6 +21,7 @@
 #include <random>
 #include <set>
 #include <vector>
+#include <stack>
 using namespace std;
 
 #define FOR(x, N)					for(int x = 0; x < N; x++)
