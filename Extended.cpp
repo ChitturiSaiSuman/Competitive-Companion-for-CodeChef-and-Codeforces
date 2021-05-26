@@ -82,8 +82,8 @@ ll power(ll x, ll y, ll p) {
 class Fraction {
 	public:
 	ll num = 0, den = 1;
-	ll gcd(ll a, ll b) {for(ll rem;b>0;rem=a%b,a=b,b=rem); return a;}
-	ll lcm(ll a, ll b) {return (a * b) / gcd(a, b);}
+	ll gcd(ll a, ll b) {if(a < 0) a = -a; if(b < 0) b = -b; for(ll rem;b>0;rem=a%b,a=b,b=rem); return a;}
+	ll lcm(ll a, ll b) {if(a < 0) a = -a; if(b < 0) b = -b; return (a * b) / gcd(a, b);}
 	Fraction() {
 		num = 0;
 		den = 1;
@@ -102,29 +102,93 @@ class Fraction {
 		num /= g;
 		den /= g;
 	};
-	Fraction operator + (Fraction const &frac) {
+    Fraction(Fraction &f) {
+        num = f.num;
+        den = f.den;
+    }
+    Fraction(string s) {
+        int pos = s.find('/');
+        if(pos != string::npos) {
+            num = stoll(s.substr(0, pos));
+            den = stoll(s.substr(pos + 1, s.size()));
+            ll g = gcd(num, den);
+            num /= g;
+            den /= g;
+        }
+        else {
+            num = stoll(s);
+            den = 1;
+        }
+    };
+    operator string() const {
+		if(den == 1)
+			return to_string(num);
+		return to_string(num) + "/" + to_string(den);
+	}
+	Fraction operator + (const Fraction &frac) {
 		ll l = lcm(den, frac.den);
 		ll a = num * (l / den);
 		ll b = frac.num * (l / frac.den);
 		return Fraction(a+b, l);
 	}
-	Fraction operator - (Fraction const &frac) {
+    void operator += (const Fraction &frac) {
+        Fraction f = Fraction(num, den);
+        f = (f + frac);
+        num = f.num;
+        den = f.den;
+    }
+	Fraction operator - (const Fraction &frac) {
 		ll l = lcm(den, frac.den);
 		ll a = num * (l / den);
 		ll b = frac.num * (l / frac.den);
 		return Fraction(a - b, l);
 	}
-	Fraction operator * (Fraction const &frac) {
+    void operator -= (const Fraction &frac) {
+        Fraction f = Fraction(num, den);
+        f = (f - frac);
+        num = f.num;
+        den = f.den;
+    }
+	Fraction operator * (const Fraction &frac) {
 		return Fraction(num * frac.num, den * frac.den);
 	}
-	Fraction operator / (Fraction const &frac) {
+    void operator *= (const Fraction &frac) {
+        Fraction f = Fraction(num, den);
+        f = (f * frac);
+        num = f.num;
+        den = f.den;
+    }
+	Fraction operator / (const Fraction &frac) {
 		return Fraction(num * frac.den, den * frac.num);
 	}
-	operator string() const {
-		if(den == 1)
-			return to_string(num);
-		return to_string(num) + "/" + to_string(den);
-	}
+    void operator /= (const Fraction &frac) {
+        Fraction f = Fraction(num, den);
+        f = (f / frac);
+        num = f.num;
+        den = f.den;
+    }
+    bool operator == (const Fraction &frac) {
+        return (frac.num == num && frac.den == den);
+    }
+    bool operator != (const Fraction &frac) {
+        return !(frac.num == num && frac.den == den);
+    }
+    bool operator < (const Fraction &frac) {
+        ll base = lcm(den, frac.den);
+        return (base/den * num) < (base/frac.den * frac.num);
+    }
+    bool operator <= (const Fraction &frac) {
+        ll base = lcm(den, frac.den);
+        return (base/den * num) <= (base/frac.den * frac.num);
+    }
+    bool operator > (const Fraction &frac) {
+        ll base = lcm(den, frac.den);
+        return (base/den * num) > (base/frac.den * frac.num);
+    }
+    bool operator >= (const Fraction &frac) {
+        ll base = lcm(den, frac.den);
+        return (base/den * num) >= (base/frac.den * frac.num);
+    }
 };
 
 ostream& operator << (ostream& out, const Fraction &f) {
@@ -711,6 +775,27 @@ void matmul(vector<vector<ll>> &a, vector<vector<ll>> &b, vector<vector<ll>> &re
     }
 }
 
+// Matrix Multiplication for Fraction
+
+void matmul(vector<vector<Fraction>> &a, vector<vector<Fraction>> &b, vector<vector<Fraction>> &res) {
+    int M = a.size();
+    int N = a[0].size();
+    int P = b[0].size();
+    vector<vector<Fraction>> result(M, vector<Fraction>(P));
+    for(int i = 0; i < M; i++) {
+        for(int j = 0; j < P; j++) {
+            result[i][j] = 0;
+            for(int k = 0; k < N; k++) {
+                result[i][j] = result[i][j] + a[i][k] * b[k][j];
+            }
+        }
+    }
+    for(int i = 0; i < M; i++) {
+        for(int j = 0; j < P; j++) {
+            res[i][j] = result[i][j];
+        }
+    }
+}
 
 // Matrix Exponentiation
 vector<vector<ll>> power(vector<vector<ll>> &a, ll y, ll p) {
@@ -721,6 +806,20 @@ vector<vector<ll>> power(vector<vector<ll>> &a, ll y, ll p) {
     for(; y > 0; y >>= 1, matmul(a, a, a, p)) {
         if((y & 1) == 1) {
             matmul(a, result, result, p);
+        }
+    }
+    return result;
+}
+
+// Fraction Matrix Exponentiation
+vector<vector<Fraction>> power(vector<vector<Fraction>> &a, ll y) {
+    vector<vector<Fraction>> result(a.size(), vector<Fraction>(a.size(), 0));
+    for(int i = 0; i < a.size(); i++) {
+        result[i][i] = 1;
+    }
+    for(; y > 0; y >>= 1, matmul(a, a, a)) {
+        if((y & 1) == 1) {
+            matmul(a, result, result);
         }
     }
     return result;
