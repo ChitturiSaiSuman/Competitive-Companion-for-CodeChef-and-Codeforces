@@ -22,6 +22,7 @@
 #include <set>
 #include <vector>
 #include <stack>
+#include <algorithm>
 using namespace std;
 
 #define FOR(x, N)					for(int x = 0; x < N; x++)
