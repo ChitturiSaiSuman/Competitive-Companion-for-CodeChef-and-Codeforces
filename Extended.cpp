@@ -32,7 +32,7 @@ using namespace std;
 #define read(arr, nax)				FOR(IT, nax)	{cin >> arr[IT];}
 #define write(arr, nax)				FOR(IT, nax)	{cout << arr[IT] << " ";}
 #define fill(arr, nax, value)		FOR(IT, nax)	{arr[IT] = value;}
-#define reverse(arr, nax)			FOR(x, nax/2)	{arr[x] = arr[nax - x - 1];}
+#define reverse(arr, nax)			FOR(x,nax/2) {arr[x] = (arr[nax-x-1] + arr[x]) - (arr[nax - x - 1] = arr[x]);}
 #define SORT123(v)					sort(v.begin(), v.end())
 #define SORT321(v)					sort(v.begin(), v.end(), greater<int>())
 

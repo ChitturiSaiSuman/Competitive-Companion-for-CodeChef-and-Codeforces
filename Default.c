@@ -40,7 +40,7 @@
 #define readLL(arr, nax)			FOR(IT, nax) {scanll(arr[IT]);}
 #define write(arr, nax)				FOR(IT, nax) {print(arr[IT]);space;}
 #define fill(arr, nax, value)		FOR(IT, nax) {arr[IT] = value;}
-#define reverse(arr, nax)			FOR(x,nax/2) {arr[x] = arr[nax-x-1];}
+#define reverse(arr, nax)			FOR(x,nax/2) {arr[x] = (arr[nax-x-1] + arr[x]) - (arr[nax - x - 1] = arr[x]);}
 #define copy(from, to, nax)			FOR(IT,nax) {to[IT] = from[IT];}
 #define getName(var)				#var
 #define debug(var)					fprintf(stderr, "%s = %lld\n", getName(var), ((ll)var))
