@@ -132,18 +132,12 @@ void solve() {
 }
 
 int main() {
-	
 	int t = 0;
-
 	// t++;
-
 	if(!t) scan(t);
-
 	preCompute();
-
 	FOR(test, t) {
-		// printf("Case #%d: ", test + 1);
-		
+		// printf("Case #%d: ", test + 1);		
 		solve();
 	}
 	return 0;

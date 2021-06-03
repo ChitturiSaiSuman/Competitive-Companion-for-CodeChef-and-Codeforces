@@ -22,17 +22,11 @@
 #include <set>
 #include <vector>
 #include <stack>
+#include <algorithm>
 using namespace std;
 
 #define FOR(x, N)					for(int x = 0; x < N; x++)
 #define inverse(a, p)				power(a, p - 2, p)
-#define getName(var)				#var
-#define debug(var)					cerr << getName(var) << " = " << var << "\n"
-#define abort						assert(false)
-#define read(arr, nax)				FOR(IT, nax)	{cin >> arr[IT];}
-#define write(arr, nax)				FOR(IT, nax)	{cout << arr[IT] << " ";}
-#define fill(arr, nax, value)		FOR(IT, nax)	{arr[IT] = value;}
-#define reverse(arr, nax)			FOR(x,nax/2) {arr[x] = (arr[nax-x-1] + arr[x]) - (arr[nax - x - 1] = arr[x]);}
 #define SORT123(v)					sort(v.begin(), v.end())
 #define SORT321(v)					sort(v.begin(), v.end(), greater<int>())
 
@@ -43,28 +37,38 @@ const int dc[] = {1, 0, 0, -1, -1, -1, 1, 1};
 const int dr[] = {0, 1, -1, 0, -1, 1, -1, 1};
 
 const ll shit	= ((ll)(998244353));	// 998,244,353
-const ll mod	= ((ll)(1e9+7));		// 10**9 + 7
-const ll hell	= ((ll)(1e9+9));		// 10**9 + 9
+const ll mod	= ((ll)(1e9 + 7));		// 10**9 + 7
+const ll hell	= ((ll)(1e9 + 9));		// 10**9 + 9
 const ll inf	= ((ll)(1e18 + 3));		// 10 ** 18 + 3
 
-const char yes[]	= "yes";
-const char Yes[]	= "Yes";
-const char YES[]	= "YES";
-const char no[]		= "no";
-const char No[]		= "No";
-const char NO[]		= "NO";
-
-static inline ll	gcd(ll a, ll b)					{for(ll rem;b>0;rem=a%b,a=b,b=rem);return a;}
-static inline ll	lcm(ll a, ll b)					{return (a*b)/(gcd(a,b));}
-static inline ll	max(ll a, ll b)					{return (a>b?a:b);}
-static inline ll	min(ll a, ll b)					{return (a<b?a:b);}
-static inline ll	mul(ll a, ll b, ll p)			{return ((a%p*b%p)%p+p)%p;}
-static inline ll	add(ll a, ll b, ll p)			{return ((a%p+b%p)%p+p)%p;}
-static inline ll	sub(ll a, ll b, ll p)			{return ((a%p-b%p)+p)%p;}
-static inline ll	sum(ll a, ll b)					{return a + b;}
-static inline ll	AND(ll a, ll b)					{return a & b;}
-static inline ll	XOR(ll a, ll b)					{return a ^ b;}
-static inline ll	OR(ll a, ll b)					{return a | b;}
+static inline ll gcd(ll a, ll b) {
+	for(ll rem; b > 0; rem = a % b, a = b, b = rem);
+	return a;
+}
+static inline ll lcm(ll a, ll b) {
+	return (a * b) / gcd(a, b);
+}
+static inline ll mul(ll a, ll b, ll p) {
+	return ((a % p * b % p) % p + p) % p;
+}
+static inline ll add(ll a, ll b, ll p) {
+	return ((a % p + b % p) % p + p) % p;
+}
+static inline ll sub(ll a, ll b, ll p) {
+	return ((a % p - b % p) + p) % p;
+}
+static inline ll SUM(ll a, ll b) {
+	return a + b;
+}
+static inline ll AND(ll a, ll b) {
+	return a & b;
+}
+static inline ll XOR(ll a, ll b) {
+	return a ^ b;
+}
+static inline ll OR(ll a, ll b) {
+	return a | b;
+}
 
 ll power(ll x, ll y, ll p) {
 	ll result = 1;
@@ -82,8 +86,6 @@ ll power(ll x, ll y, ll p) {
 class Fraction {
 	public:
 	ll num = 0, den = 1;
-	ll gcd(ll a, ll b) {if(a < 0) a = -a; if(b < 0) b = -b; for(ll rem;b>0;rem=a%b,a=b,b=rem); return a;}
-	ll lcm(ll a, ll b) {if(a < 0) a = -a; if(b < 0) b = -b; return (a * b) / gcd(a, b);}
 	Fraction() {
 		num = 0;
 		den = 1;
@@ -105,7 +107,7 @@ class Fraction {
     Fraction(Fraction &f) {
         num = f.num;
         den = f.den;
-    }
+    };
     Fraction(string s) {
         int pos = s.find('/');
         if(pos != string::npos) {
@@ -215,7 +217,6 @@ class Graph {
 
     void addEdge(int a, int b) {
         graph[a].push_back(b);
-        // graph[b].push_back(a);
     }
 
     bool bfs(int start, int end) {
@@ -332,7 +333,7 @@ class SegmentTree {
     function<ll(ll, ll)> key;
 
     public:
-    SegmentTree(vector<int> arr, int def_value = 0, ll fun(ll, ll) = sum) {
+    SegmentTree(vector<int> arr, int def_value = 0, ll fun(ll, ll) = SUM) {
         /**
          * Constructor with optional Arguments: def_value, fun
          * Extra nodes are filled with def_value
