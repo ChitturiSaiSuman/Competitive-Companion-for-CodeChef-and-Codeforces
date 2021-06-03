@@ -70,37 +70,6 @@ def sieve(size):
         sum[i]=sum[i-1]+prime[i]*i
     obj=[(prime[i],count[i],sum[i]) for i in range(size)]
     return obj
-# BIT or Fenwick Tree
-class BIT:
-    def __init__(self,n,arr):
-        self.arr = arr
-        self.n = n
-        self.bit = [0]*(self.n+1)
-        for i in range(n):
-            ind = i
-            ind += 1
-            while ind<=self.n:
-                self.bit[ind] += self.arr[i]
-                ind += ind&(-ind)
-    def update(self,ind,val):
-        initial = self.arr[ind]
-        self.arr[ind] = val
-        val -= initial
-        ind += 1
-        while ind <= self.n:
-            self.bit[ind] += val
-            ind += ind&(-ind)
-    def find(self,ind):
-        s = 0
-        ind += 1
-        while ind>0:
-            s += self.bit[ind]
-            ind -= ind&(-ind)
-        return s
-    def findRange(self,ind1,ind2):
-        if ind1>ind2:
-            ind1,ind2 = ind2,ind1
-        return self.find(ind2)-self.find(ind1-1)
 # Maximum Subsequence Sum
 def max_subsequence_sum(a,n):
     this_sum=0
