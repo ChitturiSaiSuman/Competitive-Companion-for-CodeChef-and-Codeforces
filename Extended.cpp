@@ -1,11 +1,4 @@
 // 57:69:74:68:20:4C:4F:56:45
-//	  _____   _    _   __    __     ____     __    _
-//	 / ____| | |  | | |  \  /  |   /    \   |  \  | |
-//	 | |___  | |  | | |   \/   |  /   _  \  | . \ | |
-//	 \____ \ | |  | | | |\__/| | |   /_\  | | |\ \| |
-//	 ____| | | \__/ | | |    | | |   __   | | | \ ` |
-//	 |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
-//
 
 #include <array>
 #include <cassert>
@@ -20,6 +13,7 @@
 #include <queue>
 #include <random>
 #include <set>
+#include <utility>
 #include <vector>
 #include <stack>
 #include <algorithm>

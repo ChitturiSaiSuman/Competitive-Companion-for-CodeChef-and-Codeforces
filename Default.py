@@ -1,11 +1,4 @@
 ## 57:69:74:68:20:4C:4F:56:45
-##	  _____   _    _   __    __     ____     __    _
-##	 / ____| | |  | | |  \  /  |   /    \   |  \  | |
-##	 | |___  | |  | | |   \/   |  /   _  \  | . \ | |
-##	 \____ \ | |  | | | |\__/| | |   /_\  | | |\ \| |
-##	 ____| | | \__/ | | |    | | |   __   | | | \ ` |
-##	 |_____/ \______/ |_|    |_| |__|  |__| |_|  \__|
-## 
 
 # from functools      import reduce
 # from fractions      import Fraction
@@ -23,20 +16,14 @@ from collections    import deque, defaultdict, Counter
 from sys            import stdin, stdout, stderr, setrecursionlimit
 from math           import pi, sqrt, gcd, ceil, floor, log2, log10, factorial
 
-
 size = 2 * (10 ** 6 + 1)
 
-# 
-
-
 def preCompute():
-    # 
-    pass
+    return
 
 
 def solve():
-    # 
-    pass
+    return
 
 
 def main():

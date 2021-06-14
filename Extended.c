@@ -11,15 +11,15 @@ ll power(ll x, ll y, ll p)
 }
 
 bool isPrime(ll n) {
-	if(n == 0 or n == 1)
+	if(n == 0 || n == 1)
 		return false;
-	else if(n == 2 or n == 3)
+	else if(n == 2 || n == 3)
 		return true;
-	else if(n % 2 == 0 or n % 3 == 0)
+	else if(n % 2 == 0 || n % 3 == 0)
 		return false;
 	const int root = sqrt(n);
 	for(int i = 5; i <= root; i += 6)
-		if(n % i == 0 or n % (i + 2) == 0)
+		if(n % i == 0 || n % (i + 2) == 0)
 			return false;
 	return true;
 }
