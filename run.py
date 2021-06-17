@@ -19,41 +19,41 @@ os.system("clear")
 start = None
 end = None
 
-print(Style.BRIGHT + "", end="")
+print(Style.BRIGHT + "", end = "")
 
 if ".java" in program_to_be_executed:
     print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using javac 11.0.11")
-    os.system("javac "+program_to_be_executed)
+    os.system("javac " + program_to_be_executed)
     if online_judge:
         start = time.time()
         os.system("timeout 4s java Main < in.in > output.out 2> err.err")
         end = time.time()
+        if end - start > 4:
+            print(Fore.RED + "Time Limit Exceeded")
+            engine.say("Time Limit Exceeded")
+            engine.runAndWait()
+            exit(0)
     else:
         start = time.time()
         os.system("java Main < in.in > output.out 2> err.err")
         end = time.time()
-    if end - start > 4:
-        print(Fore.RED + "Time Limit Exceeded")
-        engine.say("Time Limit Exceeded")
-        engine.runAndWait()
-        exit(0)
 
 elif ".cpp" in program_to_be_executed:
     print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using g++ (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0")
-    os.system("g++ -o runner "+program_to_be_executed+" -lm -O2")
+    os.system("g++ -o runner " + program_to_be_executed + " -lm -O2")
     if online_judge:
         start = time.time()
         os.system("timeout 2s ./runner < in.in > output.out 2> err.err")
         end = time.time()
+        if end - start > 2:
+            print(Fore.RED + "Time Limit Exceeded")
+            engine.say("Time Limit Exceeded")
+            engine.runAndWait()
+            exit(0)
     else:
         start = time.time()
         os.system("./runner < in.in > output.out 2> err.err")
         end = time.time()
-    if end - start > 2:
-        print(Fore.RED + "Time Limit Exceeded")
-        engine.say("Time Limit Exceeded")
-        engine.runAndWait()
-        exit(0)
 
 elif ".c" in program_to_be_executed:
     print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0")
@@ -62,15 +62,15 @@ elif ".c" in program_to_be_executed:
         start = time.time()
         os.system("timeout 2s ./runner < in.in > output.out 2> err.err")
         end = time.time()
+        if end - start > 2:
+            print(Fore.RED + "Time Limit Exceeded")
+            engine.say("Time Limit Exceeded")
+            engine.runAndWait()
+            exit(0)
     else:
         start = time.time()
         os.system("./runner < in.in > output.out 2> err.err")
         end = time.time()
-    if end - start > 2:
-        print(Fore.RED + "Time Limit Exceeded")
-        engine.say("Time Limit Exceeded")
-        engine.runAndWait()
-        exit(0)
 
 elif ".py" in program_to_be_executed:
     print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using Python 3.8.5")
@@ -78,15 +78,15 @@ elif ".py" in program_to_be_executed:
         start = time.time()
         os.system("timeout 10s python3 "+program_to_be_executed+" < in.in > output.out 2> err.err")
         end = time.time()
+        if end - start > 10:
+            print(Fore.RED + "Time Limit Exceeded")
+            engine.say("Time Limit Exceeded")
+            engine.runAndWait()
+            exit(0)
     else:
         start = time.time()
         os.system("python3 "+program_to_be_executed+" < in.in > output.out 2> err.err")
         end = time.time()
-    if end - start > 10:
-        print(Fore.RED + "Time Limit Exceeded")
-        engine.say("Time Limit Exceeded")
-        engine.runAndWait()
-        exit(0)
 
 with open("in.in", "r") as inputFile:
     s = inputFile.read()

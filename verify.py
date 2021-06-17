@@ -13,7 +13,7 @@ a_output = a_out.read()
 p_out.close()
 a_out.close()
 
-print(Fore.BLUE+"Status: ", end = "")
+print(Fore.BLUE + "Status: ", end = "")
 
 p_output = p_output.strip()
 a_output = a_output.strip()
