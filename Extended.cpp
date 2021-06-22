@@ -1,5 +1,6 @@
 // 57:69:74:68:20:4C:4F:56:45
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <chrono>
@@ -13,10 +14,9 @@
 #include <queue>
 #include <random>
 #include <set>
+#include <stack>
 #include <utility>
 #include <vector>
-#include <stack>
-#include <algorithm>
 using namespace std;
 
 #define FOR(x, N)					for(int x = 0; x < N; x++)
