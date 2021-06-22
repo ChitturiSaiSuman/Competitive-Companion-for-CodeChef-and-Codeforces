@@ -1,3 +1,5 @@
+import java.io.*;
+import java.util.*;
 class Algo {
 
     static long fact[];
