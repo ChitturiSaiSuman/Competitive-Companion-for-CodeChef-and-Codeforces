@@ -10,7 +10,6 @@
 #include <string.h>
 #include <time.h>
 
-typedef unsigned long long int ull;
 typedef long long int ll;
 
 const int dc[] = {1, 0, 0, -1, -1, -1, 1, 1};

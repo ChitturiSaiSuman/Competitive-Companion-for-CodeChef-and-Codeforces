@@ -49,18 +49,6 @@ static inline ll add(ll a, ll b, ll p) {
 static inline ll sub(ll a, ll b, ll p) {
 	return ((a % p - b % p) + p) % p;
 }
-static inline ll SUM(ll a, ll b) {
-	return a + b;
-}
-static inline ll AND(ll a, ll b) {
-	return a & b;
-}
-static inline ll XOR(ll a, ll b) {
-	return a ^ b;
-}
-static inline ll OR(ll a, ll b) {
-	return a | b;
-}
 
 #define nax 2000003
 
