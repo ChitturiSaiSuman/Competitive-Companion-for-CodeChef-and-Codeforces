@@ -1,8 +1,12 @@
 from colorama import Fore, Style
-import pyttsx3
+from gtts import gTTS
+from playsound import playsound
+from os import system
 
-engine = pyttsx3.init()
-engine.setProperty('rate', 180)
+def say(word):
+    gTTS(word).save("sound.mp3")
+    playsound("sound.mp3")
+    system("rm sound.mp3")
 
 p_out = open("output.out", "r")
 a_out = open("out.out", "r")
@@ -19,8 +23,7 @@ p_output = p_output.strip()
 a_output = a_output.strip()
 if a_output == "":
     print(Fore.RED + "Cannot Validate")
-    engine.say("Cannont Validate")
-    engine.runAndWait()
+    say("Cannont Validate")
     exit(0)
 
 p_lines = list(map(str, p_output.split('\n')))
@@ -38,9 +41,5 @@ if passed:
             break
 
 print(Fore.GREEN + "Samples Passed" if passed else Fore.RED + "Samples Failed")
-if passed:
-    engine.say("Samples Passed")
-    engine.runAndWait()
-else:
-    engine.say("Samples Failed")
-    engine.runAndWait()
+
+say("Samples Passed" if passed else "Samples Failed")

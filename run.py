@@ -1,12 +1,14 @@
-from typing import Tuple
-from colorama import Fore, Style, Back
+from colorama import Fore, Style
 import sys
-import os
+from os import system, listdir, remove
 import time
+from playsound import playsound
+from gtts import gTTS
 
-import pyttsx3
-engine = pyttsx3.init()
-engine.setProperty('rate', 150)
+def say(word):
+    gTTS(word).save("sound.mp3")
+    playsound("sound.mp3")
+    system("rm sound.mp3")
 
 online_judge = True
 
@@ -14,7 +16,7 @@ program_to_be_executed = sys.argv[1]
 if len(sys.argv) == 3:
     online_judge = False
 
-os.system("clear")
+system("clear")
 
 start = None
 end = None
@@ -23,69 +25,65 @@ print(Style.BRIGHT + "", end = "")
 
 if ".java" in program_to_be_executed:
     print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using javac 11.0.11")
-    os.system("javac " + program_to_be_executed)
+    system("javac " + program_to_be_executed)
     if online_judge:
         start = time.time()
-        os.system("timeout 4s java Main < in.in > output.out 2> err.err")
+        system("timeout 2s java Main < in.in > output.out 2> err.err")
         end = time.time()
-        if end - start > 4:
+        if end - start > 2:
             print(Fore.RED + "Time Limit Exceeded")
-            engine.say("Time Limit Exceeded")
-            engine.runAndWait()
+            say("Time Limit Exceeded")
             exit(0)
     else:
         start = time.time()
-        os.system("java Main < in.in > output.out 2> err.err")
+        system("java Main < in.in > output.out 2> err.err")
         end = time.time()
 
 elif ".cpp" in program_to_be_executed:
     print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using g++ (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0")
-    os.system("g++ -o runner " + program_to_be_executed + " -lm -O2")
+    system("g++ -o runner " + program_to_be_executed + " -lm -O2")
     if online_judge:
         start = time.time()
-        os.system("timeout 2s ./runner < in.in > output.out 2> err.err")
+        system("timeout 1s ./runner < in.in > output.out 2> err.err")
         end = time.time()
-        if end - start > 2:
+        if end - start > 1:
             print(Fore.RED + "Time Limit Exceeded")
-            engine.say("Time Limit Exceeded")
-            engine.runAndWait()
+            say("Time Limit Exceeded")
             exit(0)
     else:
         start = time.time()
-        os.system("./runner < in.in > output.out 2> err.err")
+        system("./runner < in.in > output.out 2> err.err")
         end = time.time()
 
 elif ".c" in program_to_be_executed:
     print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0")
-    os.system("gcc -o runner "+program_to_be_executed+" -lm")
+    system("gcc -o runner "+program_to_be_executed+" -lm")
     if online_judge:
         start = time.time()
-        os.system("timeout 2s ./runner < in.in > output.out 2> err.err")
+        system("timeout 1s ./runner < in.in > output.out 2> err.err")
         end = time.time()
-        if end - start > 2:
+        if end - start > 1:
             print(Fore.RED + "Time Limit Exceeded")
-            engine.say("Time Limit Exceeded")
-            engine.runAndWait()
+            say("Time Limit Exceeded")
             exit(0)
     else:
         start = time.time()
-        os.system("./runner < in.in > output.out 2> err.err")
+        system("./runner < in.in > output.out 2> err.err")
         end = time.time()
 
 elif ".py" in program_to_be_executed:
     print(Fore.MAGENTA + "Running " + program_to_be_executed + Fore.YELLOW + " using Python 3.8.5")
     if online_judge:
         start = time.time()
-        os.system("timeout 10s python3 "+program_to_be_executed+" < in.in > output.out 2> err.err")
+        system("timeout 5s python3 "+program_to_be_executed+" < in.in > output.out 2> err.err")
         end = time.time()
-        if end - start > 10:
+        if end - start > 5:
             print(Fore.RED + "Time Limit Exceeded")
-            engine.say("Time Limit Exceeded")
-            engine.runAndWait()
+            say("Time Limit Exceeded")
             exit(0)
     else:
         start = time.time()
-        os.system("python3 "+program_to_be_executed+" < in.in > output.out 2> err.err")
+        system("python3 "+program_to_be_executed+" < in.in > output.out 2> err.err")
         end = time.time()
 
 with open("in.in", "r") as inputFile:
@@ -112,9 +110,9 @@ with open("err.err", "r") as err:
         print(Fore.CYAN + "STDERR:")
         print(Fore.WHITE + s)
 
-for file in os.listdir():
+for file in listdir():
     if "runner" in file or ".class" in file:
-        os.remove(file)
+        remove(file)
 
-os.system("python3 verify.py")
+system("python3 verify.py")
 print(Fore.CYAN + "\nTime: " + Fore.GREEN + "%.6f"%(end - start), end = " s\n\n")
