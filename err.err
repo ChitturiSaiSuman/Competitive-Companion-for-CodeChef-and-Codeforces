@@ -1,7 +1,0 @@
-Exception in thread "Main Thread" java.lang.NullPointerException
-	at java.base/java.util.StringTokenizer.<init>(StringTokenizer.java:199)
-	at java.base/java.util.StringTokenizer.<init>(StringTokenizer.java:236)
-	at IO.next(Main.java:72)
-	at IO.nextInt(Main.java:82)
-	at Main.run(Main.java:23)
-	at java.base/java.lang.Thread.run(Thread.java:829)
