@@ -1,4 +1,3 @@
-// 57:69:74:68:20:4C:4F:56:45
 
 #include <assert.h>
 #include <ctype.h>
@@ -16,8 +15,8 @@ const int dc[] = {1, 0, 0, -1, -1, -1, 1, 1};
 const int dr[] = {0, 1, -1, 0, -1, 1, -1, 1};
 
 const ll shit	= ((ll)(998244353));
-const ll mod	= ((ll)(1e9+7));
-const ll hell	= ((ll)(1e9+9));
+const ll mod	= ((ll)(1e9 + 7));
+const ll hell	= ((ll)(1e9 + 9));
 const ll inf	= ((ll)(1e18 + 3));
 
 static inline ll	gcd(ll a, ll b)					{for(ll rem;b>0;rem=a%b,a=b,b=rem);return a;}

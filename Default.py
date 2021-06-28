@@ -1,16 +1,13 @@
-## 57:69:74:68:20:4C:4F:56:45
 
-# from functools      import reduce
 # from fractions      import Fraction
 # from statistics     import mean, median, mode
 # from re             import compile, findall, escape, search, match
-# from random         import choice, getrandbits, random, randrange, shuffle
 # from itertools      import combinations, combinations_with_replacement, permutations
 # from collections    import OrderedDict, namedtuple, ChainMap, UserDict, UserList, UserString
 # from math           import cos, acos, tan, atan, atan2, sin, asin, radians, degrees, hypot
 # from bisect         import insort, insort_left, insort_right, bisect_left, bisect_right, bisect
 # from heapq          import heapify, heappop, heappush, heappushpop, heapreplace, merge, nlargest, nsmallest
-# from numpy import dot, trace, argmax, argmin, array, cumprod, cumsum, matmul
+
 from random         import randint
 from collections    import deque, defaultdict, Counter
 from sys            import stdin, stdout, stderr, setrecursionlimit

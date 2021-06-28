@@ -90,7 +90,7 @@ class Fraction {
 	};
 	Fraction(ll n, ll d) {
 		if(d == 0) {
-			throw invalid_argument("Non-Zero denominator is expected");
+			throw invalid_argument("Expected Non-Zero denominator");
 		}
 		num = n;
 		den = d;
@@ -98,7 +98,7 @@ class Fraction {
 		num /= g;
 		den /= g;
 	};
-    Fraction(Fraction &f) {
+    Fraction(Fraction& f) {
         num = f.num;
         den = f.den;
     };
@@ -121,73 +121,72 @@ class Fraction {
 			return to_string(num);
 		return to_string(num) + "/" + to_string(den);
 	}
-	Fraction operator + (const Fraction &frac) {
+	Fraction operator + (const Fraction& frac) {
 		ll l = lcm(den, frac.den);
 		ll a = num * (l / den);
 		ll b = frac.num * (l / frac.den);
-		return Fraction(a+b, l);
+		return Fraction(a + b, l);
 	}
-    void operator += (const Fraction &frac) {
+    void operator += (const Fraction& frac) {
         Fraction f = Fraction(num, den);
         f = (f + frac);
         num = f.num;
         den = f.den;
     }
-	Fraction operator - (const Fraction &frac) {
+	Fraction operator - (const Fraction& frac) {
 		ll l = lcm(den, frac.den);
 		ll a = num * (l / den);
 		ll b = frac.num * (l / frac.den);
 		return Fraction(a - b, l);
 	}
-    void operator -= (const Fraction &frac) {
+    void operator -= (const Fraction& frac) {
         Fraction f = Fraction(num, den);
         f = (f - frac);
         num = f.num;
         den = f.den;
     }
-	Fraction operator * (const Fraction &frac) {
+	Fraction operator * (const Fraction& frac) {
 		return Fraction(num * frac.num, den * frac.den);
 	}
-    void operator *= (const Fraction &frac) {
+    void operator *= (const Fraction& frac) {
         Fraction f = Fraction(num, den);
         f = (f * frac);
         num = f.num;
         den = f.den;
     }
-	Fraction operator / (const Fraction &frac) {
+	Fraction operator / (const Fraction& frac) {
 		return Fraction(num * frac.den, den * frac.num);
 	}
-    void operator /= (const Fraction &frac) {
+    void operator /= (const Fraction& frac) {
         Fraction f = Fraction(num, den);
         f = (f / frac);
         num = f.num;
         den = f.den;
     }
-    bool operator == (const Fraction &frac) {
+    bool operator == (const Fraction& frac) {
         return (frac.num == num && frac.den == den);
     }
-    bool operator != (const Fraction &frac) {
+    bool operator != (const Fraction& frac) {
         return !(frac.num == num && frac.den == den);
     }
-    bool operator < (const Fraction &frac) {
+    bool operator < (const Fraction& frac) {
         ll base = lcm(den, frac.den);
-        return (base/den * num) < (base/frac.den * frac.num);
+        return (num * base/den) < (frac.num * base/frac.den);
     }
-    bool operator <= (const Fraction &frac) {
+    bool operator <= (const Fraction& frac) {
         ll base = lcm(den, frac.den);
-        return (base/den * num) <= (base/frac.den * frac.num);
+        return (num * base/den) <= (frac.num * base/frac.den);
     }
-    bool operator > (const Fraction &frac) {
+    bool operator > (const Fraction& frac) {
         ll base = lcm(den, frac.den);
-        return (base/den * num) > (base/frac.den * frac.num);
+        return (num * base/den) > (frac.num * base/frac.den);
     }
-    bool operator >= (const Fraction &frac) {
+    bool operator >= (const Fraction& frac) {
         ll base = lcm(den, frac.den);
-        return (base/den * num) >= (base/frac.den * frac.num);
+        return (num * base/den) >= (frac.num * base/frac.den);
     }
 };
-
-ostream& operator << (ostream& out, const Fraction &f) {
+ostream& operator << (ostream& out, const Fraction& f) {
 	if(f.den == 1)
 		return out << to_string(f.num);
 	return out << to_string(f.num) + "/" + to_string(f.den);
@@ -204,18 +203,16 @@ class Graph {
     Graph(int v, int e) {
         V = v + 1;
         E = e;
-        FOR(i, V) {
-            graph.push_back(vector<int>());
-        }
+        graph.resize(V, vector<int>());
     }
 
-    void addEdge(int a, int b) {
+    void add_edge(int a, int b) {
         graph[a].push_back(b);
     }
 
     bool bfs(int start, int end) {
         vector<bool> visited(V, false);
-        visited[true] = true;
+        visited[start] = true;
         queue<int> q;
         q.push(start);
         while (!q.empty() && !visited[end]) {
@@ -231,7 +228,7 @@ class Graph {
         return visited[end];
     }
 
-    void recurse(int start, vector<bool> & visited, int end) {
+    void recurse(int start, vector<bool>& visited, int end) {
         if(start == end) {
             visited[start] = true;
             return;
@@ -253,7 +250,7 @@ class Graph {
 
 // NextGreater, NextSmaller at Right, Left
 
-vector<int> nextGreaterInRight(vector<int> a, int n) {
+vector<int> next_greater_in_right(vector<int> a, int n) {
 	vector<int> right_index(n, n);
 	stack<int> st;
 	for(int i = 0; i < n; i++) {
@@ -267,7 +264,7 @@ vector<int> nextGreaterInRight(vector<int> a, int n) {
 	return right_index;
 }
 
-vector<int> nextGreaterInLeft(vector<int> a, int n) {
+vector<int> next_greater_in_left(vector<int>& a, int n) {
 	vector<int> left_index(n, -1);
 	stack<int> st;
 	for(int i = n - 1; i >= 0; i--) {
@@ -281,7 +278,7 @@ vector<int> nextGreaterInLeft(vector<int> a, int n) {
 	return left_index;
 }
 
-vector<int> nextSmallerInRight(vector<int> a, int n) {
+vector<int> next_smaller_in_right(vector<int>& a, int n) {
 	vector<int> right_index(n, n);
 	stack<int> st;
 	for(int i = 0; i < n; i++) {
@@ -295,7 +292,7 @@ vector<int> nextSmallerInRight(vector<int> a, int n) {
 	return right_index;
 }
 
-vector<int> nextSmallerInLeft(vector<int> a, int n) {
+vector<int> next_smaller_in_left(vector<int>& a, int n) {
 	vector<int> left_index(n, -1);
 	stack<int> st;
 	for(int i = n - 1; i >= 0; i--) {
@@ -362,18 +359,18 @@ class SegmentTree {
         /**
          * Returns the value at a[index]
          */ 
-        return rangeQuery(index, index);
+        return range_query(index, index);
     }
 
-    void pointUpdate(int index, ll value) {
+    void point_update(int index, ll value) {
         /**
          * Updates a single node and its Ancestors - Sets the node to this value
          */
-        pointUpdate(1, 0, length - 1, index, value);
+        point_update(1, 0, length - 1, index, value);
     }
 
     private:
-    ll pointUpdate(int node, int node_lb, int node_ub, int index, ll value) {
+    ll point_update(int node, int node_lb, int node_ub, int index, ll value) {
         if(index < node_lb || node_ub < index) {
             return tree[node];
         }
@@ -381,23 +378,23 @@ class SegmentTree {
             tree[node] = value;
         }
         else {
-            ll leftReturned = pointUpdate(2 * node, node_lb, (node_lb + node_ub) / 2, index, value);
-            ll rightReturned = pointUpdate(2 * node + 1, (node_lb + node_ub) / 2 + 1, node_ub, index, value);
-            tree[node] = key(leftReturned, rightReturned);
+            ll left_returned = point_update(2 * node, node_lb, (node_lb + node_ub) / 2, index, value);
+            ll right_returned = point_update(2 * node + 1, (node_lb + node_ub) / 2 + 1, node_ub, index, value);
+            tree[node] = key(left_returned, right_returned);
         }
         return tree[node];
     }
 
     public:
-    void rangeUpdate(int range_lb, int range_ub, ll value) {
+    void range_update(int range_lb, int range_ub, ll value) {
         /**
          * Updates Several Nodes using the results of Key Function over Children
          */
-        rangeUpdate(1, 0, length - 1, range_lb, range_ub, value);
+        range_update(1, 0, length - 1, range_lb, range_ub, value);
     }
 
     private:
-    ll rangeUpdate(int node, int node_lb, int node_ub, int range_lb, int range_ub, ll value) {
+    ll range_update(int node, int node_lb, int node_ub, int range_lb, int range_ub, ll value) {
         if(range_lb <= node_lb && node_ub <= range_ub) {
             carry[node] = key(carry[node], value);
         }
@@ -405,22 +402,22 @@ class SegmentTree {
             return carry[node];
         }
         else {
-            rangeUpdate(2 * node, node_lb, (node_lb + node_ub) / 2, range_lb, range_ub, value);
-            rangeUpdate(2 * node + 1, (node_lb + node_ub) / 2 + 1, node_ub, range_lb, range_ub, value);
+            range_update(2 * node, node_lb, (node_lb + node_ub) / 2, range_lb, range_ub, value);
+            range_update(2 * node + 1, (node_lb + node_ub) / 2 + 1, node_ub, range_lb, range_ub, value);
         }
         return carry[node];
     }
 
     public:
-    ll rangeQuery(int query_lb, int query_ub) {
+    ll range_query(int query_lb, int query_ub) {
         /**
          * Returns the result of Key Function over the range
          */
-        return rangeQuery(1, 0, length - 1, query_lb, query_ub);
+        return range_query(1, 0, length - 1, query_lb, query_ub);
     }
     
     private:
-    ll rangeQuery(int node, int node_lb, int node_ub, int query_lb, int query_ub) {
+    ll range_query(int node, int node_lb, int node_ub, int query_lb, int query_ub) {
         if(query_lb <= node_lb && node_ub <= query_ub) {
             return key(tree[node], carry[node]);
         }
@@ -428,9 +425,9 @@ class SegmentTree {
             return default_value;
         }
         else {
-            ll leftReturned = rangeQuery(2 * node, node_lb, (node_lb + node_ub) / 2, query_lb, query_ub);
-            ll rightReturned = rangeQuery(2 * node + 1, (node_lb + node_ub) / 2 + 1, node_ub, query_lb, query_ub);
-            return key(carry[node], key(leftReturned, rightReturned));
+            ll left_returned = range_query(2 * node, node_lb, (node_lb + node_ub) / 2, query_lb, query_ub);
+            ll right_returned = range_query(2 * node + 1, (node_lb + node_ub) / 2 + 1, node_ub, query_lb, query_ub);
+            return key(carry[node], key(left_returned, right_returned));
         }
     }
 };
@@ -445,26 +442,26 @@ class Trie {
 
         public:
         Node *next[26];
-        bool isTerminalNode;
-        int samePrefixCount;
+        bool is_terminal_node;
+        int same_prefix_count;
 
         Node() {
-            isTerminalNode = false;
-            samePrefixCount = 0;
+            is_terminal_node = false;
+            same_prefix_count = 0;
         }
     };
 
     Node *root;
     string lcp;
     int count;
-    int lcpLength;
+    int lcp_length;
     char preset;
 
     public:
     Trie() {
         root = new Node();
         count = 0;
-        lcpLength = 0;
+        lcp_length = 0;
         preset = 'a';
     }
 
@@ -476,7 +473,7 @@ class Trie {
         preset = ch;
     }
 
-    void insert(string str) {
+    void insert(string& str) {
         if(contains(str)) {
             return;
         }
@@ -490,75 +487,75 @@ class Trie {
             const int length = min(lcp.size(), str.size());
             for(; i < length && lcp[i] == str[i]; i++);
             lcp.resize(i);
-            lcpLength = i;
+            lcp_length = i;
         }
     }
 
-    int longestCommonPrefixLength() {
-        return lcpLength;
+    int longest_common_prefix_length() {
+        return lcp_length;
     }
 
-    string longestCommonPrefix() {
+    string longest_common_prefix() {
         return lcp;
     }
 
-    void remove(string str) {
+    void remove(string& str) {
         if(!contains(str)) {
             return;
         }
         _remove(root, str, str.size());
     }
 
-    bool contains(string str) {
+    bool contains(string& str) {
         return _find(root, str, str.size());
     }
 
-    int prefixCount(string prefix) {
-        return _prefixCount(root, prefix, prefix.size());
+    int prefix_count(string& prefix) {
+        return _prefix_count(root, prefix, prefix.size());
     }
 
     private:
-    void _insert(Node *node, string str, const int length) {
+    void _insert(Node* node, string& str, const int length) {
         for(int i = 0; i < length; i++) {
             int ind = str[i] - preset;
-            if(node->next[ind] == nullptr) {
-                node->next[ind] = new Node();
+            if(node -> next[ind] == nullptr) {
+                node -> next[ind] = new Node();
             }
-            (node->next[ind])->samePrefixCount++;
-            node = node->next[ind];
+            (node -> next[ind]) -> same_prefix_count++;
+            node = node -> next[ind];
         }
-        node->isTerminalNode = true;
+        node -> is_terminal_node = true;
     }
 
-    void _remove(Node *node, string str, const int length) {
+    void _remove(Node* node, string& str, const int length) {
         for(int i = 0; i < length; i++) {
             int ind = str[i] - preset;
-            node = node->next[ind];
+            node = node -> next[ind];
         }
-        node->isTerminalNode = false;
+        node -> is_terminal_node = false;
         count--;
     }
 
-    bool _find(Node *node, string str, const int length) {
+    bool _find(Node* node, string& str, const int length) {
         for(int i = 0; i < length; i++) {
             int ind = str[i] - preset;
-            if(node->next[ind] == nullptr) {
+            if(node -> next[ind] == nullptr) {
                 return false;
             }
-            node = node->next[ind];
+            node = node -> next[ind];
         }
-        return node->isTerminalNode;
+        return node -> is_terminal_node;
     }
 
-    int _prefixCount(Node *node, string prefix, const int length) {
+    int _prefix_count(Node* node, string& prefix, const int length) {
         for(int i = 0; i < length; i++) {
             int ind = prefix[i] - preset;
-            if(node->next[ind] == nullptr) {
+            if(node -> next[ind] == nullptr) {
                 return 0;
             }
-            node = node->next[ind];
+            node = node -> next[ind];
         }
-        return node->samePrefixCount;
+        return node -> same_prefix_count;
     }
 };
 // End of Trie
@@ -567,32 +564,32 @@ class Trie {
 // Utilities for Permutations and Combinations
 
 vector<ll> fact;
-vector<ll> invFact;
+vector<ll> inv_fact;
 vector<ll> inv;
 
 void prepare(int N, ll p) {
     fact.resize(N);
-    invFact.resize(N);
+    inv_fact.resize(N);
     inv.resize(N);
     fact[0] = 1;
     for(int i = 1; i < N; i++) {
         fact[i] = mul(fact[i - 1], i, p);
     }
-    invFact[N - 1] = power(fact[N - 1], p - 2, p);
+    inv_fact[N - 1] = power(fact[N - 1], p - 2, p);
     for(int i = N - 2; i >= 0; i--) {
-        invFact[i] = ((i + 1) * invFact[i + 1]) % p;
+        inv_fact[i] = ((i + 1) * inv_fact[i + 1]) % p;
     }
     inv[0] = 0;
     for(int i = 1; i < N; i++) {
-        inv[i] = (fact[i - 1] * invFact[i]) % p;
+        inv[i] = (fact[i - 1] * inv_fact[i]) % p;
     }
 }
 
 ll nCr_mod_p(int n, int r, ll p) {
-    return mul(fact[n], mul(invFact[r], invFact[n - r], p), p);
+    return mul(fact[n], mul(inv_fact[r], inv_fact[n - r], p), p);
 }
 
-ll nthCatalan_mod_p(int n, ll p) {
+ll nth_catalan_mod_p(int n, ll p) {
     return mul(nCr_mod_p(2 * n, n, p), inv[n + 1], p);
 }
 // End of Template for P & C
@@ -600,7 +597,7 @@ ll nthCatalan_mod_p(int n, ll p) {
 // Bisect Functions
 
 template <typename T>
-int binarySearch(vector<T> &a, T key) {
+int binary_search(vector<T>& a, T key) {
     int lb = 0;
     int ub = a.size() - 1;
     while(lb <= ub) {
@@ -619,8 +616,8 @@ int binarySearch(vector<T> &a, T key) {
 }
 
 template <typename T>
-int bisect_left(vector<T> &a, T key) {
-    int ind = binarySearch(a, key);
+int lower_bound(vector<T>& a, T key) {
+    int ind = binary_search(a, key);
     double k = key;
     if(ind != -1) {
         k = ((double)(key)) - 0.5;
@@ -639,8 +636,8 @@ int bisect_left(vector<T> &a, T key) {
 }
 
 template <typename T>
-int bisect_right(vector<T> &a, T key) {
-    int ind = binarySearch(a, key);
+int upper_bound(vector<T>& a, T key) {
+    int ind = binary_search(a, key);
     double k = key;
     if(ind != -1) {
         k = ((double)(key)) + 0.5;
@@ -663,7 +660,7 @@ int bisect_right(vector<T> &a, T key) {
 
 
 // Count Inversions using merge sort
-ll merge(vector<int> &a, int lb, int ub) {
+ll merge(vector<int>& a, int lb, int ub) {
     vector<int> temp(ub + 1 - lb);
     ll ans = 0;
     int i = lb;
@@ -691,24 +688,24 @@ ll merge(vector<int> &a, int lb, int ub) {
     return ans;
 }
 
-ll mergeSort (vector<int> &a, int lb, int ub) {
+ll merge_sort(vector<int>& a, int lb, int ub) {
     ll ans = 0;
     if(lb < ub) {
         int mid = (lb + ub) / 2;
-        ans += mergeSort(a, lb, mid);
-        ans += mergeSort(a, mid + 1, ub);
+        ans += merge_sort(a, lb, mid);
+        ans += merge_sort(a, mid + 1, ub);
         ans += merge(a, lb, ub);
     }
     return ans;
 }
 
-ll countInversions(vector<int> a) {
-    return mergeSort(a, 0, a.size() - 1);
+ll count_inversions(vector<int>& a) {
+    return merge_sort(a, 0, a.size() - 1);
 }
 // End of Count Inversions
 
 // Longest common subsequence
-int lcs(vector<int> &a, vector<int> &b) {
+int lcs(vector<int>& a, vector<int>& b) {
     int m = a.size();
     int n = b.size();
     vector<vector<int>> dp (m + 1, vector<int>(n + 1));
@@ -728,7 +725,7 @@ int lcs(vector<int> &a, vector<int> &b) {
     return dp[m][n];
 }
 
-int lcs(string &a, string &b) {
+int lcs(string& a, string& b) {
     int m = a.size();
     int n = b.size();
     vector<vector<int>> dp (m + 1, vector<int>(n + 1));
@@ -750,7 +747,7 @@ int lcs(string &a, string &b) {
 // End of longest common subsequence
 
 // Matrix Multiplication
-void matmul(vector<vector<ll>> &a, vector<vector<ll>> &b, vector<vector<ll>> &res, ll p) {
+void matmul(vector<vector<ll>>& a, vector<vector<ll>>& b, vector<vector<ll>>& res, ll p) {
     int M = a.size();
     int N = a[0].size();
     int P = b[0].size();
@@ -772,7 +769,7 @@ void matmul(vector<vector<ll>> &a, vector<vector<ll>> &b, vector<vector<ll>> &re
 
 // Matrix Multiplication for Fraction
 
-void matmul(vector<vector<Fraction>> &a, vector<vector<Fraction>> &b, vector<vector<Fraction>> &res) {
+void matmul(vector<vector<Fraction>>& a, vector<vector<Fraction>>& b, vector<vector<Fraction>>& res) {
     int M = a.size();
     int N = a[0].size();
     int P = b[0].size();
@@ -793,7 +790,7 @@ void matmul(vector<vector<Fraction>> &a, vector<vector<Fraction>> &b, vector<vec
 }
 
 // Matrix Exponentiation
-vector<vector<ll>> power(vector<vector<ll>> &a, ll y, ll p) {
+vector<vector<ll>> power(vector<vector<ll>>& a, ll y, ll p) {
     vector<vector<ll>> result(a.size(), vector<ll>(a.size(), 0));
     for(int i = 0; i < a.size(); i++) {
         result[i][i] = 1;
@@ -807,7 +804,7 @@ vector<vector<ll>> power(vector<vector<ll>> &a, ll y, ll p) {
 }
 
 // Fraction Matrix Exponentiation
-vector<vector<Fraction>> power(vector<vector<Fraction>> &a, ll y) {
+vector<vector<Fraction>> power(vector<vector<Fraction>>& a, ll y) {
     vector<vector<Fraction>> result(a.size(), vector<Fraction>(a.size(), 0));
     for(int i = 0; i < a.size(); i++) {
         result[i][i] = 1;
@@ -821,14 +818,14 @@ vector<vector<Fraction>> power(vector<vector<Fraction>> &a, ll y) {
 }
 
 // Nth Fibonacci
-ll nthFibonacci(ll n, ll p) {
+ll nth_fibonacci(ll n, ll p) {
     vector<vector<ll>> base(2, vector<ll>(2, 1));
     base[1][1] = 0;
     return power(base, n, p)[0][1];
 }
 
 // Prefix Sum
-vector<ll> prefixSum(vector<int> &a) {
+vector<ll> prefix_sum(vector<int>& a) {
     int n = a.size();
     vector<ll> prefix(n);
     prefix[0] = a[0];
@@ -838,7 +835,7 @@ vector<ll> prefixSum(vector<int> &a) {
     return prefix;
 }
 
-vector<ll> prefixSum(vector<ll> &a) {
+vector<ll> prefix_sum(vector<ll>& a) {
     int n = a.size();
     vector<ll> prefix(n);
     prefix[0] = a[0];
@@ -849,7 +846,7 @@ vector<ll> prefixSum(vector<ll> &a) {
 }
 
 // Suffix Sum
-vector<ll> suffixSum(vector<int> &a) {
+vector<ll> suffix_sum(vector<int>& a) {
     int n = a.size();
     vector<ll> suffix(n);
     suffix[n - 1] = a[n - 1];
@@ -859,7 +856,7 @@ vector<ll> suffixSum(vector<int> &a) {
     return suffix;
 }
 
-vector<ll> suffixSum(vector<ll> &a) {
+vector<ll> suffix_sum(vector<ll>& a) {
     int n = a.size();
     vector<ll> suffix(n);
     suffix[n - 1] = a[n - 1];
@@ -870,7 +867,7 @@ vector<ll> suffixSum(vector<ll> &a) {
 }
 
 // Set bit count
-int popCount(ll n) {
+int pop_count(ll n) {
     int c = 0;
     for(; n > 0; c += n % 2, n >>= 1);
     return c;
@@ -899,7 +896,7 @@ class DSU {
         return a;
     }
 
-    int getParent(int a) {
+    int get_parent(int a) {
         return get(a);
     }
 
@@ -1009,7 +1006,7 @@ class Sieve {
         }
 		return prime;
     }
-    vector<int> getPrimes(int size) {
+    vector<int> get_primes(int size) {
         if(prime.size() == 0) {
             sieve(size);
         }
@@ -1028,7 +1025,7 @@ class Sieve {
         return primes;
     }
 
-    vector<int> getSPF(int size) {
+    vector<int> get_spf(int size) {
         spf.resize(size);
         spf[0] = spf[1] = 1;
         for(int i = 2; i < size; i += 2) {
@@ -1049,7 +1046,7 @@ class Sieve {
         return spf;
     }
 
-    vector<int> getTotient(int size) {
+    vector<int> get_totient(int size) {
         phi.resize(size);
         for(int i = 0; i < size; i ++) {
             phi[i] = i;

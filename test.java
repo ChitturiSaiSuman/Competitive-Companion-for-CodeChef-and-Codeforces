@@ -1,4 +1,3 @@
-// 57:69:74:68:20:4C:4F:56:45
 
 import java.io.*;
 import java.util.*;
