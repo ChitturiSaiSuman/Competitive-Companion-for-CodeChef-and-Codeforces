@@ -552,7 +552,7 @@ class DSU {
         this.weight = new int[this.size];
         for(int i = 0; i < this.size; i++) {
             parent[i] = i;
-            weight[i] = i;
+            weight[i] = 1;
         }
     }
 
