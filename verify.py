@@ -1,12 +1,13 @@
 from colorama import Fore, Style
-from gtts import gTTS
+from pyttsx3 import Engine
 from playsound import playsound
 from os import system
 
 def say(word):
-    gTTS(word).save("sound.mp3")
-    playsound("sound.mp3")
-    system("rm sound.mp3")
+    speaker = Engine()
+    speaker.setProperty('rate', 175)
+    speaker.say(word)
+    speaker.runAndWait()
 
 p_out = open("output.out", "r")
 a_out = open("out.out", "r")

@@ -1,28 +1,8 @@
-// 57:69:74:68:20:4C:4F:56:45
-
-#include <algorithm>
-#include <array>
-#include <cassert>
-#include <chrono>
-#include <cmath>
-#include <cstring>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <random>
-#include <set>
-#include <stack>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define FOR(x, N)					for(int x = 0; x < N; x++)
 #define inverse(a, p)				power(a, p - 2, p)
-#define SORT123(v)					sort(v.begin(), v.end())
-#define SORT321(v)					sort(v.begin(), v.end(), greater<int>())
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -42,42 +22,29 @@ static inline ll gcd(ll a, ll b) {
 static inline ll lcm(ll a, ll b) {
 	return (a * b) / gcd(a, b);
 }
-static inline ll mul(ll a, ll b, ll p) {
-	return ((a % p * b % p) % p + p) % p;
-}
-static inline ll add(ll a, ll b, ll p) {
-	return ((a % p + b % p) % p + p) % p;
-}
-static inline ll sub(ll a, ll b, ll p) {
-	return ((a % p - b % p) + p) % p;
-}
-static inline ll SUM(ll a, ll b) {
-	return a + b;
-}
-static inline ll AND(ll a, ll b) {
-	return a & b;
-}
-static inline ll XOR(ll a, ll b) {
-	return a ^ b;
-}
-static inline ll OR(ll a, ll b) {
-	return a | b;
-}
 
 ll power(ll x, ll y, ll p) {
 	ll result = 1;
-	for(; y > 0; y >>= 1, x = mul(x, x, p)) {
+	for(; y > 0; y >>= 1, x = (x % p * x % p) % p) {
 		if(y & 1)
-			result = mul(result, x, p);
+			result = (result % p * x % p) % p;
 	}
 	return result;
 }
 
-#define nax 2000003 // 2e6 + 3
+#define NAX 2000003 // 2e6 + 3
 
 // Fraction template for CPP
 
 class Fraction {
+    private:
+    ll GCD(ll a, ll b) {
+        for(ll rem; b > 0; rem = a % b, a = b, b = rem);
+        return a;
+    }
+    ll LCM(ll a, ll b) {
+        return (a * b) / GCD(a, b);
+    }
 	public:
 	ll num = 0, den = 1;
 	Fraction() {
@@ -94,7 +61,7 @@ class Fraction {
 		}
 		num = n;
 		den = d;
-		ll g = gcd(num, den);
+		ll g = GCD(num, den);
 		num /= g;
 		den /= g;
 	};
@@ -107,7 +74,7 @@ class Fraction {
         if(pos != string::npos) {
             num = stoll(s.substr(0, pos));
             den = stoll(s.substr(pos + 1, s.size()));
-            ll g = gcd(num, den);
+            ll g = GCD(num, den);
             num /= g;
             den /= g;
         }
@@ -122,7 +89,7 @@ class Fraction {
 		return to_string(num) + "/" + to_string(den);
 	}
 	Fraction operator + (const Fraction& frac) {
-		ll l = lcm(den, frac.den);
+		ll l = LCM(den, frac.den);
 		ll a = num * (l / den);
 		ll b = frac.num * (l / frac.den);
 		return Fraction(a + b, l);
@@ -134,7 +101,7 @@ class Fraction {
         den = f.den;
     }
 	Fraction operator - (const Fraction& frac) {
-		ll l = lcm(den, frac.den);
+		ll l = LCM(den, frac.den);
 		ll a = num * (l / den);
 		ll b = frac.num * (l / frac.den);
 		return Fraction(a - b, l);
@@ -170,19 +137,19 @@ class Fraction {
         return !(frac.num == num && frac.den == den);
     }
     bool operator < (const Fraction& frac) {
-        ll base = lcm(den, frac.den);
+        ll base = LCM(den, frac.den);
         return (num * base/den) < (frac.num * base/frac.den);
     }
     bool operator <= (const Fraction& frac) {
-        ll base = lcm(den, frac.den);
+        ll base = LCM(den, frac.den);
         return (num * base/den) <= (frac.num * base/frac.den);
     }
     bool operator > (const Fraction& frac) {
-        ll base = lcm(den, frac.den);
+        ll base = LCM(den, frac.den);
         return (num * base/den) > (frac.num * base/frac.den);
     }
     bool operator >= (const Fraction& frac) {
-        ll base = lcm(den, frac.den);
+        ll base = LCM(den, frac.den);
         return (num * base/den) >= (frac.num * base/frac.den);
     }
 };
@@ -255,9 +222,8 @@ vector<int> next_greater_in_right(vector<int> a, int n) {
 	stack<int> st;
 	for(int i = 0; i < n; i++) {
 		while(!st.empty() && a[i] > a[st.top()]) {
-			int r = st.top();
-			st.pop();
-			right_index[r] = i;
+			right_index[st.top()] = i;
+            st.pop();
 		}
 		st.push(i);
 	}
@@ -269,9 +235,8 @@ vector<int> next_greater_in_left(vector<int>& a, int n) {
 	stack<int> st;
 	for(int i = n - 1; i >= 0; i--) {
 		while(!st.empty() && a[i] > a[st.top()]) {
-			int r = st.top();
-			st.pop();
-			left_index[r] = i;
+			left_index[st.top()] = i;
+            st.pop();
 		}
 		st.push(i);
 	}
@@ -283,9 +248,8 @@ vector<int> next_smaller_in_right(vector<int>& a, int n) {
 	stack<int> st;
 	for(int i = 0; i < n; i++) {
 		while(!st.empty() && a[i] < a[st.top()]) {
-			int r = st.top();
-			st.pop();
-			right_index[r] = i;
+			right_index[st.top()] = i;
+            st.pop();
 		}
 		st.push(i);
 	}
@@ -297,9 +261,8 @@ vector<int> next_smaller_in_left(vector<int>& a, int n) {
 	stack<int> st;
 	for(int i = n - 1; i >= 0; i--) {
 		while (!st.empty() && a[i] < a[st.top()]) {
-			int r = st.top();
-			st.pop();
-			left_index[r] = i;
+			left_index[st.top()] = i;
+            st.pop();
 		}
 		st.push(i);
 	}
@@ -322,21 +285,25 @@ class SegmentTree {
     ll default_value;
     int length;
     function<ll(ll, ll)> key;
+    static inline ll fun(ll a, ll b) {
+        return a + b;
+    }
 
     public:
-    SegmentTree(vector<int> arr, int def_value = 0, ll fun(ll, ll) = SUM) {
+    SegmentTree(vector<int> arr, int def_value = 0) {
         /**
          * Constructor with optional Arguments: def_value, fun
          * Extra nodes are filled with def_value
          * fun builds up relation between in parent and children
-         */  
+         */
+        
         default_value = def_value;
         key = fun;
         int n = arr.size();
         while ((n & (n - 1)) != 0) {
             n++;
-            arr.push_back(default_value);
         }
+        arr.resize(n, default_value);
         tree.resize(2 * n, default_value);
         for(int i = 0; i < n; i++) {
             tree[n + i] = arr[i];
@@ -441,7 +408,7 @@ class Trie {
     class Node {
 
         public:
-        Node *next[26];
+        map<char, Node*> next;
         bool is_terminal_node;
         int same_prefix_count;
 
@@ -455,22 +422,16 @@ class Trie {
     string lcp;
     int count;
     int lcp_length;
-    char preset;
 
     public:
     Trie() {
         root = new Node();
         count = 0;
         lcp_length = 0;
-        preset = 'a';
     }
 
     int size() {
         return count;
-    }
-
-    void setPreset(char ch) {
-        preset = ch;
     }
 
     void insert(string& str) {
@@ -517,7 +478,7 @@ class Trie {
     private:
     void _insert(Node* node, string& str, const int length) {
         for(int i = 0; i < length; i++) {
-            int ind = str[i] - preset;
+            char ind = str[i];
             if(node -> next[ind] == nullptr) {
                 node -> next[ind] = new Node();
             }
@@ -529,7 +490,7 @@ class Trie {
 
     void _remove(Node* node, string& str, const int length) {
         for(int i = 0; i < length; i++) {
-            int ind = str[i] - preset;
+            char ind = str[i];
             node = node -> next[ind];
         }
         node -> is_terminal_node = false;
@@ -538,7 +499,7 @@ class Trie {
 
     bool _find(Node* node, string& str, const int length) {
         for(int i = 0; i < length; i++) {
-            int ind = str[i] - preset;
+            char ind = str[i];
             if(node -> next[ind] == nullptr) {
                 return false;
             }
@@ -549,7 +510,7 @@ class Trie {
 
     int _prefix_count(Node* node, string& prefix, const int length) {
         for(int i = 0; i < length; i++) {
-            int ind = prefix[i] - preset;
+            char ind = prefix[i];
             if(node -> next[ind] == nullptr) {
                 return 0;
             }
@@ -573,7 +534,7 @@ void prepare(int N, ll p) {
     inv.resize(N);
     fact[0] = 1;
     for(int i = 1; i < N; i++) {
-        fact[i] = mul(fact[i - 1], i, p);
+        fact[i] = (fact[i - 1] * i) % p;
     }
     inv_fact[N - 1] = power(fact[N - 1], p - 2, p);
     for(int i = N - 2; i >= 0; i--) {
@@ -586,11 +547,11 @@ void prepare(int N, ll p) {
 }
 
 ll nCr_mod_p(int n, int r, ll p) {
-    return mul(fact[n], mul(inv_fact[r], inv_fact[n - r], p), p);
+    return (fact[n] * (inv_fact[r] * inv_fact[n - r]) % p) % p;
 }
 
 ll nth_catalan_mod_p(int n, ll p) {
-    return mul(nCr_mod_p(2 * n, n, p), inv[n + 1], p);
+    return (nCr_mod_p(2 * n, n, p) * inv[n + 1]) % p;
 }
 // End of Template for P & C
 
@@ -617,11 +578,7 @@ int binary_search(vector<T>& a, T key) {
 
 template <typename T>
 int lower_bound(vector<T>& a, T key) {
-    int ind = binary_search(a, key);
-    double k = key;
-    if(ind != -1) {
-        k = ((double)(key)) - 0.5;
-    }
+    float k = key - 0.5;
     int lb = 0, ub = a.size() - 1;
     while(lb <= ub) {
         int mid = (lb + ub) / 2;
@@ -637,11 +594,7 @@ int lower_bound(vector<T>& a, T key) {
 
 template <typename T>
 int upper_bound(vector<T>& a, T key) {
-    int ind = binary_search(a, key);
-    double k = key;
-    if(ind != -1) {
-        k = ((double)(key)) + 0.5;
-    }
+    float k = key + 0.5;
     int lb = 0, ub = a.size() - 1;
     while(lb <= ub) {
         int mid = (lb + ub) / 2;
@@ -756,7 +709,7 @@ void matmul(vector<vector<ll>>& a, vector<vector<ll>>& b, vector<vector<ll>>& re
         for(int j = 0; j < P; j++) {
             result[i][j] = 0;
             for(int k = 0; k < N; k++) {
-                result[i][j] = add(result[i][j], mul(a[i][k], b[k][j], p), p);
+                result[i][j] = (result[i][j] % p + (a[i][k] % p * b[k][j] % p) % p) % p;
             }
         }
     }
@@ -876,12 +829,11 @@ int pop_count(ll n) {
 // Disjoint Set Union
 
 class DSU {
-    private:
+    public:
     int size = 0;
     vector<int> parent;
     vector<int> weight;
 
-    public:
     DSU(int N) {
         size = N + 1;
         parent.resize(size);
@@ -896,15 +848,7 @@ class DSU {
         return a;
     }
 
-    int get_parent(int a) {
-        return get(a);
-    }
-
     void join(int a, int b) {
-        set_union(a, b);
-    }
-
-    void set_union(int a, int b) {
         int parent_of_a = get(a);
         int parent_of_b = get(b);
         if(parent_of_a == parent_of_b) {

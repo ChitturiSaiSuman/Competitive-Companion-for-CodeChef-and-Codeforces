@@ -3,12 +3,13 @@ import sys
 from os import system, listdir, remove
 import time
 from playsound import playsound
-from gtts import gTTS
+import pyttsx3
 
 def say(word):
-    gTTS(word).save("sound.mp3")
-    playsound("sound.mp3")
-    system("rm sound.mp3")
+    speaker = pyttsx3.Engine()
+    speaker.setProperty('rate', 175)
+    speaker.say(word)
+    speaker.runAndWait()
 
 online_judge = True
 

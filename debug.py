@@ -1,13 +1,13 @@
 import os
 import sys
 import colorama
-import gtts
-import playsound
+import pyttsx3
 
 def say(word):
-    gtts.gTTS(word).save("sound.mp3")
-    playsound.playsound("sound.mp3")
-    os.remove("sound.mp3")
+    speaker = pyttsx3.Engine()
+    speaker.setProperty('rate', 175)
+    speaker.say(word)
+    speaker.runAndWait()
 
 program1 = sys.argv[1]
 program2 = sys.argv[2]
@@ -32,11 +32,11 @@ with open("out2.out") as out:
     output2 = list(map(str,output2.split('\n')))
 
 if output1 != output2:
-    print(colorama.fore.RED + "Unequal Outputs dude")
-    say("Unequal Outputs dude")
+    print(colorama.fore.RED + "Unequal Outputs")
+    say("Unequal Outputs")
     fail_count = 0
     for i in range(len(output1)):
-        if output1[i]!=output2[i]:
+        if output1[i] != output2[i]:
             fail_count += 1
             print(colorama.fore.RED + str(i+1) + "th test case failed")
             if fail_count == 10:
@@ -44,5 +44,5 @@ if output1 != output2:
                 break
 
 else:
-    print(colorama.fore.GREEN + "Hurray! Outputs Matched")
-    say("Hurray! Outputs matched")
+    print(colorama.fore.GREEN + "Outputs Matched")
+    say("Outputs matched")

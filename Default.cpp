@@ -23,20 +23,11 @@ static inline ll gcd(ll a, ll b) {
 static inline ll lcm(ll a, ll b) {
 	return (a * b) / gcd(a, b);
 }
-static inline ll mul(ll a, ll b, ll p) {
-	return ((a % p * b % p) % p + p) % p;
-}
-static inline ll add(ll a, ll b, ll p) {
-	return ((a % p + b % p) % p + p) % p;
-}
-static inline ll sub(ll a, ll b, ll p) {
-	return ((a % p - b % p) + p) % p;
-}
 
 #define nax 2000003
 
 
-void preCompute() {
+void pre_compute() {
 	return;
 }
 
@@ -49,7 +40,7 @@ int main() {
     int t = 0;
 	// t++;
 	if(!t) cin >> t;
-	preCompute();
+	pre_compute();
 	FOR(test, t) {
 		// cout << "Case #" << (test + 1) << ": ";
 		solve();

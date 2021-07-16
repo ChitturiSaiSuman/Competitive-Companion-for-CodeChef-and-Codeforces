@@ -12,7 +12,7 @@ from collections import deque,OrderedDict,defaultdict,Counter,namedtuple,ChainMa
 from numpy import dot,trace,argmax,argmin,array,cumprod,cumsum,matmul
 
 # Next Greater in left using stack
-def nextGreaterInLeft(a, n):
+def next_greater_in_left(a, n):
     stack = []
     left_index = [-1] * n
     for i in range(n - 1, -1, -1):
@@ -22,7 +22,7 @@ def nextGreaterInLeft(a, n):
     return left_index
 
 # Next Greater in Right using stack
-def nextGreaterInRight(a, n):
+def next_greater_in_right(a, n):
     stack = []
     right_index = [n] * n
     for i in range(n):
@@ -33,7 +33,7 @@ def nextGreaterInRight(a, n):
 
 # Next Smaller in Left using stack
 
-def nextSmallerInLeft(a, n):
+def next_smaller_in_left(a, n):
     stack = []
     left_index = [-1] * n
     for i in range(n - 1, -1, -1):
@@ -44,7 +44,7 @@ def nextSmallerInLeft(a, n):
 
 # Next Smaller in Right using stack
 
-def nextSmallerInRight(a, n):
+def next_smaller_in_right(a, n):
     stack = []
     right_index = [n] * n
     for i in range(n):
@@ -185,7 +185,7 @@ def matmul(a,b,res,moD = 10**30):
         for j in range(p):
             res[i][j] = result[i][j]
     
-def nthFibonacci(n):
+def nth_fibonacci(n):
     base = [[1,1],[1,0]]
     result = [[1,0],[0,1]]
     while n>0:
