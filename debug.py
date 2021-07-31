@@ -32,17 +32,17 @@ with open("out2.out") as out:
     output2 = list(map(str,output2.split('\n')))
 
 if output1 != output2:
-    print(colorama.fore.RED + "Unequal Outputs")
+    print(colorama.Fore.RED + "Unequal Outputs")
     say("Unequal Outputs")
     fail_count = 0
     for i in range(len(output1)):
         if output1[i] != output2[i]:
             fail_count += 1
-            print(colorama.fore.RED + str(i+1) + "th test case failed")
+            print(colorama.Fore.RED + str(i+1) + "th test case failed")
             if fail_count == 10:
-                print(colorama.fore.RED + "Could be more than 10")
+                print(colorama.Fore.RED + "Could be more than 10")
                 break
 
 else:
-    print(colorama.fore.GREEN + "Outputs Matched")
+    print(colorama.Fore.GREEN + "Outputs Matched")
     say("Outputs matched")
