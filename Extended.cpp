@@ -1114,3 +1114,52 @@ class LCA {
         }
     }
 };
+
+vector<int> dijkstra(vector<vector<int>>& adj, int V, map<pair<int, int>, int>& cost, int start) {
+    /**
+     * Returns the distances
+     * from the vertex 'start' to other vertices
+    */
+
+    // Visited array to keep track of visited vertices
+    vector<bool> visited(V, false);
+    // Distance array to keep track of distances to vertices
+    vector<int> dist(V, INT_MAX);
+
+    dist[start] = 0;
+
+    // Priority queue for min heap
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push(make_pair(0, start));
+
+    for(; !pq.empty(); pq.pop()) {
+        // Pick the next promising pair that will guarantee
+        // Shortest path
+        pair<int, int> promising_pair = pq.top();
+        int value = promising_pair.first;
+        int vertex = promising_pair.second;
+
+        // Mark this index as visited
+        visited[vertex] = true;
+
+        // If the distance to this vertex is already less
+        // We will not apply relaxation to this vertex
+        if(dist[vertex] < value) continue;
+
+        for(int child: adj[vertex]) {
+            if(visited[child]) {
+                continue;
+            }
+            int new_distance = dist[vertex] + cost[make_pair(vertex, child)];
+
+            // If new distance is less than previous distance
+            // Relaxation is done on the cost to reach this vertex
+            if(new_distance < dist[child]) {
+                dist[child] = new_distance;
+                pq.push(make_pair(new_distance, child));
+            }
+        }
+    }
+    // dist[i] = INT_MAX if unreachable
+    return dist;
+}
