@@ -1,21 +1,5 @@
 
-#include <algorithm>
-#include <array>
-#include <cassert>
-#include <chrono>
-#include <cmath>
-#include <cstring>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <random>
-#include <set>
-#include <stack>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define FOR(x, N)					for(int x = 0; x < N; x++)
@@ -24,8 +8,8 @@ using namespace std;
 typedef unsigned long long int ull;
 typedef long long int ll;
 
-const int dc[] = {1, 0, 0, -1, -1, -1, 1, 1};
-const int dr[] = {0, 1, -1, 0, -1, 1, -1, 1};
+const short int dc[] = {1, 0, 0, -1, -1, -1, 1, 1};
+const short int dr[] = {0, 1, -1, 0, -1, 1, -1, 1};
 
 const ll shit	= ((ll)(998244353));
 const ll mod	= ((ll)(1e9 + 7));
@@ -33,38 +17,17 @@ const ll hell	= ((ll)(1e9 + 9));
 const ll inf	= ((ll)(1e18 + 3));
 
 static inline ll gcd(ll a, ll b) {
-	for(ll rem; b > 0; rem = a % b, a = b, b = rem);
+	for(ll rem = 0; b > 0; rem = a % b, a = b, b = rem);
 	return a;
 }
 static inline ll lcm(ll a, ll b) {
 	return (a * b) / gcd(a, b);
 }
-static inline ll mul(ll a, ll b, ll p) {
-	return ((a % p * b % p) % p + p) % p;
-}
-static inline ll add(ll a, ll b, ll p) {
-	return ((a % p + b % p) % p + p) % p;
-}
-static inline ll sub(ll a, ll b, ll p) {
-	return ((a % p - b % p) + p) % p;
-}
-static inline ll SUM(ll a, ll b) {
-	return a + b;
-}
-static inline ll AND(ll a, ll b) {
-	return a & b;
-}
-static inline ll XOR(ll a, ll b) {
-	return a ^ b;
-}
-static inline ll OR(ll a, ll b) {
-	return a | b;
-}
 
 #define nax 2000003
 
 
-void preCompute() {
+void pre_compute() {
 	return;
 }
 
@@ -77,7 +40,7 @@ int main() {
     int t = 0;
 	// t++;
 	if(!t) cin >> t;
-	preCompute();
+	pre_compute();
 	FOR(test, t) {
 		// cout << "Case #" << (test + 1) << ": ";
 		solve();

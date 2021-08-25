@@ -12,11 +12,11 @@ def say(word):
 program1 = sys.argv[1]
 program2 = sys.argv[2]
 
-os.system("python3 run.py " + program1)
+os.system("python3 run.py " + program1 + " false")
 os.system("clear")
 os.system("cp output.out out1.out")
 
-os.system("python3 run.py " + program2)
+os.system("python3 run.py " + program2 + " false")
 os.system("clear")
 os.system("cp output.out out2.out")
 
