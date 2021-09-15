@@ -26,4 +26,12 @@ for((i = 1; ; ++i)); do
     # ./exe2 < input.in > out2.out
     # diff -w out1.out out2.out || break
     diff -w <(./exe1 < input.in) <(./exe2 < input.in) || break
+    echo ""
+    echo "Removing generator"
+    rm generator
+    echo "Removing exe1"
+    rm exe1
+    echo "Removing exe2"
+    rm exe2
+    exit
 done
