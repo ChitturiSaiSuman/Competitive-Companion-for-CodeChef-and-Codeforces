@@ -19,53 +19,79 @@ YELLOW='\033[1;33m'
 
 clear
 compilation_log=$(g++ -std=c++17 -Wshadow -Wall -o exe $1 -O2 -Wno-unused-result)
+if [ "$2" != "" ]
+then
+    online_judge="0"
+else
+    online_judge="1"
+fi
 if [ "$?" != "0" ]
 then
     printf "\n${CYAN}STATUS: ${RED}COMPILATION ERROR\n${NC}"
     out=$(paplay /home/suman/Music/CP_SOUNDS/CFAILED.ogg)
 else
-    start=`date +%s.%6N`
-    timeout -t 2 -m 1048576 ./exe < STDIN > STDOUT 2> STDERR
-    end=`date +%s.%6N`
-    if [ "$?" != "0" ]
+    if [ "$online_judge" == "0" ]
     then
-        printf "${YELLOW}RUNTIME ERROR\n${NC}"
-        ./exe < STDIN > STDOUT
+        ./exe < STDIN > STDOUT 2> STDERR
         rm exe
-        paplay /home/suman/Music/CP_SOUNDS/RTE.ogg
-        exit
-    fi
-    rm exe
-    time_taken=$(grep -oP '(?<=CPU )[0-9]+[.]+[0-9]+' STDERR)
-    memory_used=$(grep -oP '(?<=MAXMEM )[0-9]+' STDERR)
-    runtime=$( echo "$end - $start" | bc -l )
-    if [[ ( "$time_taken" > 2.0 ) ]]
-    then
-        printf "${YELLOW}Time Limit Exceeded\n${NC}"
-        paplay /home/suman/Music/CP_SOUNDS/TLE.ogg
-
-    elif  [[ ( "$memory_used" > "1048576" ) ]]
-    then
-        printf "${PURPLE}Memory Limit Exceeded\n${NC}"
-        paplay /home/suman/Music/CP_SOUNDS/MLE.ogg
     else
-        check=$(diff --strip-trailing-cr -w STDOUT STDEXPOUT)
-        printf "${CYAN}STDIN:\n${NC}"
-        head -10 STDIN
-        printf "\n${CYAN}EXPECTED OUTPUT:\n${NC}"
-        head -10 STDEXPOUT
-        printf "\n${CYAN}YOUR OUTPUT:\n${NC}"
-        head -10 STDOUT
-        printf "\n${CYAN}STDERR:\n${NC}"
-        head -n -1 STDERR
-        printf "\n${ORANGE}TIME: ${runtime} S\n${NC}"
-        if [ "$check" != "" ]
+        start=`date +%s.%6N`
+        timeout -t 2 ./exe < STDIN > STDOUT 2> STDERR
+        end=`date +%s.%6N`
+        if [ "$?" != "0" ]
         then
-            printf "\n${BLUE}STATUS: ${RED}Failed\n${NC}"
-            paplay /home/suman/Music/CP_SOUNDS/SFAILED.ogg
+            printf "${YELLOW}RUNTIME ERROR\n${NC}"
+            ./exe < STDIN > STDOUT
+            rm exe
+            paplay /home/suman/Music/CP_SOUNDS/RTE.ogg
+            exit
+        fi
+        rm exe
+        time_taken=$(grep -oP '(?<=CPU )[0-9]+[.]+[0-9]+' STDERR)
+        runtime=$( echo "$end - $start" | bc -l )
+        if (( $(echo "$time_taken > 2" |bc -l) ))
+        then
+            printf "${YELLOW}Time Limit Exceeded\n${NC}"
+            paplay /home/suman/Music/CP_SOUNDS/TLE.ogg
         else
-            printf "\n${BLUE}STATUS: ${GREEN}Passed\n${NC}"
-            paplay /home/suman/Music/CP_SOUNDS/SPASSED.ogg
+            check=$(diff --strip-trailing-cr -w STDOUT STDEXPOUT)
+            printf "${CYAN}STDIN:\n${NC}"
+            head -10 STDIN
+            n_lines=$(wc -l STDIN | grep -o -E '[0-9]+')
+            if [[ ( $n_lines -gt 10 ) ]]
+            then
+                echo "..."
+            fi
+            printf "\n${CYAN}EXPECTED OUTPUT:\n${NC}"
+            head -10 STDEXPOUT
+            n_lines=$(wc -l STDEXPOUT | grep -o -E '[0-9]+')
+            if [[ ( $n_lines -gt 10 ) ]]
+            then
+                echo "..."
+            fi
+            printf "\n${CYAN}YOUR OUTPUT:\n${NC}"
+            head -10 STDOUT
+            n_lines=$(wc -l STDOUT | grep -o -E '[0-9]+')
+            if [[ ( $n_lines -gt 10 ) ]]
+            then
+                echo "..."
+            fi
+            printf "\n${CYAN}STDERR:\n${NC}"
+            head -n -1 STDERR
+            n_lines=$(wc -l STDERR | grep -o -E '[0-9]+')
+            if [[ ( $n_lines -gt 10 ) ]]
+            then
+                echo "..."
+            fi
+            printf "\n${ORANGE}TIME: ${runtime} S\n${NC}"
+            if [ "$check" != "" ]
+            then
+                printf "\n${BLUE}STATUS: ${RED}Failed\n${NC}"
+                paplay /home/suman/Music/CP_SOUNDS/SFAILED.ogg
+            else
+                printf "\n${BLUE}STATUS: ${GREEN}Passed\n${NC}"
+                paplay /home/suman/Music/CP_SOUNDS/SPASSED.ogg
+            fi
         fi
     fi
 fi
