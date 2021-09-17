@@ -36,7 +36,7 @@ else
         rm exe
     else
         start=`date +%s.%6N`
-        timeout -t 2 ./exe < STDIN > STDOUT 2> STDERR
+        timeout 2s ./exe < STDIN > STDOUT 2> STDERR
         end=`date +%s.%6N`
         if [ "$?" != "0" ]
         then
@@ -49,7 +49,7 @@ else
         rm exe
         time_taken=$(grep -oP '(?<=CPU )[0-9]+[.]+[0-9]+' STDERR)
         runtime=$( echo "$end - $start" | bc -l )
-        if (( $(echo "$time_taken > 2" |bc -l) ))
+        if [[ ( $time_taken -gt 2 )]]
         then
             printf "${YELLOW}Time Limit Exceeded\n${NC}"
             paplay /home/suman/Music/CP_SOUNDS/TLE.ogg
@@ -77,7 +77,7 @@ else
                 echo "..."
             fi
             printf "\n${CYAN}STDERR:\n${NC}"
-            head -n -1 STDERR
+            head -n -2 STDERR
             n_lines=$(wc -l STDERR | grep -o -E '[0-9]+')
             if [[ ( $n_lines -gt 10 ) ]]
             then
