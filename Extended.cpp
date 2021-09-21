@@ -856,9 +856,7 @@ class DSU {
         size = N + 1;
         parent.resize(size);
         weight.resize(size, 1);
-        for(int i = 0; i < size; i++) {
-            parent[i] = i;
-        }
+        iota(parent.begin(), parent.end(), 0);
     }
     
     int get(int a) {
