@@ -860,8 +860,10 @@ class DSU {
     }
     
     int get(int a) {
-        for(; parent[a] != a; parent[a] = parent[parent[a]], a = parent[a]);
-        return a;
+		int p = parent[a];
+        for(; parent[p] != p; p = parent[parent[p]]);
+		for(int b = parent[a]; a != p; parent[a] = p, a = b, b = parent[a]);
+        return p;
     }
 
     void join(int a, int b) {
