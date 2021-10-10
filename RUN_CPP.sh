@@ -47,13 +47,13 @@ else
             exit
         fi
         rm exe
-        time_taken=$(grep -oP '(?<=CPU )[0-9]+[.]+[0-9]+' STDERR)
-        runtime=$( echo "$end - $start" | bc -l )
-        if [[ ( $time_taken -gt 2 )]]
+        runtime=$(echo "scale=2 ; $end - $start > 1" | bc)
+        if [ "$runtime" == "1" ]
         then
             printf "${YELLOW}Time Limit Exceeded\n${NC}"
             paplay /home/suman/Music/CP_SOUNDS/TLE.ogg
         else
+            runtime=$( echo "$end - $start" | bc -l )
             check=$(diff --strip-trailing-cr -w STDOUT STDEXPOUT)
             printf "${CYAN}STDIN:\n${NC}"
             head -10 STDIN
