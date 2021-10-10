@@ -77,7 +77,7 @@ else
                 echo "..."
             fi
             printf "\n${CYAN}STDERR:\n${NC}"
-            head -n -2 STDERR
+            head -10 STDERR
             n_lines=$(wc -l STDERR | grep -o -E '[0-9]+')
             if [[ ( $n_lines -gt 10 ) ]]
             then
