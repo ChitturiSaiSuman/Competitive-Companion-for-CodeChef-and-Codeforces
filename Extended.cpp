@@ -529,17 +529,23 @@ vector<ll> inv_fact;
 vector<ll> inv;
 
 void prepare(int N, ll p) {
+
+    // factorials
     fact.resize(N);
-    inv_fact.resize(N);
-    inv.resize(N);
     fact[0] = 1;
     for(int i = 1; i < N; i++) {
         fact[i] = (fact[i - 1] * i) % p;
     }
+
+    // inv_factorials
+    inv_fact.resize(N);
     inv_fact[N - 1] = power(fact[N - 1], p - 2, p);
     for(int i = N - 2; i >= 0; i--) {
         inv_fact[i] = ((i + 1) * inv_fact[i + 1]) % p;
     }
+
+    // inverses
+    inv.resize(N);
     inv[0] = 0;
     for(int i = 1; i < N; i++) {
         inv[i] = (fact[i - 1] * inv_fact[i]) % p;
