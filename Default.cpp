@@ -24,7 +24,7 @@ static inline ll gcd(ll a, ll b) {
 	return a;
 }
 static inline ll lcm(ll a, ll b) {
-	return (a * b) / gcd(a, b);
+	return (a / gcd(a, b)) * b;
 }
 
 #define nax 2000003
