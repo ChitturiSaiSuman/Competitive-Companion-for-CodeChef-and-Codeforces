@@ -18,17 +18,21 @@ CYAN='\033[1;36m'
 YELLOW='\033[1;33m'
 
 clear
-compilation_log=$(g++ -std=c++17 -Wshadow -Wall -o exe $1 -O2 -Wno-unused-result)
+
 if [ "$2" != "" ]
 then
     online_judge="0"
 else
     online_judge="1"
 fi
+
+compilation_log=$(g++ -std=c++17 -Wshadow -Wall -o exe $1 -O2 -Wno-unused-result)
+
 if [ "$?" != "0" ]
 then
     printf "\n${CYAN}STATUS: ${RED}COMPILATION ERROR\n${NC}"
     out=$(paplay /home/suman/Music/CP_SOUNDS/CFAILED.ogg)
+    
 else
     if [ "$online_judge" == "0" ]
     then
