@@ -952,6 +952,29 @@ class Primality {
 };
 
 
+// Yarin Sieve
+// This is the famous "Yarin Sieve", for use when memory is tight
+
+#define MAXSIEVE 100000001
+#define MAXSIEVEHALF (MAXSIEVE >> 1)
+#define MAXSQRT 5000
+#define isprime(n) ((is_prime[n >> 4] & (1 << ((n >> 1) & 7))) && ((n & 1) || (n == 2)))
+
+char is_prime[MAXSIEVE / (1 << 4) + 2];
+
+int Yarin() {
+    memset(is_prime, (1 << (1 << 3)) - 1, sizeof(is_prime));
+    is_prime[0] = 0xFE;
+    for(int i = 1; i < MAXSQRT; i++) {
+        if(is_prime[i >> 3] & (1 << (i & 7))) {
+            for(int j = (i << 1) + i + 1; j < MAXSIEVEHALF; j += (i << 1) + 1) {
+                is_prime[j >> 3] &= ~(1 << (j & 7));
+            }
+        }
+    }
+    return 0;
+}
+
 // Sieve for prime generation, Smallest Prime Factor, Euler Totient Function
 class Sieve {
     public:
