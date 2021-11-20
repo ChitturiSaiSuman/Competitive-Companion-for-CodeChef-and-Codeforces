@@ -967,7 +967,7 @@ int Yarin() {
     is_prime[0] = 0xFE;
     for(int i = 1; i < MAXSQRT; i++) {
         if(is_prime[i >> 3] & (1 << (i & 7))) {
-            for(int j = (i << 1) + i + 1; j < MAXSIEVEHALF; j += (i << 1) + 1) {
+            for(int j = 2 * i * (i + 1); j < MAXSIEVEHALF; j += (i << 1) + 1) {
                 is_prime[j >> 3] &= ~(1 << (j & 7));
             }
         }
