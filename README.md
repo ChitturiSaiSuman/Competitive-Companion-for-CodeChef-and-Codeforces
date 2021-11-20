@@ -1,2 +1,2 @@
 # Templates
-Ready-made templates in different Languages for Competitive Programming
+Ready-made templates in C plus plus for Competitive Programming
