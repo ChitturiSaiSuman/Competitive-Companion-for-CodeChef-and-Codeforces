@@ -1065,101 +1065,69 @@ class Sieve {
 
 class LCA {
     /**
-     * Lowest Common Ancestor for multiple queries
-     * Uses Segment tree - O(N) time build + O(log N) time query
-     * Parameters for Constructor: vector<vector<int>> adj_list; (undirected)
+     * @brief Lowest Common Ancestor for Multiple Queries
+     * Uses Binary Lifting to pre-compute in O(N log N) time
+     * And answer queries in Log N time
+     * @tparam vector<vector<int>>& adj: Adjacency list of the tree
      */
-    public:
-    vector<pair<int, int>> segment_tree;
-    vector<int> last;
-    vector<int> node;
-    vector<int> depth;
-
-    int V = 0;
-    int segment_tree_size;
-
-    LCA(vector<vector<int>>& adj) {
-        V = adj.size();
-        last.resize(V);
-        node.resize(2 * V - 1);
-        depth.resize(2 * V - 1);
-        vector<bool> visited(V, false);
-        int index = 0;
-        dfs(adj, 0, 0, index, visited);
-        build_segment_tree();
-    }
-
-    void dfs(vector<vector<int>>& adj, int curr_node, int curr_depth, int& index, vector<bool>& visited) {
-        last[curr_node] = index;
-        node[index] = curr_node;
-        depth[index] = curr_depth;
-        visited[curr_node] = true;
-        index++;
-        for(int child: adj[curr_node]) {
-            if(!visited[child]) {
-                dfs(adj, child, curr_depth + 1, index, visited);
-                last[curr_node] = index;
-                node[index] = curr_node;
-                depth[index] = curr_depth;
-                index++;
-            }
-        }
-    }
-
-    void build_segment_tree() {
-        int N = node.size();
-        for(; (N & (N - 1)) != 0; N++);
-        depth.resize(N, INT_MAX);
-        segment_tree.resize(2 * N);
-        segment_tree_size = N;
-        for(int i = (2 * N) - 1; i >= N; i--) {
-            segment_tree[i] = make_pair(i, depth[i - N]);
-        }
-        for(int i = N - 1; i > 0; i--) {
-            if(segment_tree[2 * i].second < segment_tree[2 * i + 1].second) {
-                segment_tree[i] = segment_tree[2 * i];
-            }
-            else {
-                segment_tree[i] = segment_tree[2 * i + 1];
-            }
-        }
-    }
-
-    int query(int a, int b) {
-        return get_lca(a, b);
-    }
-
-    int get_lca(int a, int b) {
-        int last_a = last[a];
-        int last_b = last[b];
-        if(last_a > last_b) {
-            swap(last_a, last_b);
-        }
-        last_a += segment_tree_size;
-        last_b += segment_tree_size;
-        pair<int, int> returned = query(1, segment_tree_size, 2 * segment_tree_size - 1, last_a, last_b);
-        int index = returned.first - segment_tree_size;
-        return node[index];
-    }
-
-    pair<int, int> query(int node_index, int node_lb, int node_ub, int query_lb, int query_ub) {
-        if(node_lb > query_ub || node_ub < query_lb) {
-            return make_pair(-1, INT_MAX);
-        }
-        else if(query_lb <= node_lb && node_ub <= query_ub) {
-            return segment_tree[node_index];
-        }
-        else {
-            pair<int, int> left_returned = query(2 * node_index, node_lb, (node_lb + node_ub) / 2, query_lb, query_ub);
-            pair<int, int> right_returned = query(2 * node_index + 1, (node_lb + node_ub) / 2 + 1, node_ub, query_lb, query_ub);
-            if(left_returned.second < right_returned.second) {
-                return left_returned;
-            }
-            else {
-                return right_returned;
-            }
-        }
-    }
+ 
+public:
+ 
+	int N = 0, LOG = 0;
+	vector<vector<int>> ancestor;
+	vector<int> depth;
+ 
+	LCA(vector<vector<int>>& adj) {
+		N = adj.size();
+		LOG = ceil(log2(N)) + 2;
+		ancestor.resize(N, vector<int>(LOG));
+		depth.resize(N, 0);
+		vector<bool> visited(N);
+		dfs(adj, 0, visited);
+	}
+ 
+	int get_lca(int a, int b) {
+		if(depth[a] < depth[b]) {
+			swap(a, b);
+		}
+ 
+		int k = depth[a] - depth[b];
+		for(int j = LOG - 1; j >= 0; j--) {
+			if(k & (1 << j)) {
+				a = ancestor[a][j];
+			}
+		}
+ 
+		if(a == b) {
+			return a;
+		}
+ 
+		for(int j = LOG - 1; j >= 0; j--) {
+			if(ancestor[a][j] != ancestor[b][j]) {
+				a = ancestor[a][j];
+				b = ancestor[b][j];
+			}
+		}
+ 
+		return ancestor[a][0];
+	}
+ 
+private:
+ 
+	void dfs(vector<vector<int>>& adj, int node, vector<bool>& visited) {
+		visited[node] = true;
+		for(int child : adj[node]) {
+			if(visited[child]) {
+				continue;
+			}
+			depth[child] = depth[node] + 1;
+			ancestor[child][0] = node;
+			for(int level = 1; level < LOG; level++) {
+				ancestor[child][level] = ancestor[ancestor[child][level-1]][level-1];
+			}
+			dfs(adj, child, visited);
+		}
+	}
 };
 
 vector<int> dijkstra(vector<vector<int>>& adj, int V, map<pair<int, int>, int>& cost, int start) {
