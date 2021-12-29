@@ -34,68 +34,66 @@ then
     out=$(paplay /home/suman/Music/CP_SOUNDS/CFAILED.ogg)
     
 else
+    problem_code=$(echo $1 | cut -d'.' -f1)
     if [ "$online_judge" == "0" ]
     then
-        ./exe < STDIN > STDOUT 2> STDERR
+        input_file="$problem_code"_01.in
+        ./exe < $input_file > STDOUT 2> STDERR
         rm exe
     else
-        start=`date +%s.%6N`
-        timeout 2s ./exe < STDIN > STDOUT 2> STDERR
-        end=`date +%s.%6N`
-        if [ "$?" != "0" ]
-        then
-            printf "${YELLOW}RUNTIME ERROR\n${NC}"
-            ./exe < STDIN > STDOUT
-            rm exe
-            paplay /home/suman/Music/CP_SOUNDS/RTE.ogg
-            exit
-        fi
-        rm exe
-        runtime=$(echo "scale=2 ; $end - $start > 1" | bc)
-        if [ "$runtime" == "1" ]
-        then
-            printf "${YELLOW}Time Limit Exceeded\n${NC}"
-            paplay /home/suman/Music/CP_SOUNDS/TLE.ogg
-        else
-            runtime=$( echo "$end - $start" | bc -l )
-            check=$(diff --strip-trailing-cr -w STDOUT STDEXPOUT)
-            printf "${CYAN}STDIN:\n${NC}"
-            head -10 STDIN
-            n_lines=$(wc -l STDIN | grep -o -E '[0-9]+')
-            if [[ ( $n_lines -gt 10 ) ]]
+        for ((i=1; i<10; i++))
+        do
+            input_file="$problem_code"_0"$i".in
+            # check if input file exists
+            if [ -f $input_file ]
             then
-                echo "..."
-            fi
-            printf "\n${CYAN}EXPECTED OUTPUT:\n${NC}"
-            head -10 STDEXPOUT
-            n_lines=$(wc -l STDEXPOUT | grep -o -E '[0-9]+')
-            if [[ ( $n_lines -gt 10 ) ]]
-            then
-                echo "..."
-            fi
-            printf "\n${CYAN}YOUR OUTPUT:\n${NC}"
-            head -10 STDOUT
-            n_lines=$(wc -l STDOUT | grep -o -E '[0-9]+')
-            if [[ ( $n_lines -gt 10 ) ]]
-            then
-                echo "..."
-            fi
-            printf "\n${CYAN}STDERR:\n${NC}"
-            head -10 STDERR
-            n_lines=$(wc -l STDERR | grep -o -E '[0-9]+')
-            if [[ ( $n_lines -gt 10 ) ]]
-            then
-                echo "..."
-            fi
-            printf "\n${ORANGE}TIME: ${runtime} S\n${NC}"
-            if [ "$check" != "" ]
-            then
-                printf "\n${BLUE}STATUS: ${RED}Failed\n${NC}"
-                paplay /home/suman/Music/CP_SOUNDS/SFAILED.ogg
+                expected_output="$problem_code"_0"$i".out
+                start=`date +%s.%6N`
+                timeout 2s ./exe < $input_file > STDOUT 2> STDERR
+                end=`date +%s.%6N`
+                if [ "$?" != "0" ]
+                then
+                    printf "${YELLOW}RUNTIME ERROR\n${NC}"
+                    ./exe < STDIN > STDOUT
+                    paplay /home/suman/Music/CP_SOUNDS/RTE.ogg
+                    exit
+                fi
+                runtime=$(echo "scale=2 ; $end - $start > 1" | bc)
+                if [ "$runtime" == "1" ]
+                then
+                    printf "${YELLOW}Time Limit Exceeded\n${NC}"
+                    paplay /home/suman/Music/CP_SOUNDS/TLE.ogg
+                else
+                    runtime=$( echo "$end - $start" | bc -l )
+                    check=$(diff --strip-trailing-cr -w STDOUT $expected_output)
+                    printf "${CYAN}STDIN:\n${NC}"
+                    cat $input_file
+                    printf "\n${CYAN}EXPECTED OUTPUT:\n${NC}"
+                    cat $expected_output
+                    printf "\n${CYAN}YOUR OUTPUT:\n${NC}"
+                    cat STDOUT
+                    printf "\n${CYAN}STDERR:\n${NC}"
+                    cat STDERR
+                    printf "\n${ORANGE}TIME: ${runtime} S\n${NC}"
+                    if [ "$check" != "" ]
+                    then
+                        printf "\n${BLUE}STATUS: ${RED}Failed\n${NC}"
+                        paplay /home/suman/Music/CP_SOUNDS/SFAILED.ogg
+                    else
+                        printf "\n${BLUE}STATUS: ${GREEN}Passed\n${NC}"
+                        paplay /home/suman/Music/CP_SOUNDS/SPASSED.ogg
+                    fi
+                fi
             else
-                printf "\n${BLUE}STATUS: ${GREEN}Passed\n${NC}"
-                paplay /home/suman/Music/CP_SOUNDS/SPASSED.ogg
+                break
             fi
-        fi
+            # print a line of '*'s
+            for ((j=0; j<80; j++))
+            do
+                printf "*"
+            done
+            printf "\n"
+        done
+        rm exe
     fi
 fi
