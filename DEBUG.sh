@@ -7,6 +7,9 @@
 # Cyan         0;36     Light Cyan    1;36
 # Light Gray   0;37     White         1;37
 
+# Modify this to change the source of Templates
+templates_directory='/home/suman/Competitive-Companion-for-Codechef'
+
 NC='\033[0m'
 ORANGE='\033[0;33m'
 BLACK='\033[1;30m'
@@ -28,14 +31,14 @@ output_file="$file_name"_01.out
 if [ "$?" != "0" ]
 then
     printf "${CYAN}STATUS: ${RED}COMPILATION ERROR\n${NC}"
-    out=$(paplay /home/suman/Music/CP_SOUNDS/CFAILED.ogg)
+    paplay $templates_directory/CP_SOUNDS/CFAILED.ogg
 
 else
     echo "Now Running $1 in Debug Mode"
     ./exe < $input_file > STDOUT
     if [ "$?" != "0" ]
     then
-        paplay /home/suman/Music/CP_SOUNDS/RTE.ogg
+        paplay $templates_directory/CP_SOUNDS/RTE.ogg
     fi
     rm exe
 fi

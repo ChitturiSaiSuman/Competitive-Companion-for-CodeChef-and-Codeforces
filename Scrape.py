@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+# Scrapes a Codechef's contest page
+# Creates a folder for the contest
+# Extracts samples for each problem in the Contest
+
 import os
 import shutil
 import datetime
@@ -10,6 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+const_path_to_templates = '/home/suman/Competitive-Companion-for-Codechef'
 
 def get_samples(problem_link: str) -> list:
     # Given the link to the problem page
@@ -172,7 +178,7 @@ def extract_meta_data(contest_link: str) -> dict:
 
     return meta_data
 
-def copy_default_files(path_to_workplace, path_to_templates) -> None:
+def copy_default_files(path_to_problem, path_to_templates) -> None:
     # Use this to copy templates to the Workplace folder
     print()
 
@@ -181,11 +187,12 @@ def copy_default_files(path_to_workplace, path_to_templates) -> None:
     # Generator.cpp: C++ Program to generate test cases for test purpose
     # Test.cpp: C++ Program to write Bruteforce solution
 
-    files_needed = ['Default.cpp', 'Extended.cpp', 'Generator.cpp', 'Test.cpp']
+    files_needed = ['Default.cpp', 'Extended.cpp', 'Generator.cpp', 'Test.cpp', 'STRESS.sh']
+    files_needed += ['C_PLUS_PLUS.py', 'DEBUG.sh', 'RUN_CPP.sh', 'Snippet_Copier.py']
 
     for file in files_needed:
         print(Fore.YELLOW + "Copying " + file + "...", end = "", flush = True)
-        shutil.copy(path_to_templates + "/" + file, path_to_workplace)
+        shutil.copy(path_to_templates + "/" + file, path_to_problem)
         print(Fore.GREEN + "Done", flush = True)
     print()
 
@@ -195,7 +202,15 @@ def create_problem(path_to_workplace: str, default_source: str, header: str, pro
     # Files include: <problem_code>.cpp, <problem_code>_00.in, <problem_code>_00.out
     # <problem_code>_01.in, <problem_code>_01.out, ...
 
-    path_to_file = path_to_workplace + "/" + problem_code + ".cpp"
+    # Create a folder for the problem
+    path_to_problem = path_to_workplace + "/" + problem_code
+    try:
+        os.makedirs(path_to_problem)
+    except:
+        # Folder already exists
+        pass
+
+    path_to_file = path_to_problem + "/Solution.cpp"
     print(Fore.YELLOW + "Creating files for " + problem_code + "... ", end = "", flush = True)
 
     with open(path_to_file, 'w') as file:
@@ -213,11 +228,11 @@ def create_problem(path_to_workplace: str, default_source: str, header: str, pro
 
         case = str(i + 1).zfill(2)
 
-        input_file = path_to_workplace + "/" + problem_code + "_" + case + ".in"
+        input_file = path_to_problem + "/" + "Case_" + str(i + 1).zfill(2) + ".in"
         with open(input_file, 'w') as file:
             file.write(sample_input)
 
-        output_file = path_to_workplace + "/" + problem_code + "_" + case + ".out"
+        output_file = path_to_problem + "/" + "Case_" + str(i + 1).zfill(2) + ".out"
         with open(output_file, 'w') as file:
             file.write(sample_output)
     
@@ -254,7 +269,7 @@ def initialise_workplace(meta_data: dict) -> None:
     path_to_workplace = '/home/suman/' + meta_data['contest_code']
 
     # Path to templates (where snippets are present), modify it as needed
-    path_to_templates = '/home/suman/Desktop/Templates'
+    path_to_templates = const_path_to_templates
 
     print(Fore.YELLOW + "\nCreating workplace " + path_to_workplace + "... ", end = "", flush = True)
 
@@ -262,8 +277,6 @@ def initialise_workplace(meta_data: dict) -> None:
         os.makedirs(path_to_workplace)
     except:
         pass
-
-    copy_default_files(path_to_workplace, path_to_templates)
 
     # Template is named Default.cpp
     default_source = ""
@@ -305,4 +318,5 @@ if __name__ == '__main__':
     
     print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + str((datetime.datetime.now() - now).total_seconds()) + " seconds\n")
 
-    os.system('python3 /home/suman/Desktop/Templates/Observer.py')
+    # Run the Observer in the background
+    os.system('python3 ' + const_path_to_templates + 'Observer.py')

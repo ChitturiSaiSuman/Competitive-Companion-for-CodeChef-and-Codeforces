@@ -7,6 +7,9 @@
 # Cyan         0;36     Light Cyan    1;36
 # Light Gray   0;37     White         1;37
 
+# A Shell Script to run a C++ Program
+
+# Constants for colors
 NC='\033[0m'
 ORANGE='\033[0;33m'
 BLACK='\033[1;30m'
@@ -17,7 +20,11 @@ PURPLE='\033[1;35m'
 CYAN='\033[1;36m'
 YELLOW='\033[1;33m'
 
+path_to_templates='/home/suman/Competitive-Companion-for-Codechef'
+
 clear
+
+# Pass any additional argument to the script for No Judge
 
 if [ "$2" != "" ]
 then
@@ -31,38 +38,45 @@ compilation_log=$(g++ -std=c++17 -Wshadow -Wall -o exe $1 -O2 -Wno-unused-result
 if [ "$?" != "0" ]
 then
     printf "\n${CYAN}STATUS: ${RED}COMPILATION ERROR\n${NC}"
-    out=$(paplay /home/suman/Music/CP_SOUNDS/CFAILED.ogg)
+    out=$(paplay $path_to_templates/CP_SOUNDS/CFAILED.ogg)
     
 else
-    problem_code=$(echo $1 | cut -d'.' -f1)
     if [ "$online_judge" == "0" ]
     then
-        input_file="$problem_code"_01.in
+        # Run the program against one sample
+        # Output is captures in a file named STDOUT
+        # STDERR stream is captured in a file named STDERR
+        input_file="Case_00.in"
         ./exe < $input_file > STDOUT 2> STDERR
         rm exe
     else
-        for ((i=1; i<10; i++))
+        # Run the program against all samples
+        # Assumes there are no more than 10 samples (in worst case)
+        # Change the constant to change the number of samples
+        for ((i=0; i<10; i++))
         do
-            input_file="$problem_code"_0"$i".in
+            input_file="Case_0"$i".in"
             # check if input file exists
             if [ -f $input_file ]
             then
                 expected_output="$problem_code"_0"$i".out
+                # To Capture the time taken for the program
                 start=`date +%s.%6N`
                 timeout 2s ./exe < $input_file > STDOUT 2> STDERR
                 end=`date +%s.%6N`
                 if [ "$?" != "0" ]
+                # Implies runtime error
                 then
                     printf "${YELLOW}RUNTIME ERROR\n${NC}"
-                    ./exe < STDIN > STDOUT
-                    paplay /home/suman/Music/CP_SOUNDS/RTE.ogg
+                    ./exe < $input_file > STDOUT
+                    paplay $path_to_templates/CP_SOUNDS/RTE.ogg
                     exit
                 fi
                 runtime=$(echo "scale=2 ; $end - $start > 1" | bc)
                 if [ "$runtime" == "1" ]
                 then
                     printf "${YELLOW}Time Limit Exceeded\n${NC}"
-                    paplay /home/suman/Music/CP_SOUNDS/TLE.ogg
+                    paplay $path_to_templates/CP_SOUNDS/TLE.ogg
                 else
                     runtime=$( echo "$end - $start" | bc -l )
                     check=$(diff --strip-trailing-cr -w STDOUT $expected_output)
@@ -78,10 +92,10 @@ else
                     if [ "$check" != "" ]
                     then
                         printf "\n${BLUE}STATUS: ${RED}Failed\n${NC}"
-                        paplay /home/suman/Music/CP_SOUNDS/SFAILED.ogg
+                        paplay $path_to_templates/CP_SOUNDS/SFAILED.ogg
                     else
                         printf "\n${BLUE}STATUS: ${GREEN}Passed\n${NC}"
-                        paplay /home/suman/Music/CP_SOUNDS/SPASSED.ogg
+                        paplay $path_to_templates/CP_SOUNDS/SPASSED.ogg
                     fi
                 fi
             else

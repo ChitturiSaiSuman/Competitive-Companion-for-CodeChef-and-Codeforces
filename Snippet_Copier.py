@@ -1,6 +1,9 @@
 import pyperclip
 import sys
-sys.path.append("/home/suman/Desktop/Templates")
+
+path_to_templates = '/home/suman/Competitive-Companion-for-Codechef/'
+
+sys.path.append(path_to_templates)
 
 from C_PLUS_PLUS import *
 
@@ -15,6 +18,7 @@ for function in c_plus_plus_keys:
     if all([key_word in function.lower() or key_word in c_plus_plus_functions[function].lower() for key_word in function_name]):
         function_key = function
         break
+    
 print("Copied " + function_key + " into clipboard")
 pyperclip.copy(c_plus_plus_functions[function_key])
 pyperclip.waitForPaste(15)
