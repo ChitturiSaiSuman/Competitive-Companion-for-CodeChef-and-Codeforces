@@ -87,7 +87,6 @@ else
             else
                 break
             fi
-            # print a line of '*'s
             for ((j=0; j<80; j++))
             do
                 printf "*"
