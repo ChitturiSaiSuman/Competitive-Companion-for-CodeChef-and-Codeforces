@@ -300,6 +300,9 @@ if __name__ == '__main__':
     meta_data['time'] = now_str
 
     initialise_workplace(meta_data)
+
+    os.system("clear")
+    
     print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + str((datetime.datetime.now() - now).total_seconds()) + " seconds\n")
 
     os.system('python3 /home/suman/Desktop/Templates/Observer.py')
