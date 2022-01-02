@@ -187,8 +187,7 @@ def copy_default_files(path_to_problem, path_to_templates) -> None:
     # Generator.cpp: C++ Program to generate test cases for test purpose
     # Test.cpp: C++ Program to write Bruteforce solution
 
-    files_needed = ['Default.cpp', 'Extended.cpp', 'Generator.cpp', 'Test.cpp', 'STRESS.sh']
-    files_needed += ['C_PLUS_PLUS.py', 'DEBUG.sh', 'RUN_CPP.sh', 'Snippet_Copier.py']
+    files_needed = ['Default.cpp', 'Extended.cpp', 'Generator.cpp', 'Test.cpp']
 
     for file in files_needed:
         print(Fore.YELLOW + "Copying " + file + "...", end = "", flush = True)
@@ -210,6 +209,10 @@ def create_problem(path_to_workplace: str, default_source: str, header: str, pro
         # Folder already exists
         pass
 
+    global const_path_to_templates
+
+    copy_default_files(path_to_problem, const_path_to_templates)
+
     path_to_file = path_to_problem + "/Solution.cpp"
     print(Fore.YELLOW + "Creating files for " + problem_code + "... ", end = "", flush = True)
 
@@ -226,15 +229,16 @@ def create_problem(path_to_workplace: str, default_source: str, header: str, pro
         sample_input = test_case[0]
         sample_output = test_case[1]
 
-        case = str(i + 1).zfill(2)
-
-        input_file = path_to_problem + "/" + "Case_" + str(i + 1).zfill(2) + ".in"
+        input_file = path_to_problem + "/" + "Case_" + str(i).zfill(2) + ".in"
         with open(input_file, 'w') as file:
             file.write(sample_input)
 
-        output_file = path_to_problem + "/" + "Case_" + str(i + 1).zfill(2) + ".out"
+        output_file = path_to_problem + "/" + "Case_" + str(i).zfill(2) + ".out"
         with open(output_file, 'w') as file:
             file.write(sample_output)
+
+    shutil.copy(path_to_problem + "/Case_00.in", path_to_problem + "/STDIN")
+    shutil.copy(path_to_problem + "/Case_00.out", path_to_problem + "/STDEXPOUT")
     
     
     print(Fore.GREEN + "Done", flush = True)
@@ -319,4 +323,4 @@ if __name__ == '__main__':
     print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + str((datetime.datetime.now() - now).total_seconds()) + " seconds\n")
 
     # Run the Observer in the background
-    os.system('python3 ' + const_path_to_templates + 'Observer.py')
+    os.system('python3 ' + const_path_to_templates + '/Observer.py')

@@ -24,9 +24,6 @@ clear
 
 echo "Compiling $1 using Debug Flags"
 g++ -std=c++17 -Wshadow -Wall -o exe $1 -fsanitize=address -fsanitize=undefined -D_GLIBCXX_DEBUG -g
-file_name=$(echo $1 | cut -d'.' -f1)
-input_file="$file_name"_01.in
-output_file="$file_name"_01.out
 
 if [ "$?" != "0" ]
 then
@@ -35,7 +32,7 @@ then
 
 else
     echo "Now Running $1 in Debug Mode"
-    ./exe < $input_file > STDOUT
+    ./exe < STDIN > STDOUT
     if [ "$?" != "0" ]
     then
         paplay $templates_directory/CP_SOUNDS/RTE.ogg

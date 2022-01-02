@@ -27,7 +27,7 @@ path_to_templates = '/home/suman/Competitive-Companion-for-Codechef'
 
 def speak(text: str) -> None:
     object = gTTS(text = text, lang = 'en', slow = False)
-    destination_file = path_to_templates + 'Voice.mp3'
+    destination_file = path_to_templates + '/Voice.mp3'
     object.save(destination_file)
     system('mpg123 ' + destination_file)
     system('rm ' + destination_file)

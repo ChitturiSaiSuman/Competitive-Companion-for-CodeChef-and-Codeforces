@@ -46,67 +46,47 @@ else
         # Run the program against one sample
         # Output is captures in a file named STDOUT
         # STDERR stream is captured in a file named STDERR
-        input_file="Case_00.in"
-        ./exe < $input_file > STDOUT 2> STDERR
+        ./exe < STDIN > STDOUT 2> STDERR
         rm exe
     else
-        # Run the program against all samples
-        # Assumes there are no more than 10 samples (in worst case)
-        # Change the constant to change the number of samples
-        for ((i=0; i<10; i++))
-        do
-            input_file="Case_0"$i".in"
-            # check if input file exists
-            if [ -f $input_file ]
+        # To Capture the time taken for the program
+        start=`date +%s.%6N`
+        timeout 2s ./exe < STDIN > STDOUT 2> STDERR
+        end=`date +%s.%6N`
+        if [ "$?" != "0" ]
+        # Implies runtime error
+        then
+            printf "${YELLOW}RUNTIME ERROR\n${NC}"
+            ./exe < $input_file > STDOUT
+            paplay $path_to_templates/CP_SOUNDS/RTE.ogg
+            exit
+        fi
+        runtime=$(echo "scale=2 ; $end - $start > 1" | bc)
+        if [ "$runtime" == "1" ]
+        then
+            printf "${YELLOW}Time Limit Exceeded\n${NC}"
+            paplay $path_to_templates/CP_SOUNDS/TLE.ogg
+        else
+            runtime=$( echo "$end - $start" | bc -l )
+            check=$(diff --strip-trailing-cr -w STDOUT STDEXPOUT)
+            printf "${CYAN}STDIN:\n${NC}"
+            cat STDIN
+            printf "\n${CYAN}EXPECTED OUTPUT:\n${NC}"
+            cat STDEXPOUT
+            printf "\n${CYAN}YOUR OUTPUT:\n${NC}"
+            cat STDOUT
+            printf "\n${CYAN}STDERR:\n${NC}"
+            cat STDERR
+            printf "\n${ORANGE}TIME: ${runtime} S\n${NC}"
+            if [ "$check" != "" ]
             then
-                expected_output="$problem_code"_0"$i".out
-                # To Capture the time taken for the program
-                start=`date +%s.%6N`
-                timeout 2s ./exe < $input_file > STDOUT 2> STDERR
-                end=`date +%s.%6N`
-                if [ "$?" != "0" ]
-                # Implies runtime error
-                then
-                    printf "${YELLOW}RUNTIME ERROR\n${NC}"
-                    ./exe < $input_file > STDOUT
-                    paplay $path_to_templates/CP_SOUNDS/RTE.ogg
-                    exit
-                fi
-                runtime=$(echo "scale=2 ; $end - $start > 1" | bc)
-                if [ "$runtime" == "1" ]
-                then
-                    printf "${YELLOW}Time Limit Exceeded\n${NC}"
-                    paplay $path_to_templates/CP_SOUNDS/TLE.ogg
-                else
-                    runtime=$( echo "$end - $start" | bc -l )
-                    check=$(diff --strip-trailing-cr -w STDOUT $expected_output)
-                    printf "${CYAN}STDIN:\n${NC}"
-                    cat $input_file
-                    printf "\n${CYAN}EXPECTED OUTPUT:\n${NC}"
-                    cat $expected_output
-                    printf "\n${CYAN}YOUR OUTPUT:\n${NC}"
-                    cat STDOUT
-                    printf "\n${CYAN}STDERR:\n${NC}"
-                    cat STDERR
-                    printf "\n${ORANGE}TIME: ${runtime} S\n${NC}"
-                    if [ "$check" != "" ]
-                    then
-                        printf "\n${BLUE}STATUS: ${RED}Failed\n${NC}"
-                        paplay $path_to_templates/CP_SOUNDS/SFAILED.ogg
-                    else
-                        printf "\n${BLUE}STATUS: ${GREEN}Passed\n${NC}"
-                        paplay $path_to_templates/CP_SOUNDS/SPASSED.ogg
-                    fi
-                fi
+                printf "\n${BLUE}STATUS: ${RED}Failed\n${NC}"
+                paplay $path_to_templates/CP_SOUNDS/SFAILED.ogg
             else
-                break
+                printf "\n${BLUE}STATUS: ${GREEN}Passed\n${NC}"
+                paplay $path_to_templates/CP_SOUNDS/SPASSED.ogg
             fi
-            for ((j=0; j<80; j++))
-            do
-                printf "*"
-            done
-            printf "\n"
-        done
+        fi
         rm exe
     fi
 fi
