@@ -237,9 +237,13 @@ def create_problem(path_to_workplace: str, default_source: str, header: str, pro
         with open(output_file, 'w') as file:
             file.write(sample_output)
 
-    shutil.copy(path_to_problem + "/Case_00.in", path_to_problem + "/STDIN")
-    shutil.copy(path_to_problem + "/Case_00.out", path_to_problem + "/STDEXPOUT")
+    try:
+
+        shutil.copy(path_to_problem + "/Case_00.in", path_to_problem + "/STDIN")
+        shutil.copy(path_to_problem + "/Case_00.out", path_to_problem + "/STDEXPOUT")
     
+    except:
+        print(Fore.RED + "Error: No proper Samples found for " + problem_code, flush = True)
     
     print(Fore.GREEN + "Done", flush = True)
     
@@ -256,7 +260,7 @@ def parse_test_cases(test_cases: list, problem_code: str) -> list:
             parsed_test_cases.append((test_cases[i], test_cases[i + 1]))
         except:
             # Probably because it's interactive problem
-            print(Fore.RED + "Error in parsing test cases for " + problem_code + ".")
+            print(Fore.RED + "Error in parsing test cases for " + problem_code)
     return parsed_test_cases
 
 def initialise_workplace(meta_data: dict) -> None:
@@ -319,7 +323,7 @@ if __name__ == '__main__':
 
     os.system("clear")
     
-    print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + str((datetime.datetime.now() - now).total_seconds()) + " seconds\n")
+    print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + str((datetime.datetime.now() - now).total_seconds()) + " seconds\n" + Fore.WHITE)
 
     # Run the Observer in the background
     os.system('python3 ' + const_path_to_templates + '/Observer.py')
