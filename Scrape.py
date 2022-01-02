@@ -272,7 +272,6 @@ def initialise_workplace(meta_data: dict) -> None:
     # Path to Workplace, modify it as needed
     path_to_workplace = '/home/suman/' + meta_data['contest_code']
 
-    # Path to templates (where snippets are present), modify it as needed
     path_to_templates = const_path_to_templates
 
     print(Fore.YELLOW + "\nCreating workplace " + path_to_workplace + "... ", end = "", flush = True)
