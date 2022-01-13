@@ -33,6 +33,18 @@ else
     online_judge="1"
 fi
 
+# Check if all of the following files are present
+# If not present, create them
+declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" )
+for val in ${files[@]};
+do
+    if test -f "$val"; then
+        :
+    else
+        touch $val
+    fi
+done
+
 compilation_log=$(g++ -std=c++17 -Wshadow -Wall -o exe $1 -O2 -Wno-unused-result)
 
 if [ "$?" != "0" ]
@@ -44,15 +56,19 @@ else
     if [ "$online_judge" == "0" ]
     then
         # Run the program against one sample
-        # Output is captures in a file named STDOUT
+        # Output is captured in a file named STDOUT
         # STDERR stream is captured in a file named STDERR
         ./exe < STDIN > STDOUT 2> STDERR
         rm exe
     else
+        # Run the program against one sample
+        # But also judge it against the expected output
+
         # To Capture the time taken for the program
         start=`date +%s.%6N`
         timeout 2s ./exe < STDIN > STDOUT 2> STDERR
         end=`date +%s.%6N`
+
         if [ "$?" != "0" ]
         # Implies runtime error
         then
@@ -61,30 +77,45 @@ else
             paplay $path_to_templates/CP_SOUNDS/RTE.ogg
             exit
         fi
+
+        # Get the time taken for execution
         runtime=$(echo "scale=2 ; $end - $start > 1" | bc)
         if [ "$runtime" == "1" ]
         then
+            # Time limit exceeded, no point in verifying the output
             printf "${YELLOW}Time Limit Exceeded\n${NC}"
             paplay $path_to_templates/CP_SOUNDS/TLE.ogg
         else
             runtime=$( echo "$end - $start" | bc -l )
             check=$(diff --strip-trailing-cr -w STDOUT STDEXPOUT)
+
             printf "${CYAN}STDIN:\n${NC}"
             cat STDIN
+
             printf "\n${CYAN}EXPECTED OUTPUT:\n${NC}"
             cat STDEXPOUT
+
             printf "\n${CYAN}YOUR OUTPUT:\n${NC}"
             cat STDOUT
+
             printf "\n${CYAN}STDERR:\n${NC}"
             cat STDERR
+
             printf "\n${ORANGE}TIME: ${runtime} S\n${NC}"
+
             if [ "$check" != "" ]
             then
+                # Program output is incorrect
                 printf "\n${BLUE}STATUS: ${RED}Failed\n${NC}"
                 paplay $path_to_templates/CP_SOUNDS/SFAILED.ogg
             else
+                # Program output is correct
                 printf "\n${BLUE}STATUS: ${GREEN}Passed\n${NC}"
                 paplay $path_to_templates/CP_SOUNDS/SPASSED.ogg
+
+                # Copy the Source Code into Clipboard
+                xclip -sel c < $1
+                printf "\n${YELLOW}Copied Source Code to Clipboard\n${NC}"
             fi
         fi
         rm exe
