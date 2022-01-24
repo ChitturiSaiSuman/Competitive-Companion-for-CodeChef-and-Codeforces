@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define FOR(x, N)					for(int x = 0; x < N; x++)
-#define inverse(a, p)				power(a, p - 2, p)
+#define FOR(x, N)                    for(int x = 0; x < N; x++)
+#define inverse(a, p)                power(a, p - 2, p)
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -10,26 +10,26 @@ typedef long long int ll;
 const int dc[] = {1, 0, 0, -1, -1, -1, 1, 1};
 const int dr[] = {0, 1, -1, 0, -1, 1, -1, 1};
 
-const ll shit	= ((ll)(998244353));	// 998,244,353
-const ll mod	= ((ll)(1e9 + 7));		// 10**9 + 7
-const ll hell	= ((ll)(1e9 + 9));		// 10**9 + 9
-const ll inf	= ((ll)(1e18 + 3));		// 10 ** 18 + 3
+const ll shit    = ((ll)(998244353));    // 998,244,353
+const ll mod    = ((ll)(1e9 + 7));        // 10**9 + 7
+const ll hell    = ((ll)(1e9 + 9));        // 10**9 + 9
+const ll inf    = ((ll)(1e18 + 3));        // 10 ** 18 + 3
 
 static inline ll gcd(ll a, ll b) {
-	for(ll rem; b > 0; rem = a % b, a = b, b = rem);
-	return a;
+    for(ll rem; b > 0; rem = a % b, a = b, b = rem);
+    return a;
 }
 static inline ll lcm(ll a, ll b) {
-	return (a * b) / gcd(a, b);
+    return (a * b) / gcd(a, b);
 }
 
 ll power(ll x, ll y, ll p) {
-	ll result = 1;
-	for(; y > 0; y >>= 1, x = (x % p * x % p) % p) {
-		if(y & 1)
-			result = (result % p * x % p) % p;
-	}
-	return result;
+    ll result = 1;
+    for(; y > 0; y >>= 1, x = (x % p * x % p) % p) {
+        if(y & 1)
+            result = (result % p * x % p) % p;
+    }
+    return result;
 }
 
 #define NAX 2000003 // 2e6 + 3
@@ -45,26 +45,26 @@ class Fraction {
     ll LCM(ll a, ll b) {
         return (a * b) / GCD(a, b);
     }
-	public:
-	ll num = 0, den = 1;
-	Fraction() {
-		num = 0;
-		den = 1;
-	};
-	Fraction(ll n) {
-		num = n;
-		den = 1;
-	};
-	Fraction(ll n, ll d) {
-		if(d == 0) {
-			throw invalid_argument("Expected Non-Zero denominator");
-		}
-		num = n;
-		den = d;
-		ll g = GCD(num, den);
-		num /= g;
-		den /= g;
-	};
+    public:
+    ll num = 0, den = 1;
+    Fraction() {
+        num = 0;
+        den = 1;
+    };
+    Fraction(ll n) {
+        num = n;
+        den = 1;
+    };
+    Fraction(ll n, ll d) {
+        if(d == 0) {
+            throw invalid_argument("Expected Non-Zero denominator");
+        }
+        num = n;
+        den = d;
+        ll g = GCD(num, den);
+        num /= g;
+        den /= g;
+    };
     Fraction(Fraction& f) {
         num = f.num;
         den = f.den;
@@ -84,46 +84,46 @@ class Fraction {
         }
     };
     operator string() const {
-		if(den == 1)
-			return to_string(num);
-		return to_string(num) + "/" + to_string(den);
-	}
-	Fraction operator + (const Fraction& frac) {
-		ll l = LCM(den, frac.den);
-		ll a = num * (l / den);
-		ll b = frac.num * (l / frac.den);
-		return Fraction(a + b, l);
-	}
+        if(den == 1)
+            return to_string(num);
+        return to_string(num) + "/" + to_string(den);
+    }
+    Fraction operator + (const Fraction& frac) {
+        ll l = LCM(den, frac.den);
+        ll a = num * (l / den);
+        ll b = frac.num * (l / frac.den);
+        return Fraction(a + b, l);
+    }
     void operator += (const Fraction& frac) {
         Fraction f = Fraction(num, den);
         f = (f + frac);
         num = f.num;
         den = f.den;
     }
-	Fraction operator - (const Fraction& frac) {
-		ll l = LCM(den, frac.den);
-		ll a = num * (l / den);
-		ll b = frac.num * (l / frac.den);
-		return Fraction(a - b, l);
-	}
+    Fraction operator - (const Fraction& frac) {
+        ll l = LCM(den, frac.den);
+        ll a = num * (l / den);
+        ll b = frac.num * (l / frac.den);
+        return Fraction(a - b, l);
+    }
     void operator -= (const Fraction& frac) {
         Fraction f = Fraction(num, den);
         f = (f - frac);
         num = f.num;
         den = f.den;
     }
-	Fraction operator * (const Fraction& frac) {
-		return Fraction(num * frac.num, den * frac.den);
-	}
+    Fraction operator * (const Fraction& frac) {
+        return Fraction(num * frac.num, den * frac.den);
+    }
     void operator *= (const Fraction& frac) {
         Fraction f = Fraction(num, den);
         f = (f * frac);
         num = f.num;
         den = f.den;
     }
-	Fraction operator / (const Fraction& frac) {
-		return Fraction(num * frac.den, den * frac.num);
-	}
+    Fraction operator / (const Fraction& frac) {
+        return Fraction(num * frac.den, den * frac.num);
+    }
     void operator /= (const Fraction& frac) {
         Fraction f = Fraction(num, den);
         f = (f / frac);
@@ -154,9 +154,9 @@ class Fraction {
     }
 };
 ostream& operator << (ostream& out, const Fraction& f) {
-	if(f.den == 1)
-		return out << to_string(f.num);
-	return out << to_string(f.num) + "/" + to_string(f.den);
+    if(f.den == 1)
+        return out << to_string(f.num);
+    return out << to_string(f.num) + "/" + to_string(f.den);
 }
 
 // End of Fraction template for CPP
@@ -218,55 +218,55 @@ class Graph {
 // NextGreater, NextSmaller at Right, Left
 
 vector<int> next_greater_in_right(vector<int> a, int n) {
-	vector<int> right_index(n, n);
-	stack<int> st;
-	for(int i = 0; i < n; i++) {
-		while(!st.empty() && a[i] > a[st.top()]) {
-			right_index[st.top()] = i;
+    vector<int> right_index(n, n);
+    stack<int> st;
+    for(int i = 0; i < n; i++) {
+        while(!st.empty() && a[i] > a[st.top()]) {
+            right_index[st.top()] = i;
             st.pop();
-		}
-		st.push(i);
-	}
-	return right_index;
+        }
+        st.push(i);
+    }
+    return right_index;
 }
 
 vector<int> next_greater_in_left(vector<int>& a, int n) {
-	vector<int> left_index(n, -1);
-	stack<int> st;
-	for(int i = n - 1; i >= 0; i--) {
-		while(!st.empty() && a[i] > a[st.top()]) {
-			left_index[st.top()] = i;
+    vector<int> left_index(n, -1);
+    stack<int> st;
+    for(int i = n - 1; i >= 0; i--) {
+        while(!st.empty() && a[i] > a[st.top()]) {
+            left_index[st.top()] = i;
             st.pop();
-		}
-		st.push(i);
-	}
-	return left_index;
+        }
+        st.push(i);
+    }
+    return left_index;
 }
 
 vector<int> next_smaller_in_right(vector<int>& a, int n) {
-	vector<int> right_index(n, n);
-	stack<int> st;
-	for(int i = 0; i < n; i++) {
-		while(!st.empty() && a[i] < a[st.top()]) {
-			right_index[st.top()] = i;
+    vector<int> right_index(n, n);
+    stack<int> st;
+    for(int i = 0; i < n; i++) {
+        while(!st.empty() && a[i] < a[st.top()]) {
+            right_index[st.top()] = i;
             st.pop();
-		}
-		st.push(i);
-	}
-	return right_index;
+        }
+        st.push(i);
+    }
+    return right_index;
 }
 
 vector<int> next_smaller_in_left(vector<int>& a, int n) {
-	vector<int> left_index(n, -1);
-	stack<int> st;
-	for(int i = n - 1; i >= 0; i--) {
-		while (!st.empty() && a[i] < a[st.top()]) {
-			left_index[st.top()] = i;
+    vector<int> left_index(n, -1);
+    stack<int> st;
+    for(int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && a[i] < a[st.top()]) {
+            left_index[st.top()] = i;
             st.pop();
-		}
-		st.push(i);
-	}
-	return left_index;
+        }
+        st.push(i);
+    }
+    return left_index;
 }
 
 // ******************************************
@@ -866,9 +866,9 @@ class DSU {
     }
     
     int get(int a) {
-		int p = parent[a];
+        int p = parent[a];
         for(; parent[p] != p; p = parent[parent[p]]);
-		for(int b = parent[a]; a != p; parent[a] = p, a = b, b = parent[a]);
+        for(int b = parent[a]; a != p; parent[a] = p, a = b, b = parent[a]);
         return p;
     }
 
@@ -995,7 +995,7 @@ class Sieve {
                 }
             }
         }
-		return prime;
+        return prime;
     }
     vector<int> get_primes(int size) {
         if(prime.size() == 0) {
@@ -1073,61 +1073,61 @@ class LCA {
  
 public:
  
-	int N = 0, LOG = 0;
-	vector<vector<int>> ancestor;
-	vector<int> depth;
+    int N = 0, LOG = 0;
+    vector<vector<int>> ancestor;
+    vector<int> depth;
  
-	LCA(vector<vector<int>>& adj) {
-		N = adj.size();
-		LOG = ceil(log2(N)) + 2;
-		ancestor.resize(N, vector<int>(LOG));
-		depth.resize(N, 0);
-		vector<bool> visited(N);
-		dfs(adj, 0, visited);
-	}
+    LCA(vector<vector<int>>& adj) {
+        N = adj.size();
+        LOG = ceil(log2(N)) + 2;
+        ancestor.resize(N, vector<int>(LOG));
+        depth.resize(N, 0);
+        vector<bool> visited(N);
+        dfs(adj, 0, visited);
+    }
  
-	int get_lca(int a, int b) {
-		if(depth[a] < depth[b]) {
-			swap(a, b);
-		}
+    int get_lca(int a, int b) {
+        if(depth[a] < depth[b]) {
+            swap(a, b);
+        }
  
-		int k = depth[a] - depth[b];
-		for(int j = LOG - 1; j >= 0; j--) {
-			if(k & (1 << j)) {
-				a = ancestor[a][j];
-			}
-		}
+        int k = depth[a] - depth[b];
+        for(int j = LOG - 1; j >= 0; j--) {
+            if(k & (1 << j)) {
+                a = ancestor[a][j];
+            }
+        }
  
-		if(a == b) {
-			return a;
-		}
+        if(a == b) {
+            return a;
+        }
  
-		for(int j = LOG - 1; j >= 0; j--) {
-			if(ancestor[a][j] != ancestor[b][j]) {
-				a = ancestor[a][j];
-				b = ancestor[b][j];
-			}
-		}
+        for(int j = LOG - 1; j >= 0; j--) {
+            if(ancestor[a][j] != ancestor[b][j]) {
+                a = ancestor[a][j];
+                b = ancestor[b][j];
+            }
+        }
  
-		return ancestor[a][0];
-	}
+        return ancestor[a][0];
+    }
  
 private:
  
-	void dfs(vector<vector<int>>& adj, int node, vector<bool>& visited) {
-		visited[node] = true;
-		for(int child : adj[node]) {
-			if(visited[child]) {
-				continue;
-			}
-			depth[child] = depth[node] + 1;
-			ancestor[child][0] = node;
-			for(int level = 1; level < LOG; level++) {
-				ancestor[child][level] = ancestor[ancestor[child][level-1]][level-1];
-			}
-			dfs(adj, child, visited);
-		}
-	}
+    void dfs(vector<vector<int>>& adj, int node, vector<bool>& visited) {
+        visited[node] = true;
+        for(int child : adj[node]) {
+            if(visited[child]) {
+                continue;
+            }
+            depth[child] = depth[node] + 1;
+            ancestor[child][0] = node;
+            for(int level = 1; level < LOG; level++) {
+                ancestor[child][level] = ancestor[ancestor[child][level-1]][level-1];
+            }
+            dfs(adj, child, visited);
+        }
+    }
 };
 
 vector<int> dijkstra(vector<vector<int>>& adj, int V, map<pair<int, int>, int>& cost, int start) {
