@@ -777,28 +777,17 @@ vector<vector<Fraction>> power(vector<vector<Fraction>>& a, ll y) {
 }
 
 // Nth Fibonacci
-ll nth_fibonacci(ll n, ll p) {
-    auto mul_mat = [](vector<vector<ll>>& a, vector<vector<ll>>& b, vector<vector<ll>>& result, ll p){
-        ll res[2][2];
-        res[0][0] = ((a[0][0] * b[0][0]) % p + (a[0][1] * b[1][0]) % p) % p;
-        res[0][1] = ((a[0][0] * b[0][1]) % p + (a[0][1] * b[1][1]) % p) % p;
-        res[1][0] = ((a[1][0] * b[0][0]) % p + (a[1][1] * b[1][0]) % p) % p;
-        res[1][1] = ((a[1][0] * b[0][1]) % p + (a[1][1] * b[1][1]) % p) % p;
-        result[0][0] = res[0][0];
-        result[0][1] = res[0][1];
-        result[1][0] = res[1][0];
-        result[1][1] = res[1][1];
-    };
-    vector<vector<ll>> base(2, vector<ll>(2, 1));
-    base[1][1] = 0;
-    vector<vector<ll>> result(2, vector<ll>(2));
-    result[0][0] = result[1][1] = 1;
-    for(; n > 0; n >>= 1, mul_mat(base, base, base, p)) {
-        if((n&1)) {
-            mul_mat(base, result, result, p);
-        }
-    }
-    return result[0][1];
+pair<ll, ll> fib (ll n, const ll p) {
+    if (n == 0)
+        return {0, 1};
+
+    auto prev = fib(n >> 1, p);
+    ll c = (prev.first * (((2 * prev.second) % p - prev.first) + p) % p) % p;
+    ll d = (prev.first * prev.first) % p + (prev.second * prev.second) % p;
+    if (n & 1)
+        return {d % p, (c + d % p) % p};
+    else
+        return {c, d % p};
 }
 
 // Prefix Sum
