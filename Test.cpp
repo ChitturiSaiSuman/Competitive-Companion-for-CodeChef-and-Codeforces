@@ -42,9 +42,8 @@ void solve() {
 
 int main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
-    int t = 0;
-	// t++;
-	if(!t) cin >> t;
+    int t = 1;
+	cin >> t;
 	pre_compute();
 	FOR(test, t) {
 		// cout << "Case #" << (test + 1) << ": ";
