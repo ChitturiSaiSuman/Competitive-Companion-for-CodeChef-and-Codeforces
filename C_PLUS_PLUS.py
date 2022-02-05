@@ -1221,33 +1221,46 @@ class DSU {
     vector<int> weight;
 
     DSU(int N) {
-        size = N + 1;
+        size = N;
         parent.resize(size);
         weight.resize(size, 1);
         iota(parent.begin(), parent.end(), 0);
     }
     
     int get(int a) {
-		int p = parent[a];
+        int p = parent[a];
         for(; parent[p] != p; p = parent[parent[p]]);
-		for(int b = parent[a]; a != p; parent[a] = p, a = b, b = parent[a]);
+        for(int b = parent[a]; a != p; parent[a] = p, a = b, b = parent[a]);
         return p;
     }
 
     void join(int a, int b) {
-        int parent_of_a = get(a);
-        int parent_of_b = get(b);
-        if(parent_of_a == parent_of_b) {
+        a = get(a);
+        b = get(b);
+        if(a == b) {
             return;
         }
-        if(weight[parent_of_a] < weight[parent_of_b]) {
-            parent[parent_of_a] = parent[parent_of_b];
-            weight[parent_of_b] += weight[parent_of_a];
+        if(weight[a] < weight[b]) {
+            parent[a] = parent[b];
+            weight[b] += weight[a];
         }
         else {
-            parent[parent_of_b] = parent[parent_of_a];
-            weight[parent_of_a] += weight[parent_of_b];
+            parent[b] = parent[a];
+            weight[a] += weight[b];
         }
+    }
+
+    vector<vector<int>> get_components() {
+        vector<vector<int>> components;
+        map<int, vector<int>> component_map;
+        for(int i = 0; i < size; i++) {
+            int p = get(i);
+            component_map[p].push_back(i);
+        }
+        for(auto component : component_map) {
+            components.push_back(component.second);
+        }
+        return components;
     }
 };
 """,
