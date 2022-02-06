@@ -52,7 +52,7 @@ def get_samples(problem_link: str) -> list:
             break
 
     driver.quit()
-    print(Fore.YELLOW + "Extracting samples for " + problem_link + " ... " + Fore.GREEN + "Done")
+    print(Fore.YELLOW + "Extracting samples for " + problem_link + "... " + Fore.GREEN + "Done")
     return samples
 
 
@@ -101,7 +101,7 @@ def extract_problem_links(contest_link: str) -> list:
         # or there is issue loading problems on the page
         print(Fore.RED + "Attempt to Extract failed. Retrying... ", flush = True)
         return []
-    print(Fore.GREEN + "Done", flush = True)
+    print(Fore.GREEN + "Done\n", flush = True)
     return problem_links
 
 
@@ -119,7 +119,7 @@ def get_contest_name(contest_link: str) -> str:
     element = driver.find_element(By.CLASS_NAME, 'breadcrumbs')
     inner_text = element.get_attribute('innerHTML')
 
-    contest_name = inner_text[inner_text.rindex(";") + 1:]
+    contest_name = inner_text[inner_text.rindex(";") + 1:].strip()
     driver.quit()
     print(Fore.GREEN + "Done", flush = True)
     print(Fore.YELLOW + "Contest Name: " + Fore.GREEN + contest_name, flush = True)
@@ -190,10 +190,10 @@ def copy_default_files(path_to_problem, path_to_templates) -> None:
     files_needed = ['Default.cpp', 'Extended.cpp', 'Generator.cpp', 'Test.cpp']
 
     for file in files_needed:
-        print(Fore.YELLOW + "Copying " + file + "...", end = "", flush = True)
+        # print(Fore.YELLOW + "Copying " + file + "...", end = "", flush = True)
         shutil.copy(path_to_templates + "/" + file, path_to_problem)
-        print(Fore.GREEN + "Done", flush = True)
-    print()
+        # print(Fore.GREEN + "Done", flush = True)
+    # print()
 
 def create_problem(path_to_workplace: str, default_source: str, header: str, problem_link: str, problem_code: str, test_cases: list) -> None:
 
@@ -216,11 +216,13 @@ def create_problem(path_to_workplace: str, default_source: str, header: str, pro
     path_to_file = path_to_problem + "/Solution.cpp"
     print(Fore.YELLOW + "Creating files for " + problem_code + "... ", end = "", flush = True)
 
-    with open(path_to_file, 'w') as file:
-        problem_link = "Problem: " + problem_link + "\n"
-        header = '/*\n' + header + problem_link + '*/\n'
-        source_code = header + default_source
-        file.write(source_code)
+    if not os.path.exists(path_to_file):
+        with open(path_to_file, 'w') as file:
+            problem_link = "Problem: " + problem_link + "\n"
+            header = '/*\n' + header + problem_link + '\n'
+            header += "Scraped using https://github.com/ChitturiSaiSuman/Competitive-Companion-for-Codechef\n" + '*/\n'
+            source_code = header + default_source
+            file.write(source_code)
 
     # Creates test cases
 
@@ -278,7 +280,7 @@ def initialise_workplace(meta_data: dict) -> None:
 
     path_to_templates = const_path_to_templates
 
-    print(Fore.YELLOW + "\nCreating workplace " + path_to_workplace + "... ", end = "", flush = True)
+    print(Fore.YELLOW + "\nCreating workplace " + path_to_workplace + "...\n", flush = True)
 
     try:
         os.makedirs(path_to_workplace)
@@ -309,7 +311,7 @@ def initialise_workplace(meta_data: dict) -> None:
 if __name__ == '__main__':
 
     os.system("clear")
-    contest_link = input(Fore.YELLOW + "\nEnter Contest Link: " + Fore.WHITE)
+    contest_link = input(Fore.YELLOW + "Enter Contest Link: " + Fore.WHITE)
 
     now = datetime.datetime.now()
     now_str = str(now.strftime("%Y-%m-%d %H:%M:%S"))
@@ -321,9 +323,11 @@ if __name__ == '__main__':
 
     initialise_workplace(meta_data)
 
-    os.system("clear")
+    # os.system("clear")
+
+    total_time = "%.0f" % (datetime.datetime.now() - now).total_seconds()
     
-    print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + str((datetime.datetime.now() - now).total_seconds()) + " seconds\n" + Fore.WHITE)
+    print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + total_time + " seconds\n" + Fore.WHITE)
 
     # Run the Observer in the background
-    os.system('python3 ' + const_path_to_templates + '/Observer.py')
+    # os.system('python3 ' + const_path_to_templates + '/Observer.py')
