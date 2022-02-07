@@ -5,17 +5,28 @@ import os, sys
 do_stress = False
 limit = 100
 
-def custom_judge(std_input: list, std_output: list, std_expout: list) -> bool:
+def custom_judge(stdin: list, stdout: list, stdexpout: list) -> bool:
     # Default Judge
-    if len(std_output) != len(std_expout):
+    if len(stdout) != len(stdexpout):
         return False
-    for i in range(len(std_output)):
-        if std_output[i] != std_expout[i]:
+    for i in range(len(stdout)):
+        if stdout[i] != stdexpout[i]:
             return False
     return True
     # Comment above and Write your custom judge here
     # 
 
+    stdin = stdin[::-1]
+    stdout = stdout[::-1]
+    stdexpout = stdexpout[::-1]
+    # Call this function for reading a single line of input
+    def read(file):
+        return file.pop()
+
+    # T = int(read(stdin))
+
+    return True
+    
 
 def stress_test(file_1: str, file_2: str):
     # Compile the first Submission, which is the correct one
