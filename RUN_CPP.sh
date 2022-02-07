@@ -73,7 +73,7 @@ else
         # Implies runtime error
         then
             printf "${YELLOW}RUNTIME ERROR\n${NC}"
-            ./exe < $input_file > STDOUT
+            ./exe < STDIN > STDOUT
             paplay $path_to_templates/CP_SOUNDS/RTE.ogg
             exit
         fi
