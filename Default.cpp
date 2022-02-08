@@ -7,8 +7,8 @@ using namespace std;
 using namespace __gnu_pbds;
 // using namespace boost::multiprecision;
 
-#define FOR(x, N)					for(int x = 0; x < N; x++)
-#define inverse(a, p)				power(a, p - 2, p)
+#define FOR(x, N)			for(int x = 0; x < N; x++)
+#define inverse(a, p)		power(a, p - 2, p)
 
 typedef unsigned long long int ull;
 typedef long long int ll;

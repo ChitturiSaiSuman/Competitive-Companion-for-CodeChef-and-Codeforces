@@ -4,12 +4,14 @@ c_plus_plus_functions = {
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
+// #include <boost/multiprecision/cpp_int.hpp>
 
 using namespace std;
 using namespace __gnu_pbds;
+// using namespace boost::multiprecision;
 
-#define FOR(x, N)					for(int x = 0; x < N; x++)
-#define inverse(a, p)				power(a, p - 2, p)
+#define FOR(x, N)			for(int x = 0; x < N; x++)
+#define inverse(a, p)		power(a, p - 2, p)
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -43,9 +45,8 @@ void solve() {
 
 int main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
-    int t = 0;
-	// t++;
-	if(!t) cin >> t;
+    int t = 1;
+	cin >> t;
 	pre_compute();
 	FOR(test, t) {
 		// cout << "Case #" << (test + 1) << ": ";
