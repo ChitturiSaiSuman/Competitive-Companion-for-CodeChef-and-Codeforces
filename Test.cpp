@@ -9,6 +9,8 @@ using namespace __gnu_pbds;
 
 #define FOR(x, N)			for(int x = 0; x < N; x++)
 #define inverse(a, p)		power(a, p - 2, p)
+#define get_name(x)			#x
+#define debug(x)			cout << get_name(x) << " = " << x << '\n'
 
 typedef unsigned long long int ull;
 typedef long long int ll;

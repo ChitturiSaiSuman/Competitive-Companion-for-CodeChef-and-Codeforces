@@ -64,7 +64,7 @@ def check_status(url: str) -> None:
 def start(url: str) -> None:
 
     # This is the x_path of the last submission of the User
-    relative_xpath = "//tbody/tr[1]/td[5]/a[1]"
+    relative_xpath = "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/aside[1]/div[2]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]"
 
     # Create an instance of Chrome
     options = webdriver.ChromeOptions()
@@ -78,7 +78,9 @@ def start(url: str) -> None:
     # Waits until the element loads on the page
     element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.XPATH, relative_xpath)))[0]
 
-    last_submission = element.get_attribute('href')
+    last_submission = element.get_attribute('innerHTML')
+    print(last_submission)
+    return
     last_submission_id = last_submission.split('/')[-1]
 
     while True:
