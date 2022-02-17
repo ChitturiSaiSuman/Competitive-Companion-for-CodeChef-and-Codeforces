@@ -29,15 +29,18 @@ def custom_judge(stdin: list, stdout: list, stdexpout: list) -> bool:
     
 
 def stress_test(file_1: str, file_2: str):
-    # Compile the first Submission, which is the correct one
-    print('Compiling ' + file_1)
-    os.system('g++ -std=c++17 -Wshadow -Wall -o AC ' + file_1 + ' -O2 -Wno-unused-result')
-    # Compile the second Submission, which is the one to be tested
-    print('Compiling ' + file_2)
-    os.system('g++ -std=c++17 -Wshadow -Wall -o WA ' + file_2 + ' -O2 -Wno-unused-result')
+
     # Compile the Generator
     print('Compiling Generator.cpp')
     os.system('g++ -std=c++17 -Wshadow -Wall -o generator Generator.cpp -O2 -Wno-unused-result')
+
+    # Compile the first Submission, which is the correct one
+    print('Compiling ' + file_1)
+    os.system('g++ -std=c++17 -Wshadow -Wall -o AC ' + file_1 + ' -O2 -Wno-unused-result')
+
+    # Compile the second Submission, which is the one to be tested
+    print('Compiling ' + file_2)
+    os.system('g++ -std=c++17 -Wshadow -Wall -o WA ' + file_2 + ' -O2 -Wno-unused-result')
 
     for seed in range(1, limit + 1):
         print("Test Case:", seed, flush = True)
@@ -99,7 +102,7 @@ if __name__ == '__main__':
         if len(sys.argv) < 3:
             print("Please Provide necessary arguments")
             exit(0)
-        print("Stress Testing")
+        print("Running Stress Test")
         file_1, file_2 = sys.argv[1], sys.argv[2]
         stress_test(file_1, file_2)
     else:
