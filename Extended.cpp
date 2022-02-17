@@ -11,6 +11,7 @@ using namespace __gnu_pbds;
 #define inverse(a, p)		power(a, p - 2, p)
 #define get_name(x)			#x
 #define debug(x)			cout << get_name(x) << " = " << x << '\n'
+#define endl				'\n'
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -29,6 +30,15 @@ static inline ll gcd(ll a, ll b) {
 }
 static inline ll lcm(ll a, ll b) {
 	return (a / gcd(a, b)) * b;
+}
+static inline ll power(ll a, ll b, ll p) {
+	ll result = 1;
+	for(; b > 0; b >>= 1, (a = a * a % p)) {
+		if(b & 1) {
+			result = result * a % p;
+		}
+	}
+	return result;
 }
 
 #define nax 2000003
@@ -52,15 +62,6 @@ int main() {
 		solve();
 	}
 	return 0;
-}
-
-ll power(ll x, ll y, ll p) {
-    ll result = 1;
-    for(; y > 0; y >>= 1, x = (x % p * x % p) % p) {
-        if(y & 1)
-            result = (result % p * x % p) % p;
-    }
-    return result;
 }
 
 // Fraction template for CPP
