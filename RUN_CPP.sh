@@ -35,7 +35,7 @@ fi
 
 # Check if all of the following files are present
 # If not present, create them
-declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" )
+declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" "DEBUG.cpp" "DEBUG.h" )
 for val in ${files[@]};
 do
     if test -f "$val"; then
@@ -45,7 +45,7 @@ do
     fi
 done
 
-compilation_log=$(g++ -std=c++17 -Wshadow -Wall -o exe $1 -O2 -Wno-unused-result)
+compilation_log=$(g++ DEBUG.cpp -std=c++17 -Wshadow -Wall -o exe $1 -O2 -Wno-unused-result)
 
 if [ "$?" != "0" ]
 then

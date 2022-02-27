@@ -22,8 +22,20 @@ YELLOW='\033[1;33m'
 
 clear
 
+# Check if all of the following files are present
+# If not present, create them
+declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" "DEBUG.cpp" "DEBUG.h" )
+for val in ${files[@]};
+do
+    if test -f "$val"; then
+        :
+    else
+        touch $val
+    fi
+done
+
 echo "Compiling $1 using Debug Flags"
-g++ -std=c++17 -Wshadow -Wall -o exe $1 -fsanitize=address -fsanitize=undefined -D_GLIBCXX_DEBUG -g
+g++ DEBUG.cpp -std=c++17 -Wshadow -Wall -o exe $1 -fsanitize=address -fsanitize=undefined -D_GLIBCXX_DEBUG -g
 
 if [ "$?" != "0" ]
 then

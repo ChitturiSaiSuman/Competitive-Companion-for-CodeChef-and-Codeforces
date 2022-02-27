@@ -188,7 +188,8 @@ def copy_default_files(path_to_problem, path_to_templates) -> None:
     # Test.cpp: C++ Program to write Bruteforce solution
     # Custom_Judge.py: Judge for problems that allow printing any valid answer
 
-    files_needed = ['Default.cpp', 'Extended.cpp', 'Generator.cpp', 'Test.cpp', 'Custom_Judge.py']
+    files_needed = ['Default.cpp', 'Extended.cpp', 'Generator.cpp', 'Test.cpp']
+    files_needed += ['DEBUG.cpp', 'DEBUG.h', 'Custom_Judge.py']
 
     for file in files_needed:
         # print(Fore.YELLOW + "Copying " + file + "...", end = "", flush = True)

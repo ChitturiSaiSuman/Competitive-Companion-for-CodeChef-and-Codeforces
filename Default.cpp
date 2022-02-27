@@ -1,16 +1,22 @@
 
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/assoc_container.hpp>
 // #include <boost/multiprecision/cpp_int.hpp>
 
+#ifdef ONLINE_JUDGE
+#define debug(x)
+#else
+#include "DEBUG.h"
+#define get_name(x)		#x
+#define debug(x)		cerr << get_name(x) << ": "; debug(x);
+#endif
+
 using namespace std;
-using namespace __gnu_pbds;
+// using namespace __gnu_pbds;
 // using namespace boost::multiprecision;
 
 #define FOR(x, N)			for(int x = 0; x < N; x++)
 #define inverse(a, p)		power(a, p - 2, p)
-#define get_name(x)			#x
-#define debug(x)			cout << get_name(x) << " = " << x << '\n'
 #define endl				'\n'
 
 typedef unsigned long long int ull;
