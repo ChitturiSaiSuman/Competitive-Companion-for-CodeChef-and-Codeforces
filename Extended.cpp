@@ -1268,3 +1268,28 @@ unordered_map<long long, int, custom_hash> safe_map;
 gp_hash_table<long long, int, custom_hash> safe_hash_table;
 
 // ***************************************************************************************
+// Polynomial Hash Functions
+
+int get_hash1(const string& s) {
+    const int p = 31;
+    const int m = 1e9 + 7;
+    long p_pow = 1;
+    int hash_so_far = 0;
+    for(const char& ch: s) {
+        hash_so_far = (hash_so_far + (ch - 'a' + 1) * p_pow) % m;
+        p_pow = (p_pow * p) % m;
+    }
+    return hash_so_far;
+}
+
+int get_hash2(const string& s) {
+    const int p = 37;
+    const int m = 1e9 + 9;
+    long p_pow = 1;
+    int hash_so_far = 0;
+    for(const char& ch: s) {
+        hash_so_far = (hash_so_far + (ch - 'a' + 1) * p_pow) % m;
+        p_pow = (p_pow * p) % m;
+    }
+    return hash_so_far;
+}
