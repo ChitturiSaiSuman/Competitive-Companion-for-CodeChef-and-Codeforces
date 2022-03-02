@@ -35,8 +35,12 @@ def get_samples(problem_link: str) -> list:
     # Headless Chrome driver
     # Runs in background, doesn't open a Chrome window
 
-    driver.get(problem_link)
-    element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.TAG_NAME, "code")))
+    try:
+        driver.get(problem_link)
+        element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.TAG_NAME, "code")))
+    except:
+        print(Fore.RED + "Error in loading problem page for " + problem_link)
+        return []
 
     samples = []
     i = 1
