@@ -1149,7 +1149,7 @@
 		"description": "Nth Fibonacci in O(log N) time"
 	},
 	"Polynomial Rolling Hash Function": {
-		"prefix": "Polynomial rolling hash function",
+		"prefix": "Polynomial Rolling Hash Function",
 		"body": [
 		  "int get_hash1(const string& s) {",
 		  "    const int p = 31;",
@@ -1176,5 +1176,14 @@
 		  "}"
 		],
 		"description": "Polynomial Rolling Hash Function"
+	},
+	"Print Vector": {
+		"prefix": "print vector",
+		"body": [
+		  "for(int _i = 0, _n = ${1:vector_variable}.size(); _i < _n; _i++) {",
+		  "    cout << ${1:vector_variable}[_i] << \" \\n\"[_i == _n - 1];",
+		  "}"
+		],
+		"description": "Writes contents of a vector to stdout"
 	}
 }
