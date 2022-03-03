@@ -1178,12 +1178,21 @@
 		"description": "Polynomial Rolling Hash Function"
 	},
 	"Print Vector": {
-		"prefix": "print vector",
+		"prefix": ["print vector", "output vector", "write vector"],
 		"body": [
 		  "for(int _i = 0, _n = ${1:vector_variable}.size(); _i < _n; _i++) {",
 		  "    cout << ${1:vector_variable}[_i] << \" \\n\"[_i == _n - 1];",
 		  "}"
 		],
 		"description": "Writes contents of a vector to stdout"
+	},
+	"Read Vector": {
+		"prefix": ["scan vector", "input vector", "read vector"],
+		"body": [
+			"for(int _i = 0; _i < (int)${1:vector_variable}.size(); _i++) {",
+			"    cin >> ${1:vector_variable}[_i];",
+			"}"
+		],
+		"description": "Reads contents into a vector from stdin"
 	}
 }
