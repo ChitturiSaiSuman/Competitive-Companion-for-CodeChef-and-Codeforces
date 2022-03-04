@@ -276,7 +276,7 @@ def initialise_workplace(meta_data: dict) -> None:
     # Header to include in the source code
     # Modify it as needed
 
-    header = "Author: Chitturi Sai Suman" + "\n"
+    header = "Author: Sai Suman Chitturi" + "\n"
     header += "Powered by: GitHub Copilot" + "\n"
     header += "Created: " + meta_data['time'] + "\n"
     header += "Contest: " + meta_data['contest_name'] + "\n"
