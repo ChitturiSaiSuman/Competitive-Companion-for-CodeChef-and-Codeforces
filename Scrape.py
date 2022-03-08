@@ -314,9 +314,7 @@ def initialise_workplace(meta_data: dict) -> None:
     print(Fore.GREEN + "Done" + Fore.WHITE, flush = True)
 
 
-if __name__ == '__main__':
-
-    os.system("clear")
+def codechef_scraper():
     contest_link = input(Fore.YELLOW + "Enter Contest Link: " + Fore.WHITE)
 
     now = datetime.datetime.now()
@@ -337,3 +335,28 @@ if __name__ == '__main__':
 
     # Run the Observer in the background
     # os.system('python3 ' + const_path_to_templates + '/Observer.py')
+
+def general():
+    contest_name = input("Contest Name: ")
+    n = int(input("Number of Problems: "))
+
+    now = datetime.datetime.now()
+    now_str = str(now.strftime("%Y-%m-%d %H:%M:%S"))
+
+    meta_data = {}
+    meta_data['time'] = now_str
+    meta_data['contest_code'] = os.path.join(contest_name.replace(' ', '_'))
+    meta_data['contest_name'] = contest_name
+    meta_data['problem_links'] = ['NA'] * n
+    meta_data['problem_codes'] = [str(i) for i in range(1, n + 1)]
+    meta_data['problem_samples'] = [[] for _ in range(n)]
+
+    initialise_workplace(meta_data)
+
+if __name__ == '__main__':
+    os.system("clear")
+    choice = input("Do you want to scrape a Codechef contest? (Y/N) ")
+    if choice in "yesYesYES":
+        codechef_scraper()
+    else:
+        general()
