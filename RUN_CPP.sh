@@ -45,7 +45,7 @@ do
     fi
 done
 
-compilation_log=$(g++ DEBUG.cpp -std=c++17 -Wshadow -Wall -o exe $1 -O2 -Wno-unused-result)
+compilation_log=$(g++ -DSUMAN DEBUG.cpp -std=c++17 -Wshadow -Wall -o exe $1 -O2 -Wno-unused-result)
 
 if [ "$?" != "0" ]
 then

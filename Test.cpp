@@ -3,12 +3,12 @@
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <boost/multiprecision/cpp_int.hpp>
 
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
+#ifdef SUMAN
 #include "DEBUG.h"
 #define get_name(x)		#x
 #define debug(x)		cerr << get_name(x) << ": "; debug(x);
+#else
+#define debug(x)
 #endif
 
 using namespace std;

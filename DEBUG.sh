@@ -35,7 +35,7 @@ do
 done
 
 echo "Compiling $1 using Debug Flags"
-g++ DEBUG.cpp -std=c++17 -Wshadow -Wall -o exe $1 -fsanitize=address -fsanitize=undefined -D_GLIBCXX_DEBUG -g
+g++ -DSUMAN DEBUG.cpp -std=c++17 -Wshadow -Wall -o exe $1 -fsanitize=address -fsanitize=undefined -D_GLIBCXX_DEBUG -g
 
 if [ "$?" != "0" ]
 then
