@@ -1,24 +1,50 @@
-import pyperclip
 import sys
+import json
+import pyperclip
 
-path_to_templates = '/home/suman/Competitive-Companion-for-Codechef/'
+def read_json():
+    path_to_templates = '/home/suman/Competitive-Companion-for-Codechef/'
+    with open(path_to_templates + 'CPP.json') as file:
+        data = json.load(file)
+    return data
 
-sys.path.append(path_to_templates)
+def load_dict(data):
+    c_plus_plus_functions = {}
+    for snippet in data:
+        keys = [snippet]
+        prefix = data[snippet]['prefix']
+        if isinstance(prefix, list):
+            prefix = ' '.join(prefix)
+        keys.append(prefix)
+        keys.append(data[snippet]['description'])
+        keys = ' '.join(keys)
 
-from C_PLUS_PLUS import *
+        value = data[snippet]['body']
+        value = '\n'.join(value)
 
-c_plus_plus_keys = list(c_plus_plus_functions.keys())
+        c_plus_plus_functions[keys] = value
+    return c_plus_plus_functions
 
-function_name = input("Which Function do you need?: ")
-function_name = list(map(str, function_name.lower().split()))
+def query(snippets: dict):
+    keys = list(snippets.keys())
+    function_name = input("Which Function do you need?: ")
+    function_name = list(map(str, function_name.lower().split()))
+    function_key = ""
+    for function in keys:
+        if all([key_word in function.lower() or key_word in snippets[function].lower() for key_word in function_name]):
+            function_key = function
+            break
 
-function_key = ""
+    if function_key == "":
+        print("No Match Found")
+        sys.exit()
 
-for function in c_plus_plus_keys:
-    if all([key_word in function.lower() or key_word in c_plus_plus_functions[function].lower() for key_word in function_name]):
-        function_key = function
-        break
-    
-print("Copied " + function_key + " into clipboard")
-pyperclip.copy(c_plus_plus_functions[function_key])
-pyperclip.waitForPaste(15)
+    print("Copied " + ' '.join(function_name) + " into clipboard")
+    pyperclip.copy(snippets[function_key])
+    pyperclip.waitForPaste(15)
+
+
+if __name__ == '__main__':
+    data = read_json()
+    c_plus_plus_functions = load_dict(data)
+    query(c_plus_plus_functions)

@@ -394,48 +394,6 @@
 		],
 		"description": "Binary Search"
 	},
-	"Lower Bound": {
-		"prefix": "Lower Bound",
-		"body": [
-		  "template <typename T>",
-		  "int lower_bound(vector<T>& a, T key) {",
-		  "    float k = key - 0.5;",
-		  "    int lb = 0, ub = a.size() - 1;",
-		  "    while(lb <= ub) {",
-		  "        int mid = (lb + ub) / 2;",
-		  "        if(a[mid] < k) {",
-		  "            lb = mid + 1;",
-		  "        }",
-		  "        else {",
-		  "            ub = mid - 1;",
-		  "        }",
-		  "    }",
-		  "    return lb;",
-		  "}"
-		],
-		"description": "Lower Bound"
-	},
-	"Upper Bound": {
-		"prefix": "Upper Bound",
-		"body": [
-		  "template <typename T>",
-		  "int upper_bound(vector<T>& a, T key) {",
-		  "    float k = key + 0.5;",
-		  "    int lb = 0, ub = a.size() - 1;",
-		  "    while(lb <= ub) {",
-		  "        int mid = (lb + ub) / 2;",
-		  "        if(a[mid] < k) {",
-		  "            lb = mid + 1;",
-		  "        }",
-		  "        else {",
-		  "            ub = mid - 1;",
-		  "        }",
-		  "    }",
-		  "    return lb;",
-		  "}"
-		],
-		"description": "Upper Bound"
-	},
 	"Count Inversions": {
 		"prefix": "Count Inversions",
 		"body": [
@@ -1236,5 +1194,56 @@
 		  "};"
 		],
 		"description": "Polynomial Rolling Hash Function"
+	},
+	"Simple Tree Generator": {
+		"prefix": "Simple Tree Generator",
+		"body": [
+		  "int randint(int a, int b) {",
+		  "    return a + rand() % (b - a + 1);",
+		  "}",
+		  "",
+		  "void generate() {",
+		  "    int n = randint(2, 20);",
+		  "    printf(\"%d\\n\", n);",
+		  "    for(int i = 2; i <= n; ++i) {",
+		  "        printf(\"%d %d\\n\", rand(1, i - 1), i);",
+		  "    }",
+		  "}"
+		],
+		"description": "Simple Tree Generator"
+	},
+	"Strong Tree Generator": {
+		"prefix": "Strong Tree Generator",
+		"body": [
+		  "int randint(int a, int b) {",
+		  "    return a + rand() % (b - a + 1);",
+		  "}",
+		  "",
+		  "void generate() {",
+		  "    int n = rand(2, 20);",
+		  "    printf(\"%d\\n\", n);",
+		  "    vector<pair<int,int>> edges;",
+		  "    for(int i = 2; i <= n; ++i) {",
+		  "        edges.emplace_back(rand(1, i - 1), i);",
+		  "    }",
+		  "    ",
+		  "    vector<int> perm(n + 1); // re-naming vertices",
+		  "    for(int i = 1; i <= n; ++i) {",
+		  "        perm[i] = i;",
+		  "    }",
+		  "    random_shuffle(perm.begin() + 1, perm.end());",
+		  "    ",
+		  "    random_shuffle(edges.begin(), edges.end()); // random order of edges",
+		  "    ",
+		  "    for(pair<int, int> edge : edges) {",
+		  "        int a = edge.first, b = edge.second;",
+		  "        if(rand() % 2) {",
+		  "            swap(a, b); // random order of two vertices",
+		  "        }",
+		  "        printf(\"%d %d\\n\", perm[a], perm[b]);",
+		  "    }",
+		  "}"
+		],
+		"description": "Strong Tree Generator"
 	}
 }
