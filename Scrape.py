@@ -37,7 +37,7 @@ def get_samples(problem_link: str) -> list:
 
     try:
         driver.get(problem_link)
-        element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.TAG_NAME, "code")))
+        element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.TAG_NAME, "code")))
     except:
         print(Fore.RED + "Error extracting samples from " + problem_link)
         return []
@@ -79,7 +79,7 @@ def extract_problem_links(contest_link: str) -> list:
     driver.get(contest_link)
 
     # Wait until the problem links appear on the contest page
-    element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "dataTable")))
+    element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "dataTable")))
 
     all_links = driver.find_elements(By.TAG_NAME, 'a')
 
@@ -119,7 +119,7 @@ def get_contest_name(contest_link: str) -> str:
     driver = webdriver.Chrome(options = options)
     driver.get(contest_link)
 
-    element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "breadcrumbs")))
+    element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "breadcrumbs")))
     element = driver.find_element(By.CLASS_NAME, 'breadcrumbs')
     inner_text = element.get_attribute('innerHTML')
 
