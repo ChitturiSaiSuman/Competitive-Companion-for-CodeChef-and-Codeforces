@@ -3,17 +3,26 @@
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <boost/multiprecision/cpp_int.hpp>
 
-#ifdef SUMAN
-#include "DEBUG.h"
-#define get_name(x)		#x
-#define debug(x)		cerr << get_name(x) << ": "; debug(x);
-#else
-#define debug(x)
-#endif
-
 using namespace std;
 // using namespace __gnu_pbds;
 // using namespace boost::multiprecision;
+
+template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) {
+	return os << '(' << p.first << ", " << p.second << ')'; 
+}
+template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) {
+	os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}';
+}
+void debug() { cerr << '\n'; }
+template<typename Head, typename... Tail> void debug(Head H, Tail... T) {
+	cerr << ' ' << H; debug(T...);
+}
+
+#ifdef SUMAN
+#define debug(...) cerr << #__VA_ARGS__ << ":", debug(__VA_ARGS__)
+#else
+#define debug(...)
+#endif
 
 #define FOR(x, N)			for(int x = 0; x < N; x++)
 #define inverse(a, p)		power(a, p - 2, p)

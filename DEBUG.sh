@@ -24,7 +24,7 @@ clear
 
 # Check if all of the following files are present
 # If not present, create them
-declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" "DEBUG.cpp" "DEBUG.h" )
+declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" )
 for val in ${files[@]};
 do
     if test -f "$val"; then
@@ -35,7 +35,7 @@ do
 done
 
 echo "Compiling $1 using Debug Flags"
-g++ -DSUMAN DEBUG.cpp -std=c++17 -Wshadow -Wall -o exe $1 -fsanitize=address -fsanitize=undefined -D_GLIBCXX_DEBUG -g
+g++ -DSUMAN -std=c++17 -Wshadow -Wall -o exe $1 -fsanitize=address -fsanitize=undefined -D_GLIBCXX_DEBUG -g
 
 if [ "$?" != "0" ]
 then
