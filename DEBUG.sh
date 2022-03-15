@@ -24,7 +24,7 @@ clear
 
 # Check if all of the following files are present
 # If not present, create them
-declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" )
+declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" "DEBUG.h" )
 for val in ${files[@]};
 do
     if test -f "$val"; then
