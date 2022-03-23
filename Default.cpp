@@ -15,9 +15,8 @@ using namespace std;
 #define debug(x)
 #endif
 
-#define FOR(x, N)			for(int x = 0; x < N; x++)
-#define inverse(a, p)		power(a, p - 2, p)
-#define endl				'\n'
+#define FOR(x, N)	for(int x = 0; x < N; x++)
+#define endl		'\n'
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -31,7 +30,7 @@ const ll hell	= ((ll)(1e9 + 9));
 const ll inf	= ((ll)(1e18 + 3));
 
 static inline ll gcd(ll a, ll b) {
-	for(ll rem = 0; b > 0; rem = a % b, a = b, b = rem);
+	for(; b > 0; a %= b, swap(a, b));
 	return a;
 }
 static inline ll lcm(ll a, ll b) {
@@ -45,6 +44,9 @@ static inline ll power(ll a, ll b, ll p) {
 		}
 	}
 	return result;
+}
+static inline ll inverse(ll a, ll p) {
+	return power(a, p - 2, p);
 }
 
 #define nax 2000003

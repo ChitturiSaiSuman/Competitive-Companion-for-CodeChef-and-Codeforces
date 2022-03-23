@@ -15,9 +15,8 @@ using namespace std;
 #define debug(x)
 #endif
 
-#define FOR(x, N)			for(int x = 0; x < N; x++)
-#define inverse(a, p)		power(a, p - 2, p)
-#define endl				'\n'
+#define FOR(x, N)	for(int x = 0; x < N; x++)
+#define endl		'\n'
 
 typedef unsigned long long int ull;
 typedef long long int ll;
@@ -31,7 +30,7 @@ const ll hell	= ((ll)(1e9 + 9));
 const ll inf	= ((ll)(1e18 + 3));
 
 static inline ll gcd(ll a, ll b) {
-	for(ll rem = 0; b > 0; rem = a % b, a = b, b = rem);
+	for(; b > 0; a %= b, swap(a, b));
 	return a;
 }
 static inline ll lcm(ll a, ll b) {
@@ -45,6 +44,9 @@ static inline ll power(ll a, ll b, ll p) {
 		}
 	}
 	return result;
+}
+static inline ll inverse(ll a, ll p) {
+	return power(a, p - 2, p);
 }
 
 #define nax 2000003
@@ -1270,26 +1272,73 @@ gp_hash_table<long long, int, custom_hash> safe_hash_table;
 // ***************************************************************************************
 // Polynomial Hash Functions
 
-int get_hash1(const string& s) {
-    const int p = 31;
-    const int m = 1e9 + 7;
-    long p_pow = 1;
-    int hash_so_far = 0;
-    for(const char& ch: s) {
-        hash_so_far = (hash_so_far + (ch - 'a' + 1) * p_pow) % m;
-        p_pow = (p_pow * p) % m;
-    }
-    return hash_so_far;
-}
+class Hash {
+private:
+    int length;
+    const int mod1 = 1e9 + 7, mod2 = 1e9 + 9;
+    const int p1 = 31, p2 = 37;
+    vector<int> hash1, hash2;
+    pair<int, int> hash_pair;
 
-int get_hash2(const string& s) {
-    const int p = 37;
-    const int m = 1e9 + 9;
-    long p_pow = 1;
-    int hash_so_far = 0;
-    for(const char& ch: s) {
-        hash_so_far = (hash_so_far + (ch - 'a' + 1) * p_pow) % m;
-        p_pow = (p_pow * p) % m;
+public:
+    inline static vector<int> inv_pow1, inv_pow2;
+    inline static int inv_size = 1;
+
+    Hash(const string& s) {
+        length = s.size();
+        hash1.resize(length);
+        hash2.resize(length);
+
+        int h1 = 0, h2 = 0;
+        long long p_pow1 = 1, p_pow2 = 1;
+        for(int i = 0; i < length; i++) {
+            h1 = (h1 + (s[i] - 'a' + 1) * p_pow1) % mod1;
+            h2 = (h2 + (s[i] - 'a' + 1) * p_pow2) % mod2;
+            p_pow1 = (p_pow1 * p1) % mod1;
+            p_pow2 = (p_pow2 * p2) % mod2;
+            hash1[i] = h1;
+            hash2[i] = h2;
+        }
+        hash_pair = make_pair(h1, h2);
+
+        if(inv_size < length) {
+            for(; inv_size < length; inv_size <<= 1);
+            
+            inv_pow1.resize(inv_size, -1);
+            inv_pow2.resize(inv_size, -1);
+
+            inv_pow1[inv_size - 1] = inverse(power(p1, inv_size - 1, mod1), mod1);
+            inv_pow2[inv_size - 1] = inverse(power(p2, inv_size - 1, mod2), mod2);
+            
+            for(int i = inv_size - 2; i >= 0 && inv_pow1[i] == -1; i--) {
+                inv_pow1[i] = (1LL * inv_pow1[i + 1] * p1) % mod1;
+                inv_pow2[i] = (1LL * inv_pow2[i + 1] * p2) % mod2;
+            }
+        }
     }
-    return hash_so_far;
-}
+
+    int size() {
+        return length;
+    }
+
+    pair<int, int> prefix(const int index) {
+        return {hash1[index], hash2[index]};
+    }
+
+    pair<int, int> substr(const int l, const int r) {
+        if(l == 0) {
+            return {hash1[r], hash2[r]};
+        }
+        int temp1 = hash1[r] - hash1[l - 1];
+        int temp2 = hash2[r] - hash2[l - 1];
+        temp1 += (temp1 < 0 ? mod1 : 0);
+        temp2 += (temp2 < 0 ? mod2 : 0);
+        temp1 = (temp1 * 1LL * inv_pow1[l]) % mod1;
+        temp2 = (temp2 * 1LL * inv_pow2[l]) % mod2;
+        return {temp1, temp2};
+    }
+
+    bool operator==(const Hash& other) {
+        return (hash_pair == other.hash_pair);
+    }
+};
