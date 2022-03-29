@@ -68,6 +68,9 @@ int main() {
 	FOR(test, t) {
 		// cout << "Case #" << (test + 1) << ": ";
 		solve();
+		#ifdef SUMAN
+		cerr << '\n';
+		#endif
 	}
 	return 0;
 }
