@@ -1,20 +1,18 @@
 import os, sys
 
+# Usage: python3 Custom_Judge.py AC.cpp WA.cpp
+# Write your generator in Generator.cpp
+# All files in the same directory
+# AC.cpp (or any name you want) is the correct answer
+# WA.cpp (or any name you want) is the one to be tested
+
+
 # The first argument must be the path 
 # to the Correct Submission if do_stress is True
 do_stress = False
 limit = 100
 
 def custom_judge(stdin: list, stdout: list, stdexpout: list) -> bool:
-    # Default Judge
-    if len(stdout) != len(stdexpout):
-        return False
-    for i in range(len(stdout)):
-        if stdout[i] != stdexpout[i]:
-            return False
-    return True
-    # Comment above and Write your custom judge here
-    # 
 
     stdin = stdin[::-1]
     stdout = stdout[::-1]
@@ -23,7 +21,17 @@ def custom_judge(stdin: list, stdout: list, stdexpout: list) -> bool:
     def read(file):
         return file.pop()
 
-    # T = int(read(stdin))
+    # Default Judge
+    if len(stdout) != len(stdexpout):
+        return False
+    for i in range(len(stdout)):
+        if stdout[i] != stdexpout[i]:
+            return False
+    return True
+    # Comment above and Write your custom judge here
+    # Example:    
+
+    # T = int(read(stdin)) # Number of test cases
 
     return True
     
