@@ -9,8 +9,8 @@ using namespace std;
 
 #ifdef SUMAN
 #include "DEBUG.h"
-#define get_name(x) #x
-#define debug(x)    cerr << get_name(x) << ":"; debug(x)
+#define LINE		cerr << "line " << __LINE__ << ": ";
+#define debug(x)    LINE; cerr << "(" << #x << ")"; debug(x)
 #else
 #define debug(x)
 #endif

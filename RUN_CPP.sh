@@ -22,6 +22,11 @@ YELLOW='\033[1;33m'
 
 path_to_templates='/home/suman/Competitive-Companion-for-Codechef'
 
+# Highly Important: Limit the Memory usage
+# of the program to 2 Gigabytes
+
+ulimit -v 2097152
+
 clear
 
 # Pass any additional argument to the script for No Judge

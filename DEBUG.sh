@@ -10,6 +10,11 @@
 # Modify this to change the source of Templates
 templates_directory='/home/suman/Competitive-Companion-for-Codechef'
 
+# Highly Important: Limit the Memory usage
+# of the program to 2 Gigabytes
+
+ulimit -v 2097152
+
 NC='\033[0m'
 ORANGE='\033[0;33m'
 BLACK='\033[1;30m'
