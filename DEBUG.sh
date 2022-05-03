@@ -29,13 +29,15 @@ clear
 
 # Check if all of the following files are present
 # If not present, create them
-declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" "DEBUG.h" )
+declare -a files=("STDIN" "STDOUT" "STDEXPOUT" "STDERR" "Test.cpp"
+                  "DEBUG.h" "Custom_Judge.py" "Generator.cpp")
+                  
 for val in ${files[@]};
 do
     if test -f "$val"; then
         :
     else
-        touch $val
+        cp $path_to_templates/$val .
     fi
 done
 
