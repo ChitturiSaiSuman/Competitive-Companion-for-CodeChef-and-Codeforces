@@ -1,4 +1,8 @@
 
+#pragma GCC optimize("Ofast")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
+#pragma GCC optimize("unroll-loops")
+
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <boost/multiprecision/cpp_int.hpp>
@@ -38,7 +42,7 @@ static inline ll lcm(ll a, ll b) {
 }
 static inline ll power(ll a, ll b, ll p) {
 	ll result = 1;
-	for(; b > 0; b >>= 1, (a = a * a % p)) {
+	for(; b > 0; b >>= 1, a = a * a % p) {
 		if(b & 1) {
 			result = result * a % p;
 		}

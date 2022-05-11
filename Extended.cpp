@@ -1,4 +1,8 @@
 
+#pragma GCC optimize("Ofast")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
+#pragma GCC optimize("unroll-loops")
+
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <boost/multiprecision/cpp_int.hpp>
@@ -38,7 +42,7 @@ static inline ll lcm(ll a, ll b) {
 }
 static inline ll power(ll a, ll b, ll p) {
 	ll result = 1;
-	for(; b > 0; b >>= 1, (a = a * a % p)) {
+	for(; b > 0; b >>= 1, a = a * a % p) {
 		if(b & 1) {
 			result = result * a % p;
 		}
@@ -571,34 +575,34 @@ vector<ll> inv;
 
 void prepare(int N, ll p) {
 
-    // factorials
-    fact.resize(N);
-    fact[0] = 1;
-    for(int i = 1; i < N; i++) {
-        fact[i] = (fact[i - 1] * i) % p;
-    }
+	// factorials
+	fact.resize(N);
+	fact[0] = 1;
+	for(int i = 1; i < N; i++) {
+		fact[i] = fact[i - 1] * i % p;
+	}
 
-    // inv_factorials
-    inv_fact.resize(N);
-    inv_fact[N - 1] = power(fact[N - 1], p - 2, p);
-    for(int i = N - 2; i >= 0; i--) {
-        inv_fact[i] = ((i + 1) * inv_fact[i + 1]) % p;
-    }
+	// inv_factorials
+	inv_fact.resize(N);
+	inv_fact[N - 1] = power(fact[N - 1], p - 2, p);
+	for(int i = N - 2; i >= 0; i--) {
+		inv_fact[i] = inv_fact[i + 1] * (i + 1) % p;
+	}
 
-    // inverses
-    inv.resize(N);
-    inv[0] = 0;
-    for(int i = 1; i < N; i++) {
-        inv[i] = (fact[i - 1] * inv_fact[i]) % p;
-    }
+	// inverses
+	inv.resize(N);
+	inv[0] = 0;
+	for(int i = 1; i < N; i++) {
+		inv[i] = fact[i - 1] * inv_fact[i] % p;
+	}
 }
 
 ll nCr_mod_p(int n, int r, ll p) {
-    return (fact[n] * (inv_fact[r] * inv_fact[n - r]) % p) % p;
+	return fact[n] * (inv_fact[r] * inv_fact[n - r] % p) % p;
 }
 
 ll nth_catalan_mod_p(int n, ll p) {
-    return (nCr_mod_p(2 * n, n, p) * inv[n + 1]) % p;
+	return nCr_mod_p(2 * n, n, p) * inv[n + 1] % p;
 }
 // End of Template for P & C
 
