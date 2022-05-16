@@ -81,8 +81,8 @@ def start(url: str) -> None:
         if any(new_stack[i] == old_stack[i] for i in range(len(new_stack))):
             sleep(10)
             continue
-        print("New Submission Detected. Details:", new_stack[-1], flush = True)
-        check_status(new_stack[-1])
+        print("New Submission Detected. Details:", new_stack[0], flush = True)
+        check_status(new_stack[0])
         old_stack = new_stack
 
 
