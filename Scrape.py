@@ -334,7 +334,7 @@ def codechef_scraper():
     print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + total_time + " seconds\n" + Fore.WHITE)
 
     # Run the Observer in the background
-    # os.system('python3 ' + const_path_to_templates + '/Observer.py')
+    os.system('python3 ' + const_path_to_templates + '/Observer.py')
 
 def general():
     contest_name = input("Contest Name: ")

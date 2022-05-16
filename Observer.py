@@ -17,124 +17,73 @@ from selenium.webdriver.common.by import By
 
 from time import sleep
 from gtts import gTTS
-from os import system
-from re import findall
+from playsound import playsound
+from os import remove
+import sys
 
 # Constants:
 # Path to Templates, modify this based on your system
 path_to_templates = '/home/suman/Competitive-Companion-for-Codechef'
+sys.path.append(path_to_templates)
+
+# This is the x_path of the last submission of the User
+relative_xpath = "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/aside[1]/div[2]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]"
+
+from Submission import *
+
 # Speech synthesis for Accepted Submission
 accepted = 'Your submission has been accepted'
 processing = 'Your submissions is being processed'
 rejected = 'Your submission was not accepted'
-
-class Submission:
-    def __init__(self, time_of_submission, problem, verdict, lang, link):
-        self.time_of_submission = time_of_submission
-        self.problem = problem
-        self.verdict = verdict
-        self.lang = lang
-        self.link = link
-
-    def get_data(self) -> tuple:
-        return (self.time_of_submission,
-                self.problem,
-                self.verdict,
-                self.lang,
-                self.link
-            )
-
-    def __eq__(self, obj) -> bool:
-        return self.get_data() == obj.get_data()
 
 def speak(text: str) -> None:
     object = gTTS(text = text, lang = 'en', slow = False)
     destination_file = path_to_templates + '/Voice.mp3'
     object.save(destination_file)
     print(text, flush = True)
-    system('mpg123 ' + destination_file)
-    system('rm ' + destination_file)
+    playsound(destination_file)
+    remove(destination_file)
 
-def check_status(url: str) -> None:
-    # Create an instance of Chrome
-    options = webdriver.ChromeOptions()
-    # Headless implies no GUI
-    options.add_argument('headless')
-    driver = webdriver.Chrome(options = options)
-
-    # Open the Profile page of the User
-    driver.get(url)
-    # Get the last submission of the User
-    element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.XPATH, "//tbody/tr[1]/td[3]/span[1]/img[1]")))[0]
-
-    # Get the status of the last submission
-    src = element.get_attribute('src')
-    if 'tick' in src:
+def check_status(submission: Submission) -> None:
+    verdict = submission.verdict
+    if verdict == 'AC':
         speak(accepted)
-    elif 'loader' in src:
+    elif verdict == 'NA':
         speak(processing)
-        sleep(10)
-        check_status(url)
+        sleep(5)
+        check_status(submission)
     else:
         speak(rejected)
 
-def parse_element(text: str) -> Submission:
-    elements = list(map(lambda x: x + '</td>', text.split('</td>')))
-    
-    submission = elements[0]
-    if 'PM' in submission or 'AM' in submission:
-        time = findall('\d{1,2}[:]\d{2}', submission)[0]
-        date = findall('\d{1,2}[.\-/]\d{1,2}[.\-/]\d{1,2}', submission)[0]
-        time_of_submission = (time, 'AM' if 'AM' in submission else 'PM', date)
-    else:
-        if 'min' in submission:
-            
-
-
-"/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/aside[1]/div[2]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]"
-"/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/aside[1]/div[2]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[2]"
-"/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/aside[1]/div[2]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[3]"
-
-def start(url: str) -> None:
-
-    # last_ten_submissions = []
-
-    # This is the x_path of the last submission of the User
-    relative_xpath = "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/aside[1]/div[2]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[8]"
-
-    # Create an instance of Chrome
+def get_submission_stack(url: str) -> list:
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
     driver = webdriver.Chrome(options = options)
-
-    # Open the Profile page of the User
     driver.get(url)
 
-    # Get the last submission of the User
-    # Waits until the element loads on the page
-    element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.XPATH, relative_xpath)))[0]
+    stack = []
 
-    last_submission = element.get_attribute('innerHTML')
-    # print(last_submission)
-    parse_element(last_submission)
-    # return
-    last_submission_id = last_submission.split('/')[-1]
+    for i in range(1, 13):
+        path = relative_xpath[:-2] + str(i) + ']'
+        element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.XPATH, path)))[0]
+        submission = element.get_attribute('innerHTML')
+        submission = parse_submission(submission)
+        stack.append(submission)
+    
+    return stack
 
-    print("Identified Last Submission:", last_submission_id)
-
+def start(url: str) -> None:
+    old_stack = get_submission_stack(url)
+    print("List of Submissions: ", flush = True)
+    print(*old_stack, sep = '\n', flush = True, end = '\n\n')
     while True:
-        driver.get(url)
-        element = WebDriverWait(driver, 100).until(EC.presence_of_all_elements_located((By.XPATH, relative_xpath)))[0]
-
-        current_submission = element.get_attribute('innerHTML')
-
-        # If the last submission has changed, check the status of the submission
-        current_submission_id = current_submission.split('/')[-1]
-        if current_submission_id != last_submission_id:
-            print("New Submission Detected. Submission id: " + current_submission_id, flush = True)
-            check_status(url)
-
-        last_submission_id = current_submission_id
+        new_stack = get_submission_stack(url)
+        if any(new_stack[i] == old_stack[i] for i in range(len(new_stack))):
+            sleep(10)
+            continue
+        print("New Submission Detected. Details:", new_stack[-1], flush = True)
+        check_status(new_stack[-1])
+        old_stack = new_stack
 
 
 if __name__ == '__main__':
