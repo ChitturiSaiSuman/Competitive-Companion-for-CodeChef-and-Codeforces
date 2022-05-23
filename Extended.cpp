@@ -1349,3 +1349,35 @@ public:
         return (hash_pair == other.hash_pair);
     }
 };
+
+int longest_common_substring(const string& s1, const string& s2) {
+    Hash h1(s1), h2(s2);
+    const int m = s1.length(), n = s2.length();
+
+    auto find = [&](int k) {
+        set<pair<int, int>> substring_hashes;
+        for(int begin = 0, end = begin + k - 1; end < n; begin++, end++) {
+            substring_hashes.insert(h2.substr(begin, end));
+        }
+        for(int begin = 0, end = begin + k - 1; end < m; begin++, end++) {
+            if(substring_hashes.count(h1.substr(begin, end))) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    int lcs_length = 0;
+    int lb = 1, ub = min(m, n);
+    while(lb <= ub) {
+        int mid = (lb + ub) / 2;
+        if(find(mid)) {
+            lcs_length = mid;
+            lb = mid + 1;
+        } else {
+            ub = mid - 1;
+        }
+    }
+
+    return lcs_length;
+}
