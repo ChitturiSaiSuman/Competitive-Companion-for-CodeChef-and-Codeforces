@@ -2,8 +2,6 @@
 
 **Automatically Scrape Test Cases for Codechef Contest problems. Also has a built-in judge that can Judge Solutions against Samples**
 
-Powered by: GitHub Copilot
-
 ## 1. Introduction
 
 Competetive Companion is a Python Script that can be used to scrape test cases for Codechef Contest problems. It also has a built-in judge that can Judge Solutions against Samples.
