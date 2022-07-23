@@ -26,8 +26,9 @@ def get_samples(problem_link: str) -> list:
     xpath = "//body/div[@id='ember-root']/div[@id='ember242']/div[@id='ember251']/main[@id='content-regions']/section[1]/div[1]/span[3]/pre[1]"
     # xpath of the sample test cases
 
-    xpath_prefix = "//body/div[@id='ember-root']/div[@id='ember242']/div[@id='ember251']/main[@id='content-regions']/section[1]/div[1]/span["
-    xpath_suffix = "]/pre[1]"
+    xpath_prefix = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div["
+    xpath_suffix_1 = "]/div[2]/div[1]/pre[1]"
+    xpath_suffix_2 = "]/div[2]/div[2]/pre[1]"
 
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
@@ -37,20 +38,23 @@ def get_samples(problem_link: str) -> list:
 
     try:
         driver.get(problem_link)
-        element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.TAG_NAME, "code")))
+        element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "_input_output__table_lulsq_184")))
     except:
         print(Fore.RED + "Error extracting samples from " + problem_link)
         return []
 
     samples = []
-    i = 1
+    i = 2
 
     # iterate for multiple test cases
     while True:
-        absolute_xpath = xpath_prefix + str(i) + xpath_suffix
+        absolute_xpath_1 = xpath_prefix + str(i) + xpath_suffix_1
+        absolute_xpath_2 = xpath_prefix + str(i) + xpath_suffix_2
         try:
-            element = driver.find_element(By.XPATH, absolute_xpath)
-            samples.append(element.text)
+            element = driver.find_element(By.XPATH, absolute_xpath_1)
+            samples.append(element.get_attribute('innerHTML'))
+            element = driver.find_element(By.XPATH, absolute_xpath_2)
+            samples.append(element.get_attribute('innerHTML'))
             i += 1
         except:
             break
@@ -91,6 +95,8 @@ def extract_problem_links(contest_link: str) -> list:
             # A problem link is of the form:
             # https://www.codechef.com/<contest_code>/problems/<problem_code>
             if link.startswith(prefix):
+                if problem_links != [] and problem_links[-1] == link:
+                    continue
                 problem_links.append(link)
         except:
             # Probably the contest has not started yet
@@ -277,6 +283,7 @@ def initialise_workplace(meta_data: dict) -> None:
     # Modify it as needed
 
     header = "Author: Sai Suman Chitturi" + "\n"
+    header += "Powered by: Amazon CodeWhisperer" + "\n"
     header += "Created: " + meta_data['time'] + "\n"
     header += "Contest: " + meta_data['contest_name'] + "\n"
 
