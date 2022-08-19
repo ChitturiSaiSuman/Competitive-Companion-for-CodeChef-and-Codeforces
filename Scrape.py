@@ -44,7 +44,9 @@ def get_samples(problem_link: str) -> list:
         return []
 
     samples = []
-    i = 2
+    i = 3
+
+    tried_other_way = False
 
     # iterate for multiple test cases
     while True:
@@ -57,7 +59,15 @@ def get_samples(problem_link: str) -> list:
             samples.append(element.get_attribute('innerHTML'))
             i += 1
         except:
-            break
+            if samples == []:
+                if not tried_other_way:
+                    i = 2
+                    tried_other_way = True
+                    continue
+                else:
+                    break
+            else:
+                break
 
     driver.quit()
     print(Fore.YELLOW + "Extracting samples for " + problem_link + "... " + Fore.GREEN + "Done")
@@ -73,7 +83,8 @@ def extract_problem_links(contest_link: str) -> list:
     options.add_argument('headless')
     driver = webdriver.Chrome(options = options)
 
-    prefix = contest_link
+    contest_prefix = contest_link
+    practice_substring = "/submit/"
 
     if "?" in contest_link:
         prefix = contest_link[:contest_link.index("?")]
@@ -94,7 +105,11 @@ def extract_problem_links(contest_link: str) -> list:
             link = str(link.get_attribute('href'))
             # A problem link is of the form:
             # https://www.codechef.com/<contest_code>/problems/<problem_code>
-            if link.startswith(prefix):
+            if link.startswith(contest_prefix):
+                if problem_links != [] and problem_links[-1] == link:
+                    continue
+                problem_links.append(link)
+            elif practice_substring in link:
                 if problem_links != [] and problem_links[-1] == link:
                     continue
                 problem_links.append(link)
@@ -169,11 +184,11 @@ def extract_meta_data(contest_link: str) -> dict:
     problem_codes = get_problem_codes(problem_links)
 
     # Problem Samples
-    # Uses multi-threading concept to speed up the process
+    # Uses multi-threading to speed up the process
     # Creates N number of threads, where N is the number of problems
     # N = |Scorable problems| + |Non-scorable problems|
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers = len(problem_links)) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
         results = executor.map(get_samples, problem_links)
 
     problem_samples = list(results)
@@ -340,7 +355,7 @@ def codechef_scraper():
     print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + total_time + " seconds\n" + Fore.WHITE)
 
     # Run the Observer in the background
-    os.system('python3 ' + const_path_to_templates + '/Observer.py')
+    # os.system('python3 ' + const_path_to_templates + '/Observer.py')
 
 def general():
     contest_name = input("Contest Name: ")
