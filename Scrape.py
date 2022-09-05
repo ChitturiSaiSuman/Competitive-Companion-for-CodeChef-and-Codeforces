@@ -7,201 +7,12 @@
 import os
 import shutil
 import datetime
-import concurrent.futures
 from colorama import Fore
-
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+from Codechef import Codechef
+from Codeforces import Codeforces
 
 const_path_to_templates = '/home/suman/Competitive-Companion-for-Codechef'
 
-def get_samples(problem_link: str) -> list:
-    # Given the link to the problem page
-    # This function will return a list of strings
-    # [input0, output0, input1, output1, ...]
-    # Probably doesn't work for interactive problems
-
-    xpath = "//body/div[@id='ember-root']/div[@id='ember242']/div[@id='ember251']/main[@id='content-regions']/section[1]/div[1]/span[3]/pre[1]"
-    # xpath of the sample test cases
-
-    xpath_prefix = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div["
-    xpath_suffix_1 = "]/div[2]/div[1]/pre[1]"
-    xpath_suffix_2 = "]/div[2]/div[2]/pre[1]"
-
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    driver = webdriver.Chrome(options = options)
-    # Headless Chrome driver
-    # Runs in background, doesn't open a Chrome window
-
-    try:
-        driver.get(problem_link)
-        element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "_input_output__table_lulsq_184")))
-    except:
-        print(Fore.RED + "Error extracting samples from " + problem_link)
-        return []
-
-    samples = []
-    i = 3
-
-    tried_other_way = False
-
-    # iterate for multiple test cases
-    while True:
-        absolute_xpath_1 = xpath_prefix + str(i) + xpath_suffix_1
-        absolute_xpath_2 = xpath_prefix + str(i) + xpath_suffix_2
-        try:
-            element = driver.find_element(By.XPATH, absolute_xpath_1)
-            samples.append(element.get_attribute('innerHTML'))
-            element = driver.find_element(By.XPATH, absolute_xpath_2)
-            samples.append(element.get_attribute('innerHTML'))
-            i += 1
-        except:
-            if samples == []:
-                if not tried_other_way:
-                    i = 2
-                    tried_other_way = True
-                    continue
-                else:
-                    break
-            else:
-                break
-
-    driver.quit()
-    print(Fore.YELLOW + "Extracting samples for " + problem_link + "... " + Fore.GREEN + "Done")
-    return samples
-
-
-def extract_problem_links(contest_link: str) -> list:
-    # Given a link to a contest page
-    # Returns a list of links to problem pages
-
-    print(Fore.CYAN + "Extracting problem links... ", end = "", flush = True)
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    driver = webdriver.Chrome(options = options)
-
-    contest_prefix = contest_link
-    practice_substring = "/submit/"
-
-    if "?" in contest_link:
-        prefix = contest_link[:contest_link.index("?")]
-
-    prefix += "/problems"
-
-    driver.get(contest_link)
-
-    # Wait until the problem links appear on the contest page
-    element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "dataTable")))
-
-    all_links = driver.find_elements(By.TAG_NAME, 'a')
-
-    problem_links = []
-
-    for link in all_links:
-        try:
-            link = str(link.get_attribute('href'))
-            # A problem link is of the form:
-            # https://www.codechef.com/<contest_code>/problems/<problem_code>
-            if link.startswith(contest_prefix):
-                if problem_links != [] and problem_links[-1] == link:
-                    continue
-                problem_links.append(link)
-            elif practice_substring in link:
-                if problem_links != [] and problem_links[-1] == link:
-                    continue
-                problem_links.append(link)
-        except:
-            # Probably the contest has not started yet
-            # or there is issue loading problems on the page
-
-            print(Fore.RED + "Attempt to Extract failed. Retrying... ", flush = True)
-            return []
-    
-    driver.quit()
-    if problem_links == []:
-        # Probably the contest has not started yet
-        # or there is issue loading problems on the page
-        print(Fore.RED + "Attempt to Extract failed. Retrying... ", flush = True)
-        return []
-    print(Fore.GREEN + "Done\n", flush = True)
-    return problem_links
-
-
-def get_contest_name(contest_link: str) -> str:
-    # Given a contest link
-    # Returns the contest name
-
-    print(Fore.YELLOW + "Extracting contest name... ", end = "", flush = True)
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    driver = webdriver.Chrome(options = options)
-    driver.get(contest_link)
-
-    element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "breadcrumbs")))
-    element = driver.find_element(By.CLASS_NAME, 'breadcrumbs')
-    inner_text = element.get_attribute('innerHTML')
-
-    contest_name = inner_text[inner_text.rindex(";") + 1:].strip()
-    driver.quit()
-    print(Fore.GREEN + "Done", flush = True)
-    print(Fore.YELLOW + "Contest Name: " + Fore.GREEN + contest_name, flush = True)
-    return contest_name
-
-def get_problem_codes(problem_links: list) -> list:
-
-    # Given a list of problem links
-    # Returns a list of problem codes
-
-    problem_codes = []
-    for link in problem_links:
-        code = link[link.rindex('/') + 1:]
-        problem_codes.append(code)
-    
-    return problem_codes
-
-
-def extract_meta_data(contest_link: str) -> dict:
-
-    # Contest Code
-    contest_code = ""
-    if "?" in contest_link:
-        contest_code = contest_link[contest_link.rindex("/") + 1: contest_link.index("?")]
-    else:
-        contest_code = contest_link[contest_link.rindex("/") + 1:]
-
-    # Contest Name
-    contest_name = get_contest_name(contest_link)
-
-    # Problem links
-    problem_links = []
-    while problem_links == []:
-        problem_links = extract_problem_links(contest_link)
-
-    # Problem Codes
-    problem_codes = get_problem_codes(problem_links)
-
-    # Problem Samples
-    # Uses multi-threading to speed up the process
-    # Creates N number of threads, where N is the number of problems
-    # N = |Scorable problems| + |Non-scorable problems|
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
-        results = executor.map(get_samples, problem_links)
-
-    problem_samples = list(results)
-
-    # Problem Meta Data
-    meta_data = {}
-    meta_data['contest_code'] = contest_code
-    meta_data['contest_name'] = contest_name
-    meta_data['problem_links'] = problem_links
-    meta_data['problem_codes'] = problem_codes
-    meta_data['problem_samples'] = problem_samples
-
-    return meta_data
 
 def copy_default_files(path_to_problem, path_to_templates) -> None:
     # Use this to copy templates to the Workplace folder
@@ -217,10 +28,7 @@ def copy_default_files(path_to_problem, path_to_templates) -> None:
     files_needed += ['DEBUG.h', 'Custom_Judge.py', 'STDIN', 'STDEXPOUT']
 
     for file in files_needed:
-        # print(Fore.YELLOW + "Copying " + file + "...", end = "", flush = True)
         shutil.copy(path_to_templates + "/" + file, path_to_problem)
-        # print(Fore.GREEN + "Done", flush = True)
-    # print()
 
 def create_problem(path_to_workplace: str, default_source: str, header: str, problem_link: str, problem_code: str, test_cases: list) -> None:
 
@@ -341,14 +149,12 @@ def codechef_scraper():
     now = datetime.datetime.now()
     now_str = str(now.strftime("%Y-%m-%d %H:%M:%S"))
 
-    
     print()
-    meta_data = extract_meta_data(contest_link)
+    contest = Codechef(contest_link)
+    meta_data = contest.extract_meta_data()
     meta_data['time'] = now_str
 
     initialise_workplace(meta_data)
-
-    # os.system("clear")
 
     total_time = "%.0f" % (datetime.datetime.now() - now).total_seconds()
     
@@ -357,7 +163,24 @@ def codechef_scraper():
     # Run the Observer in the background
     # os.system('python3 ' + const_path_to_templates + '/Observer.py')
 
-def general():
+def codeforces_scraper():
+    contest_link = input(Fore.YELLOW + "Enter Contest Link: " + Fore.WHITE)
+
+    now = datetime.datetime.now()
+    now_str = str(now.strftime("%Y-%m-%d %H:%M:%S"))
+
+    print()
+    contest = Codeforces(contest_link)
+    meta_data = contest.extract_meta_data()
+    meta_data['time'] = now_str
+
+    initialise_workplace(meta_data)
+
+    total_time = "%.0f" % (datetime.datetime.now() - now).total_seconds()
+    
+    print(Fore.YELLOW + "\nScrape time: " + Fore.GREEN + "" + total_time + " seconds\n" + Fore.WHITE)
+
+def generic():
     contest_name = input("Contest Name: ")
     n = int(input("Number of Problems: "))
 
@@ -376,8 +199,15 @@ def general():
 
 if __name__ == '__main__':
     os.system("clear")
-    choice = input("Do you want to scrape a Codechef contest? (Y/N) ")
-    if choice in "yesYesYES":
+    print("Select one among the following")
+    print("1. CodeChef")
+    print("2. Codeforces")
+    print("3. Generic Contest")
+
+    choice = input("Enter your input: ")
+    if choice == "1":
         codechef_scraper()
+    elif choice == "2":
+        codeforces_scraper()
     else:
-        general()
+        generic()
