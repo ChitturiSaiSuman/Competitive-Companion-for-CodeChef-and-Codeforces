@@ -3,7 +3,7 @@ import json
 import pyperclip
 
 def read_json():
-    path_to_templates = '/home/suman/Competitive-Companion-for-Codechef/'
+    path_to_templates = '/home/suman/Competitive-Companion-for-CodeChef-and-Codeforces/'
     with open(path_to_templates + 'CPP.json') as file:
         data = json.load(file)
     return data

@@ -20,7 +20,7 @@ PURPLE='\033[1;35m'
 CYAN='\033[1;36m'
 YELLOW='\033[1;33m'
 
-path_to_templates='/home/suman/Competitive-Companion-for-Codechef'
+path_to_templates='/home/suman/Competitive-Companion-for-CodeChef-and-Codeforces'
 
 # Highly Important: Limit the Memory usage
 # of the program to 2 Gigabytes

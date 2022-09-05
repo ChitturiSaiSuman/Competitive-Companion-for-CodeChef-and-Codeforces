@@ -11,7 +11,7 @@ from colorama import Fore
 from Codechef import Codechef
 from Codeforces import Codeforces
 
-const_path_to_templates = '/home/suman/Competitive-Companion-for-Codechef'
+const_path_to_templates = '/home/suman/Competitive-Companion-for-CodeChef-and-Codeforces'
 
 
 def copy_default_files(path_to_problem, path_to_templates) -> None:
@@ -55,7 +55,7 @@ def create_problem(path_to_workplace: str, default_source: str, header: str, pro
         with open(path_to_file, 'w') as file:
             problem_link = "Problem: " + problem_link + "\n"
             header = '/*\n' + header + problem_link + '\n'
-            header += "Scraped using https://github.com/ChitturiSaiSuman/Competitive-Companion-for-Codechef\n" + '*/\n'
+            header += "Scraped using https://github.com/ChitturiSaiSuman/Competitive-Companion-for-CodeChef-and-Codeforces\n" + '*/\n'
             source_code = header + default_source
             file.write(source_code)
 

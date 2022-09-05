@@ -23,7 +23,7 @@ import sys
 
 # Constants:
 # Path to Templates, modify this based on your system
-path_to_templates = '/home/suman/Competitive-Companion-for-Codechef'
+path_to_templates = '/home/suman/Competitive-Companion-for-CodeChef-and-Codeforces'
 sys.path.append(path_to_templates)
 
 # This is the x_path of the last submission of the User

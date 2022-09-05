@@ -8,7 +8,7 @@
 # Light Gray   0;37     White         1;37
 
 # Modify this to change the source of Templates
-templates_directory='/home/suman/Competitive-Companion-for-Codechef'
+templates_directory='/home/suman/Competitive-Companion-for-CodeChef-and-Codeforces'
 
 # Highly Important: Limit the Memory usage
 # of the program to 2 Gigabytes

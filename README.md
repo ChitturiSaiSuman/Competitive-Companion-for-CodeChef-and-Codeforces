@@ -13,10 +13,10 @@ Competetive Companion is a Python Script that can be used to scrape test cases f
 # Run the following commands in a terminal:
 
 # Clone the repository
-git clone https://github.com/ChitturiSaiSuman/Competitive-Companion-for-Codechef.git
+git clone https://github.com/ChitturiSaiSuman/Competitive-Companion-for-CodeChef-and-Codeforces.git
 
 # Change directory to the repository
-cd Competitive-Companion-for-Codechef
+cd Competitive-Companion-for-CodeChef-and-Codeforces
 
 # Run the application
 python3 Scrape.py
@@ -51,10 +51,10 @@ pip install coloroma
 nano ~/.bashrc
 # Add the following lines at the beginning of the file
 
-alias run="bash /home/<user_name>/Competitive-Companion-for-Codechef/RUN_CPP.sh"
-alias stress="bash /home/<user_name>/Competitive-Companion-for-Codechef/STRESS.sh"
-alias debug="bash /home/<user_name>/Competitive-Companion-for-Codechef/DEBUG.sh"
-alias clip="python3 /home/<user_name>/Competitive-Companion-for-Codechef/Snippet_Copier.py"
+alias run="bash /home/<user_name>/Competitive-Companion-for-CodeChef-and-Codeforces/RUN_CPP.sh"
+alias stress="bash /home/<user_name>/Competitive-Companion-for-CodeChef-and-Codeforces/STRESS.sh"
+alias debug="bash /home/<user_name>/Competitive-Companion-for-CodeChef-and-Codeforces/DEBUG.sh"
+alias clip="python3 /home/<user_name>/Competitive-Companion-for-CodeChef-and-Codeforces/Snippet_Copier.py"
 
 # Save the file using CTRL + O and then Y
 # Exit nano using CTRL + X
