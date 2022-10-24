@@ -30,14 +30,14 @@ def copy_default_files(path_to_problem, path_to_templates) -> None:
     for file in files_needed:
         shutil.copy(path_to_templates + "/" + file, path_to_problem)
 
-def create_problem(path_to_workplace: str, default_source: str, header: str, problem_link: str, problem_code: str, test_cases: list) -> None:
+def create_problem(path_to_workspace: str, default_source: str, header: str, problem_link: str, problem_code: str, test_cases: list) -> None:
 
-    # Creates files neccessary for a problem in the Workplace folder
+    # Creates files neccessary for a problem in the Workspace folder
     # Files include: <problem_code>.cpp, <problem_code>_00.in, <problem_code>_00.out
     # <problem_code>_01.in, <problem_code>_01.out, ...
 
     # Create a folder for the problem
-    path_to_problem = path_to_workplace + "/" + problem_code
+    path_to_problem = path_to_workspace + "/" + problem_code
     try:
         os.makedirs(path_to_problem)
     except:
@@ -111,14 +111,14 @@ def initialise_workplace(meta_data: dict) -> None:
     header += "Contest: " + meta_data['contest_name'] + "\n"
 
     # Path to Workplace, modify it as needed
-    path_to_workplace = '/home/suman/' + meta_data['contest_code']
+    path_to_workspace = '/home/suman/' + meta_data['contest_code']
 
     path_to_templates = const_path_to_templates
 
-    print(Fore.YELLOW + "\nCreating workplace " + path_to_workplace + "...\n", flush = True)
+    print(Fore.YELLOW + "\nCreating workspace " + path_to_workspace + "...\n", flush = True)
 
     try:
-        os.makedirs(path_to_workplace)
+        os.makedirs(path_to_workspace)
     except:
         pass
 
@@ -133,13 +133,13 @@ def initialise_workplace(meta_data: dict) -> None:
         problem_code = meta_data['problem_codes'][i]
         test_cases = meta_data['problem_samples'][i]
         test_cases = parse_test_cases(test_cases, problem_code)
-        create_problem(path_to_workplace, default_source, header, problem_link, problem_code, test_cases)
+        create_problem(path_to_workspace, default_source, header, problem_link, problem_code, test_cases)
 
     print()
 
     # Open the Workplace folder in Visual Studio Code
-    print(Fore.YELLOW + "Opening " + path_to_workplace + " in Code... ", end = "", flush = True)
-    os.system("code " + path_to_workplace)
+    print(Fore.YELLOW + "Opening " + path_to_workspace + " in Code... ", end = "", flush = True)
+    os.system("code " + path_to_workspace)
     print(Fore.GREEN + "Done" + Fore.WHITE, flush = True)
 
 

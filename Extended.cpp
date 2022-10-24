@@ -1286,6 +1286,7 @@ private:
     const int p1 = 31, p2 = 37;
     vector<int> hash1, hash2;
     pair<int, int> hash_pair;
+    const char seed = 'a';
 
 public:
     inline static vector<int> inv_pow1, inv_pow2;
@@ -1299,8 +1300,8 @@ public:
         int h1 = 0, h2 = 0;
         long long p_pow1 = 1, p_pow2 = 1;
         for(int i = 0; i < length; i++) {
-            h1 = (h1 + (s[i] - 'a' + 1) * p_pow1) % mod1;
-            h2 = (h2 + (s[i] - 'a' + 1) * p_pow2) % mod2;
+            h1 = (h1 + (s[i] - seed + 1) * p_pow1) % mod1;
+            h2 = (h2 + (s[i] - seed + 1) * p_pow2) % mod2;
             p_pow1 = (p_pow1 * p1) % mod1;
             p_pow2 = (p_pow2 * p2) % mod2;
             hash1[i] = h1;
