@@ -8,6 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from html import unescape
 
 class Codechef:
     def __init__(self, contest_link: str) -> None:
@@ -28,8 +29,9 @@ class Codechef:
         element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "breadcrumbs")))
         element = driver.find_element(By.CLASS_NAME, 'breadcrumbs')
         inner_text = element.get_attribute('innerHTML')
+        inner_text = unescape(inner_text)
 
-        contest_name = inner_text[inner_text.rindex(";") + 1:].strip()
+        contest_name = inner_text[inner_text.rindex("»") + 1:].strip()
         driver.quit()
         print(Fore.GREEN + "Done", flush = True)
         print(Fore.YELLOW + "Contest Name: " + Fore.GREEN + contest_name, flush = True)
