@@ -2,7 +2,7 @@
 # Creates a folder for the contest
 # Extracts samples for each problem in the Contest
 
-import concurrent.futures
+import concurrent.futures, bs4, functools
 from colorama import Fore
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -49,7 +49,7 @@ class Codechef:
         driver = webdriver.Chrome(options = options)
 
         contest_prefix = contest_link
-        practice_substring = "/submit/"
+        practice_substring = "/problems/"
 
         if "?" in contest_link:
             contest_prefix = contest_link[:contest_link.index("?")]
@@ -111,13 +111,6 @@ class Codechef:
         # [input0, output0, input1, output1, ...]
         # Probably doesn't work for interactive problems
 
-        xpath = "//body/div[@id='ember-root']/div[@id='ember242']/div[@id='ember251']/main[@id='content-regions']/section[1]/div[1]/span[3]/pre[1]"
-        # xpath of the sample test cases
-
-        xpath_prefix = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div["
-        xpath_suffix_1 = "]/div[2]/div[1]/pre[1]"
-        xpath_suffix_2 = "]/div[2]/div[2]/pre[1]"
-
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
         driver = webdriver.Chrome(options = options)
@@ -126,40 +119,24 @@ class Codechef:
 
         try:
             driver.get(problem_link)
-            element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "_input_output__table_lulsq_184")))
+            element = WebDriverWait(driver, 50).until(EC.presence_of_all_elements_located((By.ID, "problem-statement")))
         except:
             print(Fore.RED + "Error extracting samples from " + problem_link)
             return []
 
-        samples = []
-        i = 3
+        elements = driver.find_elements(By.TAG_NAME, 'div[class^="_input_output__table_"]')
+        inner_text = list(map(lambda element: element.get_attribute('innerHTML'), elements))
 
-        tried_other_way = False
+        def parse_html(text: str) -> list:
+            soup = bs4.BeautifulSoup(text, 'html.parser')
+            results = list(soup.find_all('pre'))
+            sample_input = results[0].text
+            sample_output = results[1].text
+            return [sample_input, sample_output]
 
-        # iterate for multiple test cases
-        while True:
-            absolute_xpath_1 = xpath_prefix + str(i) + xpath_suffix_1
-            absolute_xpath_2 = xpath_prefix + str(i) + xpath_suffix_2
-            try:
-                element = driver.find_element(By.XPATH, absolute_xpath_1)
-                samples.append(element.get_attribute('innerHTML'))
-                element = driver.find_element(By.XPATH, absolute_xpath_2)
-                samples.append(element.get_attribute('innerHTML'))
-                i += 1
-            except:
-                if samples == []:
-                    if not tried_other_way:
-                        i = 2
-                        tried_other_way = True
-                        continue
-                    else:
-                        break
-                else:
-                    break
-
-        driver.quit()
-        print(Fore.YELLOW + "Extracting samples for " + problem_link + "... " + Fore.GREEN + "Done")
+        samples = sum(list(map(parse_html, inner_text)), [])
         return samples
+        
 
     def extract_meta_data(self) -> dict:
 
