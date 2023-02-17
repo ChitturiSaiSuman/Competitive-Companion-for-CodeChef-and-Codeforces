@@ -106,7 +106,6 @@ def initialise_workplace(meta_data: dict) -> None:
     # Modify it as needed
 
     header = "Author: Sai Suman Chitturi" + "\n"
-    header += "Powered by: Amazon CodeWhisperer" + "\n"
     header += "Created: " + meta_data['time'] + "\n"
     header += "Contest: " + meta_data['contest_name'] + "\n"
 
