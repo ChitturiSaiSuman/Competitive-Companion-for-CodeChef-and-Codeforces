@@ -94,7 +94,7 @@ else
             paplay $path_to_templates/CP_SOUNDS/TLE.ogg
         else
             runtime=$( echo "$end - $start" | bc -l )
-            check=$(diff --strip-trailing-cr -w STDOUT STDEXPOUT)
+            check=$(diff --strip-trailing-cr STDOUT STDEXPOUT)
 
             printf "${CYAN}STDIN:\n${NC}"
             cat STDIN
