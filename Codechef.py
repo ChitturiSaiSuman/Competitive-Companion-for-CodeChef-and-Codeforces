@@ -124,17 +124,17 @@ class Codechef:
             print(Fore.RED + "Error extracting samples from " + problem_link)
             return []
 
-        elements = driver.find_elements(By.TAG_NAME, 'div[class^="_input_output__table_"]')
-        inner_text = list(map(lambda element: element.get_attribute('innerHTML'), elements))
+        elements = driver.find_elements(By.TAG_NAME, 'pre')
+        samples = list(map(lambda element: element.get_attribute('innerHTML'), elements))
 
-        def parse_html(text: str) -> list:
-            soup = bs4.BeautifulSoup(text, 'html.parser')
-            results = list(soup.find_all('pre'))
-            sample_input = results[0].text
-            sample_output = results[1].text
-            return [sample_input, sample_output]
+        # def parse_html(text: str) -> list:
+        #     soup = bs4.BeautifulSoup(text, 'html.parser')
+        #     results = list(soup.find_all('pre'))
+        #     sample_input = results[0].text
+        #     sample_output = results[1].text
+        #     return [sample_input, sample_output]
 
-        samples = sum(list(map(parse_html, inner_text)), [])
+        # samples = sum(list(map(parse_html, inner_text)), [])
         return samples
         
 
