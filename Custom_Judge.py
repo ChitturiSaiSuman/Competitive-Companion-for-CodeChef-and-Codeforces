@@ -40,15 +40,15 @@ def stress_test(file_1: str, file_2: str):
 
     # Compile the Generator
     print('Compiling Generator.cpp')
-    os.system('g++ -std=c++17 -Wshadow -Wall -o generator Generator.cpp -O2 -Wno-unused-result')
+    os.system('g++ -DSUMAN -std=c++17 -Wshadow -Wall -o generator Generator.cpp -O2 -Wno-unused-result')
 
     # Compile the first Submission, which is the correct one
     print('Compiling ' + file_1)
-    os.system('g++ -std=c++17 -Wshadow -Wall -o AC ' + file_1 + ' -O2 -Wno-unused-result')
+    os.system('g++ -DSUMAN -std=c++17 -Wshadow -Wall -o AC ' + file_1 + ' -O2 -Wno-unused-result')
 
     # Compile the second Submission, which is the one to be tested
     print('Compiling ' + file_2)
-    os.system('g++ -std=c++17 -Wshadow -Wall -o WA ' + file_2 + ' -O2 -Wno-unused-result')
+    os.system('g++ -DSUMAN -std=c++17 -Wshadow -Wall -o WA ' + file_2 + ' -O2 -Wno-unused-result')
 
     for seed in range(1, limit + 1):
         print("Test Case:", seed, flush = True)
@@ -74,7 +74,7 @@ def stress_test(file_1: str, file_2: str):
 def run_single(file: str) -> bool:
     # Compile the Submission
     print('Compiling ' + file)
-    os.system('g++ -std=c++17 -Wshadow -Wall -o exe ' + file + ' -O2 -Wno-unused-result')
+    os.system('g++ -DSUMAN -std=c++17 -Wshadow -Wall -o exe ' + file + ' -O2 -Wno-unused-result')
     # Run the Submission
     print('Running ' + file)
     os.system('./exe < STDIN > STDOUT')

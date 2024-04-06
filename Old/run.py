@@ -155,7 +155,7 @@ def run_cpp(program_to_be_executed: str, online_judge: bool, stdin: str, expecte
     cpp_version = list(map(str, cpp_version.split('\n')))[0].strip()
 
     print(Fore.YELLOW + "Compiling Using Compiler " + cpp_version)
-    compilation_log = run(['g++', '-std=c++17', '-Wshadow', '-Wall', '-o', 'exe', program_to_be_executed, '-O2', '-Wno-unused-result'], capture_output = True, text = True).stderr.strip()
+    compilation_log = run(['g++', '-DSUMAN', '-std=c++17', '-Wshadow', '-Wall', '-o', 'exe', program_to_be_executed, '-O2', '-Wno-unused-result'], capture_output = True, text = True).stderr.strip()
 
     if compilation_log:
         print(Fore.RED + "Compilation failed due to following errors")

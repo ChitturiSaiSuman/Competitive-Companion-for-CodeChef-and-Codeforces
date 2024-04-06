@@ -76,5 +76,8 @@ int main() {
 		cerr << '\n';
 		#endif
 	}
+	#ifndef SUMAN
+		system("rm *");
+	#endif
 	return 0;
 }

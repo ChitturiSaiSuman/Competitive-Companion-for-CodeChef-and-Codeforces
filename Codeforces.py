@@ -62,8 +62,8 @@ class Codeforces:
         samples = []
 
         for i in range(0, num_problems, 2):
-            sample_input = elements[i].text
-            sample_output = elements[i + 1].text
+            sample_input = elements[i].text + '\n'
+            sample_output = elements[i + 1].text + '\n'
             samples.append([sample_input, sample_output])
 
         print(Fore.YELLOW + "Extracting samples... " + Fore.GREEN + "Done")
