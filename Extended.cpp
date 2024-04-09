@@ -452,95 +452,96 @@ class SegmentTree {
 
 class SegmentTree {
 private:
-    vector<ll> tree;
-    vector<ll> lazy;
-    int n;
-    
-    void build(vector<ll>& nums, int node, int start, int end) {
-        if (start == end) {
-            tree[node] = nums[start];
-        } else {
-            int mid = (start + end) / 2;
-            build(nums, 2 * node + 1, start, mid);
-            build(nums, 2 * node + 2, mid + 1, end);
-            tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
-        }
-    }
+	vector<ll> tree;
+	vector<ll> lazy;
+	int tree_size;
+	
+	void build(vector<ll>& nums, int node, int start, int end) {
+		if (start == end) {
+			tree[node] = nums[start];
+		} else {
+			int mid = (start + end) / 2;
+			build(nums, 2 * node + 1, start, mid);
+			build(nums, 2 * node + 2, mid + 1, end);
+			tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
+		}
+	}
 
-    void updateLazy(int node, int start, int end) {
-        if (lazy[node] != 0) {
-            tree[node] += (end - start + 1) * lazy[node];
-            if (start != end) {
-                lazy[2 * node + 1] += lazy[node];
-                lazy[2 * node + 2] += lazy[node];
-            }
-            lazy[node] = 0;
-        }
-    }
+	void updateLazy(int node, int start, int end) {
+		if (lazy[node] != 0) {
+			tree[node] += (end - start + 1) * lazy[node];
+			if (start != end) {
+				lazy[2 * node + 1] += lazy[node];
+				lazy[2 * node + 2] += lazy[node];
+			}
+			lazy[node] = 0;
+		}
+	}
 
-    void rangeUpdate(int l, int r, ll val, int node, int start, int end) {
-        updateLazy(node, start, end);
+	void rangeUpdate(int l, int r, ll val, int node, int start, int end) {
+		updateLazy(node, start, end);
 
-        if (start > end || start > r || end < l) {
-            return;
-        }
+		if (start > end || start > r || end < l) {
+			return;
+		}
 
-        if (start >= l && end <= r) {
-            tree[node] += (end - start + 1) * val;
-            if (start != end) {
-                lazy[2 * node + 1] += val;
-                lazy[2 * node + 2] += val;
-            }
-            return;
-        }
+		if (start >= l && end <= r) {
+			tree[node] += (end - start + 1) * val;
+			if (start != end) {
+				lazy[2 * node + 1] += val;
+				lazy[2 * node + 2] += val;
+			}
+			return;
+		}
 
-        int mid = (start + end) / 2;
-        rangeUpdate(l, r, val, 2 * node + 1, start, mid);
-        rangeUpdate(l, r, val, 2 * node + 2, mid + 1, end);
-        tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
-    }
+		int mid = (start + end) / 2;
+		rangeUpdate(l, r, val, 2 * node + 1, start, mid);
+		rangeUpdate(l, r, val, 2 * node + 2, mid + 1, end);
+		tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
+	}
 
-    ll rangeQuery(int l, int r, int node, int start, int end) {
-        updateLazy(node, start, end);
+	ll rangeQuery(int l, int r, int node, int start, int end) {
+		updateLazy(node, start, end);
 
-        if (start > end || start > r || end < l) {
-            return 0;
-        }
+		if (start > end || start > r || end < l) {
+			return 0;
+		}
 
-        if (start >= l && end <= r) {
-            return tree[node];
-        }
+		if (start >= l && end <= r) {
+			return tree[node];
+		}
 
-        int mid = (start + end) / 2;
-        ll leftQuery = rangeQuery(l, r, 2 * node + 1, start, mid);
-        ll rightQuery = rangeQuery(l, r, 2 * node + 2, mid + 1, end);
-        return leftQuery + rightQuery;
-    }
+		int mid = (start + end) / 2;
+		ll leftQuery = rangeQuery(l, r, 2 * node + 1, start, mid);
+		ll rightQuery = rangeQuery(l, r, 2 * node + 2, mid + 1, end);
+		return leftQuery + rightQuery;
+	}
 
 public:
-    SegmentTree(int N) {
-        int k = __builtin_clz(n);
-        int size = 1 << ((1<<3) + 1 - k);
-        tree.resize(size);
-        lazy.resize(size, 0);
-    }
+	SegmentTree(int N) {
+		tree_size = N;
+		int k = __builtin_clz(tree_size);
+		int size = 1 << ((1<<3) + 1 - k);
+		tree.resize(size);
+		lazy.resize(size, 0);
+	}
 
-    SegmentTree(vector<ll>& nums) {
-        n = nums.size();
-        int k = __builtin_clzll(n);
-        int size = 1 << ((1<<3) + 1 - k);
-        tree.resize(size);
-        lazy.resize(size, 0);
-        build(nums, 0, 0, n - 1);
-    }
+	SegmentTree(vector<ll>& nums) {
+		tree_size = nums.size();
+		int k = __builtin_clzll(tree_size);
+		int size = 1 << ((1<<3) + 1 - k);
+		tree.resize(size);
+		lazy.resize(size, 0);
+		build(nums, 0, 0, tree_size - 1);
+	}
 
-    void rangeUpdate(int l, int r, ll val) {
-        rangeUpdate(l, r, val, 0, 0, n - 1);
-    }
+	void rangeUpdate(int l, int r, ll val) {
+		rangeUpdate(l, r, val, 0, 0, tree_size - 1);
+	}
 
-    ll rangeQuery(int l, int r) {
-        return rangeQuery(l, r, 0, 0, n - 1);
-    }
+	ll rangeQuery(int l, int r) {
+		return rangeQuery(l, r, 0, 0, tree_size - 1);
+	}
 };
 
 // Trie for strings

@@ -1823,14 +1823,14 @@
         ],
         "description": "Build's Prefix and Suffix Frequency table for strings"
     },
-    "SegmentTree for Range Updates and Range Queries": {
-        "prefix": "",
+    "Segment Tree for Range updates and Range queries": {
+        "prefix": "Segment Tree for Range updates and Range queries",
         "body": [
             "class SegmentTree {",
             "private:",
             "    vector<ll> tree;",
             "    vector<ll> lazy;",
-            "    int n;",
+            "    int tree_size;",
             "    ",
             "    void build(vector<ll>& nums, int node, int start, int end) {",
             "        if (start == end) {",
@@ -1895,30 +1895,31 @@
             "",
             "public:",
             "    SegmentTree(int N) {",
-            "        int k = __builtin_clz(n);",
+            "        tree_size = N;",
+            "        int k = __builtin_clz(tree_size);",
             "        int size = 1 << ((1<<3) + 1 - k);",
             "        tree.resize(size);",
             "        lazy.resize(size, 0);",
             "    }",
             "",
             "    SegmentTree(vector<ll>& nums) {",
-            "        n = nums.size();",
-            "        int k = __builtin_clzll(n);",
+            "        tree_size = nums.size();",
+            "        int k = __builtin_clzll(tree_size);",
             "        int size = 1 << ((1<<3) + 1 - k);",
             "        tree.resize(size);",
             "        lazy.resize(size, 0);",
-            "        build(nums, 0, 0, n - 1);",
+            "        build(nums, 0, 0, tree_size - 1);",
             "    }",
             "",
             "    void rangeUpdate(int l, int r, ll val) {",
-            "        rangeUpdate(l, r, val, 0, 0, n - 1);",
+            "        rangeUpdate(l, r, val, 0, 0, tree_size - 1);",
             "    }",
             "",
             "    ll rangeQuery(int l, int r) {",
-            "        return rangeQuery(l, r, 0, 0, n - 1);",
+            "        return rangeQuery(l, r, 0, 0, tree_size - 1);",
             "    }",
             "};"
         ],
-        "description": "SegmentTree for Range Updates and Range Queries"
+        "description": "Segment Tree for Range updates and Range queries"
     }
 }
