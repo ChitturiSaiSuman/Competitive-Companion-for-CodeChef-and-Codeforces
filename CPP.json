@@ -1936,7 +1936,7 @@
             "    }",
             "",
             "    FenwickTree(vector<int> const &a): FenwickTree(a.size()) {",
-            "        for (int i = 0; i < a.size(); i++) {",
+            "        for (int i = 0; i < (int)a.size(); i++) {",
             "            add(i, a[i]);",
             "        }",
             "    }",
