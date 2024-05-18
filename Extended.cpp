@@ -76,9 +76,6 @@ int main() {
 		cerr << '\n';
 		#endif
 	}
-	#ifndef SUMAN
-		system("rm *");
-	#endif
 	return 0;
 }
 
@@ -1889,3 +1886,688 @@ ostream& operator<<(ostream& out, const big_integer& a) {
     }
     return out;
 }
+
+// Ordered Multiset (allows Duplicates)
+// Code written by ChatGPT
+// Supports O(log N) insertion, removal and access
+// Keeps the elements ordered
+template <typename T>
+class ordered_multiset {
+private:
+    enum Color { RED, BLACK };
+
+    struct Node {
+        T key;
+        Node* parent;
+        Node* left;
+        Node* right;
+        Color color;
+        int size;
+    };
+
+    Node* root;
+
+    Node* createNode(const T& key) {
+        Node* newNode = new Node;
+        newNode->key = key;
+        newNode->parent = nullptr;
+        newNode->left = nullptr;
+        newNode->right = nullptr;
+        newNode->color = RED;
+        newNode->size = 1;
+        return newNode;
+    }
+
+    void updateSize(Node* node) {
+        if (node != nullptr) {
+            int leftSize = (node->left != nullptr) ? node->left->size : 0;
+            int rightSize = (node->right != nullptr) ? node->right->size : 0;
+            node->size = leftSize + rightSize + 1;
+        }
+    }
+
+    void rotateLeft(Node* x) {
+        Node* y = x->right;
+        x->right = y->left;
+        if (y->left != nullptr)
+            y->left->parent = x;
+        y->parent = x->parent;
+        if (x->parent == nullptr)
+            root = y;
+        else if (x == x->parent->left)
+            x->parent->left = y;
+        else
+            x->parent->right = y;
+        y->left = x;
+        x->parent = y;
+
+        updateSize(x);
+        updateSize(y);
+    }
+
+    void rotateRight(Node* x) {
+        Node* y = x->left;
+        x->left = y->right;
+        if (y->right != nullptr)
+            y->right->parent = x;
+        y->parent = x->parent;
+        if (x->parent == nullptr)
+            root = y;
+        else if (x == x->parent->right)
+            x->parent->right = y;
+        else
+            x->parent->left = y;
+        y->right = x;
+        x->parent = y;
+
+        updateSize(x);
+        updateSize(y);
+    }
+
+    void fixInsertion(Node* z) {
+        while (z->parent != nullptr && z->parent->color == RED) {
+            if (z->parent == z->parent->parent->left) {
+                Node* y = z->parent->parent->right;
+                if (y != nullptr && y->color == RED) {
+                    z->parent->color = BLACK;
+                    y->color = BLACK;
+                    z->parent->parent->color = RED;
+                    z = z->parent->parent;
+                } else {
+                    if (z == z->parent->right) {
+                        z = z->parent;
+                        rotateLeft(z);
+                    }
+                    z->parent->color = BLACK;
+                    z->parent->parent->color = RED;
+                    rotateRight(z->parent->parent);
+                }
+            } else {
+                Node* y = z->parent->parent->left;
+                if (y != nullptr && y->color == RED) {
+                    z->parent->color = BLACK;
+                    y->color = BLACK;
+                    z->parent->parent->color = RED;
+                    z = z->parent->parent;
+                } else {
+                    if (z == z->parent->left) {
+                        z = z->parent;
+                        rotateRight(z);
+                    }
+                    z->parent->color = BLACK;
+                    z->parent->parent->color = RED;
+                    rotateLeft(z->parent->parent);
+                }
+            }
+        }
+        root->color = BLACK;
+    }
+
+    void transplant(Node* u, Node* v) {
+        if (u->parent == nullptr)
+            root = v;
+        else if (u == u->parent->left)
+            u->parent->left = v;
+        else
+            u->parent->right = v;
+        if (v != nullptr)
+            v->parent = u->parent;
+    }
+
+    Node* treeMinimum(Node* x) {
+        while (x->left != nullptr)
+            x = x->left;
+        return x;
+    }
+
+    void fixDeletion(Node* x) {
+        while (x != root && x->color == BLACK) {
+            if (x == x->parent->left) {
+                Node* w = x->parent->right;
+                if (w->color == RED) {
+                    w->color = BLACK;
+                    x->parent->color = RED;
+                    rotateLeft(x->parent);
+                    w = x->parent->right;
+                }
+                if (w->left->color == BLACK && w->right->color == BLACK) {
+                    w->color = RED;
+                    x = x->parent;
+                } else {
+                    if (w->right->color == BLACK) {
+                        w->left->color = BLACK;
+                        w->color = RED;
+                        rotateRight(w);
+                        w = x->parent->right;
+                    }
+                    w->color = x->parent->color;
+                    x->parent->color = BLACK;
+                    w->right->color = BLACK;
+                    rotateLeft(x->parent);
+                    x = root;
+                }
+            } else {
+                Node* w = x->parent->left;
+                if (w->color == RED) {
+                    w->color = BLACK;
+                    x->parent->color = RED;
+                    rotateRight(x->parent);
+                    w = x->parent->left;
+                }
+                if (w->right->color == BLACK && w->left->color == BLACK) {
+                    w->color = RED;
+                    x = x->parent;
+                } else {
+                    if (w->left->color == BLACK) {
+                        w->right->color = BLACK;
+                        w->color = RED;
+                        rotateLeft(w);
+                        w = x->parent->left;
+                    }
+                    w->color = x->parent->color;
+                    x->parent->color = BLACK;
+                    w->left->color = BLACK;
+                    rotateRight(x->parent);
+                    x = root;
+                }
+            }
+        }
+        x->color = BLACK;
+    }
+
+    Node* findNode(const T& key) const {
+        Node* current = root;
+        while (current != nullptr) {
+            if (key == current->key)
+                return current;
+            else if (key < current->key)
+                current = current->left;
+            else
+                current = current->right;
+        }
+        return nullptr;
+    }
+
+    Node* getNodeAtIndex(Node* x, int index) {
+        if (x == nullptr)
+            return nullptr;
+
+        int leftSize = (x->left != nullptr) ? x->left->size : 0;
+
+        if (index < leftSize)
+            return getNodeAtIndex(x->left, index);
+        else if (index == leftSize)
+            return x;
+        else
+            return getNodeAtIndex(x->right, index - leftSize - 1);
+    }
+
+public:
+    RedBlackTree() : root(nullptr) {}
+
+    int insert(const T& key) {
+        Node* z = createNode(key);
+        Node* y = nullptr;
+        Node* x = root;
+        while (x != nullptr) {
+            y = x;
+            x->size++;
+            if (z->key < x->key)
+                x = x->left;
+            else
+                x = x->right;
+        }
+        z->parent = y;
+        if (y == nullptr)
+            root = z;
+        else if (z->key < y->key)
+            y->left = z;
+        else
+            y->right = z;
+        fixInsertion(z);
+        return 0;
+    }
+
+    void erase(const T& key) {
+        Node* z = findNode(key);
+        if (z == nullptr)
+            return;
+        Node* y = z;
+        Node* x = nullptr;
+        Color yOriginalColor = y->color;
+        if (z->left == nullptr) {
+            x = z->right;
+            transplant(z, z->right);
+        } else if (z->right == nullptr) {
+            x = z->left;
+            transplant(z, z->left);
+        } else {
+            y = treeMinimum(z->right);
+            yOriginalColor = y->color;
+            x = y->right;
+            if (y->parent == z)
+                x->parent = y;
+            else {
+                transplant(y, y->right);
+                y->right = z->right;
+                y->right->parent = y;
+            }
+            transplant(z, y);
+            y->left = z->left;
+            y->left->parent = y;
+            y->color = z->color;
+        }
+        delete z;
+
+        Node* current = x;
+        while (current != nullptr) {
+            updateSize(current);
+            current = current->parent;
+        }
+
+        if (yOriginalColor == BLACK)
+            fixDeletion(x);
+    }
+
+    const T& getElementAt(int index) {
+        Node* nodeAtIndex = getNodeAtIndex(root, index);
+        if (nodeAtIndex == nullptr) {
+            throw std::out_of_range("Index out of range");
+        }
+        return nodeAtIndex->key;
+    }
+
+    int getIndex(const T& key) const {
+        int index = 0;
+        Node* current = root;
+        while (current != nullptr) {
+            if (key == current->key)
+                return index + (current->left != nullptr ? current->left->size : 0);
+            else if (key < current->key)
+                current = current->left;
+            else {
+                index += (current->left != nullptr ? current->left->size : 0) + 1;
+                current = current->right;
+            }
+        }
+        throw std::out_of_range("Element not found");
+    }
+};
+
+// Ordered multi_set using GNU PBDS
+// Allows duplicates
+// Include these headers
+// #include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/tree_policy.hpp>
+// using namespace __gnu_pbds;
+template<typename T>
+class Ordered_Multiset_PBDS {
+private:
+    int unique_id = 0;
+    tree<pair<T, int>, null_type, less<pair<T, int>>, rb_tree_tag, tree_order_statistics_node_update> my_tree;
+public:
+    void insert(T item) {
+        my_tree.insert({item, unique_id++});
+    }
+
+    void erase(T item) {
+        my_tree.erase({item, 0});
+    }
+
+    T get_element_at(int index) {
+        return (*my_tree.find_by_order(index)).first;
+    }
+
+    int count_less_than(T item) {
+        return int(my_tree.order_of_key({item, 0}));
+    }
+
+    int size() {
+        return my_tree.size();
+    }
+};
+
+// Ordered set (does not allow duplicates)
+// Code written by ChatGPT
+// Supports O(log N) insertion, removal and access
+// Keeps the elements ordered
+template <typename T>
+class ordered_set {
+private:
+    set<T> tracker;
+    enum Color { RED, BLACK };
+
+    struct Node {
+        T key;
+        Node* parent;
+        Node* left;
+        Node* right;
+        Color color;
+        int size;
+    };
+
+    Node* root;
+
+    Node* createNode(const T& key) {
+        Node* newNode = new Node;
+        newNode->key = key;
+        newNode->parent = nullptr;
+        newNode->left = nullptr;
+        newNode->right = nullptr;
+        newNode->color = RED;
+        newNode->size = 1;
+        return newNode;
+    }
+
+    void updateSize(Node* node) {
+        if (node != nullptr) {
+            int leftSize = (node->left != nullptr) ? node->left->size : 0;
+            int rightSize = (node->right != nullptr) ? node->right->size : 0;
+            node->size = leftSize + rightSize + 1;
+        }
+    }
+
+    void rotateLeft(Node* x) {
+        Node* y = x->right;
+        x->right = y->left;
+        if (y->left != nullptr)
+            y->left->parent = x;
+        y->parent = x->parent;
+        if (x->parent == nullptr)
+            root = y;
+        else if (x == x->parent->left)
+            x->parent->left = y;
+        else
+            x->parent->right = y;
+        y->left = x;
+        x->parent = y;
+
+        updateSize(x);
+        updateSize(y);
+    }
+
+    void rotateRight(Node* x) {
+        Node* y = x->left;
+        x->left = y->right;
+        if (y->right != nullptr)
+            y->right->parent = x;
+        y->parent = x->parent;
+        if (x->parent == nullptr)
+            root = y;
+        else if (x == x->parent->right)
+            x->parent->right = y;
+        else
+            x->parent->left = y;
+        y->right = x;
+        x->parent = y;
+
+        updateSize(x);
+        updateSize(y);
+    }
+
+    void fixInsertion(Node* z) {
+        while (z->parent != nullptr && z->parent->color == RED) {
+            if (z->parent == z->parent->parent->left) {
+                Node* y = z->parent->parent->right;
+                if (y != nullptr && y->color == RED) {
+                    z->parent->color = BLACK;
+                    y->color = BLACK;
+                    z->parent->parent->color = RED;
+                    z = z->parent->parent;
+                } else {
+                    if (z == z->parent->right) {
+                        z = z->parent;
+                        rotateLeft(z);
+                    }
+                    z->parent->color = BLACK;
+                    z->parent->parent->color = RED;
+                    rotateRight(z->parent->parent);
+                }
+            } else {
+                Node* y = z->parent->parent->left;
+                if (y != nullptr && y->color == RED) {
+                    z->parent->color = BLACK;
+                    y->color = BLACK;
+                    z->parent->parent->color = RED;
+                    z = z->parent->parent;
+                } else {
+                    if (z == z->parent->left) {
+                        z = z->parent;
+                        rotateRight(z);
+                    }
+                    z->parent->color = BLACK;
+                    z->parent->parent->color = RED;
+                    rotateLeft(z->parent->parent);
+                }
+            }
+        }
+        root->color = BLACK;
+    }
+
+    void transplant(Node* u, Node* v) {
+        if (u->parent == nullptr)
+            root = v;
+        else if (u == u->parent->left)
+            u->parent->left = v;
+        else
+            u->parent->right = v;
+        if (v != nullptr)
+            v->parent = u->parent;
+    }
+
+    Node* treeMinimum(Node* x) {
+        while (x->left != nullptr)
+            x = x->left;
+        return x;
+    }
+
+    void fixDeletion(Node* x) {
+        while (x != root && x->color == BLACK) {
+            if (x == x->parent->left) {
+                Node* w = x->parent->right;
+                if (w->color == RED) {
+                    w->color = BLACK;
+                    x->parent->color = RED;
+                    rotateLeft(x->parent);
+                    w = x->parent->right;
+                }
+                if (w->left->color == BLACK && w->right->color == BLACK) {
+                    w->color = RED;
+                    x = x->parent;
+                } else {
+                    if (w->right->color == BLACK) {
+                        w->left->color = BLACK;
+                        w->color = RED;
+                        rotateRight(w);
+                        w = x->parent->right;
+                    }
+                    w->color = x->parent->color;
+                    x->parent->color = BLACK;
+                    w->right->color = BLACK;
+                    rotateLeft(x->parent);
+                    x = root;
+                }
+            } else {
+                Node* w = x->parent->left;
+                if (w->color == RED) {
+                    w->color = BLACK;
+                    x->parent->color = RED;
+                    rotateRight(x->parent);
+                    w = x->parent->left;
+                }
+                if (w->right->color == BLACK && w->left->color == BLACK) {
+                    w->color = RED;
+                    x = x->parent;
+                } else {
+                    if (w->left->color == BLACK) {
+                        w->right->color = BLACK;
+                        w->color = RED;
+                        rotateLeft(w);
+                        w = x->parent->left;
+                    }
+                    w->color = x->parent->color;
+                    x->parent->color = BLACK;
+                    w->left->color = BLACK;
+                    rotateRight(x->parent);
+                    x = root;
+                }
+            }
+        }
+        x->color = BLACK;
+    }
+
+    Node* findNode(const T& key) const {
+        Node* current = root;
+        while (current != nullptr) {
+            if (key == current->key)
+                return current;
+            else if (key < current->key)
+                current = current->left;
+            else
+                current = current->right;
+        }
+        return nullptr;
+    }
+
+    Node* getNodeAtIndex(Node* x, int index) {
+        if (x == nullptr)
+            return nullptr;
+
+        int leftSize = (x->left != nullptr) ? x->left->size : 0;
+
+        if (index < leftSize)
+            return getNodeAtIndex(x->left, index);
+        else if (index == leftSize)
+            return x;
+        else
+            return getNodeAtIndex(x->right, index - leftSize - 1);
+    }
+
+public:
+    RedBlackTree() : root(nullptr) {}
+
+    int insert(const T& key) {
+        if (!(tracker.find(key) == tracker.end())) {
+            return;
+        }
+        tracker.insert(key);
+        Node* z = createNode(key);
+        Node* y = nullptr;
+        Node* x = root;
+        while (x != nullptr) {
+            y = x;
+            x->size++;
+            if (z->key < x->key)
+                x = x->left;
+            else
+                x = x->right;
+        }
+        z->parent = y;
+        if (y == nullptr)
+            root = z;
+        else if (z->key < y->key)
+            y->left = z;
+        else
+            y->right = z;
+        fixInsertion(z);
+        return 0;
+    }
+
+    void erase(const T& key) {
+        tracker.erase(key);
+        Node* z = findNode(key);
+        if (z == nullptr)
+            return;
+        Node* y = z;
+        Node* x = nullptr;
+        Color yOriginalColor = y->color;
+        if (z->left == nullptr) {
+            x = z->right;
+            transplant(z, z->right);
+        } else if (z->right == nullptr) {
+            x = z->left;
+            transplant(z, z->left);
+        } else {
+            y = treeMinimum(z->right);
+            yOriginalColor = y->color;
+            x = y->right;
+            if (y->parent == z)
+                x->parent = y;
+            else {
+                transplant(y, y->right);
+                y->right = z->right;
+                y->right->parent = y;
+            }
+            transplant(z, y);
+            y->left = z->left;
+            y->left->parent = y;
+            y->color = z->color;
+        }
+        delete z;
+
+        Node* current = x;
+        while (current != nullptr) {
+            updateSize(current);
+            current = current->parent;
+        }
+
+        if (yOriginalColor == BLACK)
+            fixDeletion(x);
+    }
+
+    const T& getElementAt(int index) {
+        Node* nodeAtIndex = getNodeAtIndex(root, index);
+        if (nodeAtIndex == nullptr) {
+            throw std::out_of_range("Index out of range");
+        }
+        return nodeAtIndex->key;
+    }
+
+    int getIndex(const T& key) const {
+        int index = 0;
+        Node* current = root;
+        while (current != nullptr) {
+            if (key == current->key)
+                return index + (current->left != nullptr ? current->left->size : 0);
+            else if (key < current->key)
+                current = current->left;
+            else {
+                index += (current->left != nullptr ? current->left->size : 0) + 1;
+                current = current->right;
+            }
+        }
+        throw std::out_of_range("Element not found");
+    }
+};
+
+// Ordered Set using GNU PBDS
+// Functions as a set (doesn't allow duplicates)
+// Include these headers
+// #include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/tree_policy.hpp>
+// using namespace __gnu_pbds;
+template<typename T>
+class Ordered_Set_PBDS {
+private:
+    tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update> my_tree;
+public:
+    void insert(T item) {
+        my_tree.insert(item);
+    }
+
+    void erase(T item) {
+        my_tree.erase(item);
+    }
+
+    T get_element_at(int index) {
+        return *my_tree.find_by_order(index);
+    }
+
+    int count_less_than(T item) {
+        return int(my_tree.order_of_key(item));
+    }
+
+    int size() {
+        return my_tree.size();
+    }
+};
