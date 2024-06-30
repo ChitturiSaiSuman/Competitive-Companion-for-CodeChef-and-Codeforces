@@ -55,6 +55,28 @@ static inline ll inverse(ll a, ll p) {
 
 #define nax 2000003
 
+/**
+ * Dynamic Hash:
+ *      A Polynomial Rolling Hash and Fenwick Tree
+ *      based String Hashing Data Structure.
+ * Operations Supported:
+ *      int size() {
+ *          returns the size of the hash (length of string)
+ *      }
+ *      pair<int, int> prefix(int index) {
+ *          returns the hash of the prefix S[0, index]
+ *      }
+ *      pair<int, int> substr(int l, int r) {
+ *          returns the hash of the substring S[l, r]
+ *      }
+ *      void update(int index, char source, char target) {
+ *          Updates the hash value when S[index]
+ *          is replaced from source to target
+ *      }
+ *      bool operator==(DynamicHash& other) {
+ *          returns true if this == other
+ *      }
+ */
 class DynamicHash {
 private:
     // Constants
@@ -64,47 +86,51 @@ private:
     const int INV_P1 = inverse(P1, MOD1), INV_P2 = inverse(P2, MOD2);
 
     // Hash size
-    int length;
+    int length = 0;
 
     // Fenwick Tree members
-        int bit_size;
-        vector<int> bit1, bit2;
+    int bit_size;
+    vector<int> bit1, bit2;
 
     // Fenwick Tree methods
 
-        void bit_build() {
-            bit_size = length + 2;
-            bit1.assign(bit_size, 0);
-            bit2.assign(bit_size, 0);
-            for (int i = 0; i < length; i++) {
-                bit_add(bit1, i, hash1[i], MOD1);
-                bit_add(bit2, i, hash2[i], MOD2);
-            }
+    /**
+     * Builds BIT for the Hash Vectors
+     * Call this only when hash1 and hash2 are populated
+     */
+    void bit_build() {
+        bit_size = length + 2;
+        bit1.assign(bit_size, 0);
+        bit2.assign(bit_size, 0);
+        for (int i = 0; i < length; i++) {
+            bit_add(bit1, i, hash1[i], MOD1);
+            bit_add(bit2, i, hash2[i], MOD2);
         }
+    }
 
-        void bit_add(vector<int>& bit, int index, int val, int modulo) {
-            for (++index; index < bit_size; index += index & -index) {
-                // if val < 0: adding 2LL * modulo will make it positive
-                bit[index] = (bit[index] + (2LL * modulo) + val) % modulo;
-            }
+    /**
+     * Point Addition: Adds Val to the element at index Position
+     */
+    void bit_add(vector<int>& bit, int index, int val, int modulo) {
+        for (++index; index < bit_size; index += index & -index) {
+            // if val < 0: adding 2LL * modulo will make it positive
+            bit[index] = (bit[index] + (2LL * modulo) + val) % modulo;
         }
+    }
 
-        void bit_range_update(int l, int r, int val1, int val2) {
-            bit_add(bit1, l, val1, MOD1); bit_add(bit1, r + 1, -val1, MOD1);
-            bit_add(bit2, l, val2, MOD2); bit_add(bit2, r + 1, -val2, MOD2);
+    /**
+     * Range Query: Returns the Sum of the Prefix ending at index
+     */
+    pair<int, int> bit_get(int index) const {
+        ll h1 = 0, h2 = 0;
+        for (++index; index > 0; index -= index & -index) {
+            h1 += bit1[index];
+            h1 %= MOD1;
+            h2 += bit2[index];
+            h2 %= MOD2;
         }
-
-        pair<int, int> bit_query(int index) const {
-            ll h1 = 0, h2 = 0;
-            for (++index; index > 0; index -= index & -index) {
-                h1 += bit1[index];
-                h1 %= MOD1;
-                h2 += bit2[index];
-                h2 %= MOD2;
-            }
-            return {(int)h1, (int)h2};
-        }
-
+        return {(int)h1, (int)h2};
+    }
     // End of Fenwick Tree Methods
 
 public:
@@ -136,10 +162,9 @@ public:
         hash1.resize(cache_size);
         hash2.resize(cache_size);
 
-        int h1 = 0, h2 = 0;
         for (int i = 0; i < length; i++) {
-            h1 = (h1 + (s[i] - OFFSET + 1) * 1LL * p_pow1[i]) % MOD1;
-            h2 = (h2 + (s[i] - OFFSET + 1) * 1LL * p_pow2[i]) % MOD2;
+            ll h1 = ((s[i] - OFFSET + 1) * 1LL * p_pow1[i]) % MOD1;
+            ll h2 = ((s[i] - OFFSET + 1) * 1LL * p_pow2[i]) % MOD2;
             hash1[i] = h1;
             hash2[i] = h2;
         }
@@ -151,7 +176,7 @@ public:
     /**
      * Returns the size of the string or hash
      */
-    int size() {
+    int size() const {
         return length;
     }
 
@@ -160,57 +185,53 @@ public:
      */
     pair<int, int> prefix(const int index) const {
         // Can be a Private Method
-        return bit_query(index);
+        return bit_get(index);
     }
 
     /**
      * Returns the hash value of the substring s[l, r]
      */
-    pair<int, int> substr(const int l, const int r) {
+    pair<int, int> substr(const int l, const int r) const {
         if(l == 0) {
             return prefix(r);
         }
-        auto p_r = prefix(r), p_l = prefix(l - 1);
+
+        auto p_r = prefix(r);
+        auto p_l = prefix(l - 1);
+
         int temp1 = p_r.first - p_l.first;
         int temp2 = p_r.second - p_l.second;
 
-        temp1 += (temp1 < 0 ? MOD1 : 0);
-        temp2 += (temp2 < 0 ? MOD2 : 0);
-        temp1 = (temp1 * 1LL * inv_pow1[l]) % MOD1;
-        temp2 = (temp2 * 1LL * inv_pow2[l]) % MOD2;
+        temp1 += (temp1 < 0 ? MOD1 : 0); temp1 = (temp1 * 1LL * inv_pow1[l]) % MOD1;
+        temp2 += (temp2 < 0 ? MOD2 : 0); temp2 = (temp2 * 1LL * inv_pow2[l]) % MOD2;
 
         return {temp1, temp2};
     }
 
     /**
+     * Updates the hash value when s[index]
+     * is replaced from source to target.
      * Remember to update your original string.
-     * Update the hash value when s[index] is replaced
-     * from source to target.
      */
     void update(const int index, const char source, const char target) {
         if (source == target) {
             return;
         }
 
-        int before_1 = ((source - OFFSET + 1) * 1LL * p_pow1[index]) % MOD1;
-        int after_1 = ((target - OFFSET + 1) * 1LL * p_pow1[index]) % MOD1;
-        int d1 = after_1 - before_1;
-        if (d1 < 0) {
-            d1 += MOD1;
-        }
+        // Compute the difference for MOD1 (consider target vs source)
+        int d1 = (target - source + MOD1) % MOD1;
+        d1 = (d1 * 1LL * p_pow1[index]) % MOD1;
 
-        int before_2 = ((source - OFFSET + 1) * 1LL * p_pow2[index]) % MOD2;
-        int after_2 = ((target - OFFSET + 1) * 1LL * p_pow2[index]) % MOD2;
-        int d2 = after_2 - before_2;
-        if (d2 < 0) {
-            d2 += MOD2;
-        }
+        // Compute the difference for MOD2 (consider target vs source)
+        int d2 = (target - source + MOD2) % MOD2;
+        d2 = (d2 * 1LL * p_pow2[index]) % MOD2;
 
-        bit_range_update(index, length - 1, d1, d2);
+        bit_add(bit1, index, d1, MOD1);
+        bit_add(bit2, index, d2, MOD2);
     }
 
     bool operator==(const DynamicHash& other) {
-        return prefix(length - 1) == other.prefix(other.length - 1);
+        return prefix(size() - 1) == other.prefix(other.size() - 1);
     }
 };
 
@@ -218,24 +239,37 @@ void pre_compute() {
     return;
 }
 
-void solve() {
+void solve(int test) {
     string s1, s2;
     cin >> s1 >> s2;
 
     DynamicHash h1(s1), h2(s2);
 
+    debug(h1.prefix(s1.length() - 1)); debug(h2.prefix(s2.length()));
+
     int ops = 0;
     cin >> ops;
 
-    while (ops--) {
-        int index; char ch;
-        cin >> index >> ch;
+    for (int op = 0; op < ops; op++) {
+        int index; char ch; string s;
+        cin >> index >> ch >> s;
+
+        string prev1 = s1, prev2 = s2;
 
         h1.update(index, s1[index], ch);
         s1[index] = ch;
 
+        if (s1 != s) {
+            cout << "Something is fishy. Failed Test: " << (op + 1) << '\n';
+        }
+
         if ((s1 == s2) != (h1 == h2)) {
-            cout << "Failed Test" << '\n';
+            cout << "Test: " << (test + 1) << '\n';
+            cout << "Failed Test: " << (op + 1) << '\n';
+            cout << "Previous: " << prev1 << ", " << prev2 << '\n';
+            cout << "Index and Value: " << index << ", " << ch << '\n';
+            auto p1 = h1.prefix(s1.length() - 1), p2 = h2.prefix(s2.length() - 1);
+            cout << "Hashes: " << "(" << p1.first << ", " << p1.second << "), (" << p2.first << ", " << p2.second << ")" << '\n';
             break;
         }
     }
@@ -248,7 +282,7 @@ int main() {
     pre_compute();
     FOR(test, t) {
         // cout << "Case #" << (test + 1) << ": ";
-        solve();
+        solve(test);
         #ifdef SUMAN
         cerr << '\n';
         #endif
