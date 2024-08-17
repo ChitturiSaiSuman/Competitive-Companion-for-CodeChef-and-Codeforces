@@ -172,6 +172,7 @@ def codeforces_scraper():
     contest = Codeforces(contest_link)
     meta_data = contest.extract_meta_data()
     meta_data['time'] = now_str
+    meta_data['contest_code'] = 'Codeforces_' + meta_data['contest_code']
 
     initialise_workplace(meta_data)
 

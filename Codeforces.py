@@ -72,7 +72,7 @@ class Codeforces:
     def extract_meta_data(self) -> dict:
 
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
+        # options.add_argument('headless')
         driver = webdriver.Chrome(options = options)
         driver.get(self.contest_link)
 
