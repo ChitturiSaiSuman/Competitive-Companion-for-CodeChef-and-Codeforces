@@ -2751,6 +2751,8 @@ public:
 
 #include <functional>
 
+// https://en.wikipedia.org/wiki/Splay_tree
+
 #ifndef SPLAY_TREE
 #define SPLAY_TREE
 
